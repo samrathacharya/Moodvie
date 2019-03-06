@@ -2,7 +2,7 @@
 
 import datetime
 class Movie():
-    def __init__ (self,title = None,date = None,casts = [],synopsis=None,trailors=[],platforms={},imdb=None,rt=None,mt = None,pic=None,reviews={}):
+    def __init__ (self,title = None,date = None,casts = [],synopsis=None,trailors=[],platforms=[],imdb=None,rt=None,mt = None,pic=None,reviews={}):
         self._title = title #omdb
         self._release_date=date #omdb
         self._casts=casts #omdb
