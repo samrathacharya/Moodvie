@@ -2,17 +2,23 @@
 
 import datetime
 class Movie():
-    def __init__ (self,title = "",date = None,casts = [],synopsis="",trailors=[],platforms={},imdb=-1,rt=-1,mt = -1,reviews={}):
-        self._title = title
-        self._release_date=date
-        self._casts=casts
-        self._synopsis=synopsis
-        self._trailers=trailors
-        self._platforms=platforms
-        self._imdb_rating =imdb
-        self._rt_rating = rt
-        self._mt_rating = mt
+    def __init__ (self,title = None,date = None,casts = [],synopsis=None,trailors=[],platforms={},imdb=None,rt=None,mt = None,pic=None,reviews={}):
+        self._title = title #omdb
+        self._release_date=date #omdb
+        self._casts=casts #omdb
+        self._synopsis=synopsis #omdb
+        self._imdb_rating =imdb #omdb
+        self._rt_rating = rt #omdb
+        self._mt_rating = mt #omdb
+        self._poster = pic #omdb
         self._top_reviews=reviews
+        self._trailers=trailors 
+        self._platforms=platforms
+        
+    def getPoster(self):
+        return self._poster
+
+
 
     def getTitle(self):
         return self._title
@@ -41,8 +47,8 @@ class Movie():
 
 
     
-
-
+    def setPoster(self,pic_link):
+        self._poster = pic_link
 
     def setTitle(self,string):
         self._title = string
