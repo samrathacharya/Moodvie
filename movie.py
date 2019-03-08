@@ -1,19 +1,19 @@
 
 
 import datetime
-class Movie():
-    def __init__ (self,title = None,date = None,casts = [],synopsis=None,trailors=[],platforms=[],imdb=None,rt=None,mt = None,pic=None,reviews={}):
+class Movie:
+    def __init__ (self,title = None,date = None,synopsis=None,imdb=None,rt=None,mt = None,pic=None):
         self._title = title #omdb
         self._release_date=date #omdb
-        self._casts=casts #omdb
+        self._casts=list() #omdb
         self._synopsis=synopsis #omdb
         self._imdb_rating =imdb #omdb
         self._rt_rating = rt #omdb
         self._mt_rating = mt #omdb
         self._poster = pic #omdb
-        self._top_reviews=reviews
-        self._trailers=trailors 
-        self._platforms=platforms
+        self._top_reviews={}
+        self._trailers=list()
+        self._platforms=list()
         
     def getPoster(self):
         return self._poster

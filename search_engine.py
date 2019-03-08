@@ -17,8 +17,12 @@ class Search_engine():
             # put the basic information of the movie into the movie item
             self._omdb.set_movie_byid(item,m)
             # put the itunes price info into the movie item
-            self._itunes.set_platform(m)
+            
 
+           
+            p = self._itunes.search_platform(m)
+            if(p != None):
+                m.add_platforms(p)
             movies_list.append(m)
 
         return movies_list
@@ -30,11 +34,10 @@ if __name__ == "__main__":
     movielist = engine.search_by_title("Rush hour")
     for item in movielist:
         print("title %s date %s"%(item.getTitle(),item.getDate()))
-
-        platforms = item.getPlatforms()
-        for platform in platforms:
-            print("platform %s price %s"%(platform.getName(),platform.getPrice()))
-
+        for p in item.getPlatforms():
+            print(p.getName())
+            print(p.getPrice())
+            print(p.getLink())
         print("")
     
         

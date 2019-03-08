@@ -6,15 +6,15 @@ class Itunes_api():
     def __init__(self):
         self._link = "https://itunes.apple.com/search?media=movie"
     
-    def set_platform(self,movie):
-        # search the movie on itunes according its title and date
-        title = movie.getTitle()
+    def search_platform(self,target_movie):
+        # search the target_target_movie on itunes according its title and date
+        title = target_movie.getTitle()
         string = "&term=" + title
         response = requests.get(self._link + string)
         result_dictionary = response.json()
         # no result found
         if(result_dictionary['resultCount']==0):
-            return
+            return None
         
         # get the result list from the json
         results_list= result_dictionary['results']
@@ -24,24 +24,24 @@ class Itunes_api():
             date = self.date_convert(item['releaseDate'])
             #compare title and the date in result list
             
-            if item['trackName'].lower() == title.lower() and date == movie.getDate():
-                #print("movie name: %s date %s Movie date %s" % (movie.getTitle(),date,movie.getDate()))
-
-
+            if item['trackName'].lower() == title.lower() and date == target_movie.getDate():
+                #print("target_movie name: %s track name %s date %s target_movie date %s" % (target_movie.getTitle(),item['trackName'],date,target_movie.getDate()))
                 #get the price of itunes
                 if 'trackRentalPrice' in item.keys():
-                    movie.add_platforms( Platform("itunes",item['trackRentalPrice'],item['trackViewUrl']))
-                    return
+                    return Platform("itunes",item['trackRentalPrice'],item['trackViewUrl'])
+                    
                 elif 'trackPrice' in item.keys():
-                    movie.add_platforms( Platform("itunes",item['trackPrice'],item['trackViewUrl']))
-                    return
+                    
+                    return Platform("itunes",item['trackPrice'],item['trackViewUrl'])
                 else:
                     for item_key in item.keys():
                         if 'Price' in item_key:
-                            movie.add_platforms( Platform("itunes",item[item_key],item['trackViewUrl']))
-                            return 
                             
-                return
+                            return Platform("itunes",item[item_key],item['trackViewUrl'])
+                            
+                break
+                            
+                
             
         
     

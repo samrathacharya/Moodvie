@@ -1,5 +1,5 @@
 
-class Platform():
+class Platform:
     def __init__(self,name,price=0,link=None):
         self._name=  name
         self._link = link
