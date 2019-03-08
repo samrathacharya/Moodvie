@@ -16,3 +16,4 @@ class Platform():
         self._price = p
     def setName(self,n):
         self._name = n
+        
