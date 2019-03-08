@@ -1,6 +1,6 @@
 
 class Platform():
-    def __init__(self,name,price=None,link=None):
+    def __init__(self,name,price=0,link=None):
         self._name=  name
         self._link = link
         self._price = price
