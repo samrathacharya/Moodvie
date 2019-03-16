@@ -7,15 +7,18 @@ class Omdb_api():
     def __init__(self):
         self._link = "http://www.omdbapi.com/?apikey=358bbe35"
 
-    def set_movie_byid(self, id, movie):
+    def get_movie_byid(self, id):
+
         string = "&i=" + id
         response = requests.get(self._link + string)
         result_dictionay = response.json()
         if result_dictionay['Response'] == "False":
-            return False
-
+            return None
+        movie = Movie(id)
         movie.setTitle(result_dictionay['Title'])
         movie.setDate(self.date_convert(result_dictionay['Released']))
+        movie.setPoster(result_dictionay['Poster'])
+
         movie.setSynopsis(result_dictionay['Plot'])
 
         casts = result_dictionay['Actors']
@@ -33,10 +36,10 @@ class Omdb_api():
                 movie.setMtRating(tmp['Value'])
 
         movie.setImdbRating(result_dictionay['imdbRating'])
-        movie.setPoster(result_dictionay['Poster'])
-        return True
 
-    def get_id_list(self, title):
+        return movie
+
+    def get_movieList(self, title):
         string = '&type="Movie"&s='+title
         response = requests.get(self._link + string)
         result_dictionay = response.json()
@@ -44,12 +47,14 @@ class Omdb_api():
         if result_dictionay['Response'] == "False":
             return []
 
-        id_list = []
+        movie_List = list()
         search_resultList = result_dictionay['Search']
 
         for item in search_resultList:
-            id_list.append(item['imdbID'])
-        return id_list
+            newMovie = Movie(
+                item['imdbID'], title=item['Title'], date=item['Year'], pic=item['Poster'])
+            movie_List.append(newMovie)
+        return movie_List
 
     def date_convert(self, date):
         if date == None or date == "N/A":

@@ -2,26 +2,51 @@
 from omdb_api import Omdb_api
 from itunes_api import Itunes_api
 from movie import Movie
+from google_play_api import Googleplay_scraper
 
 
 class Search_engine():
     def __init__(self):
         self._omdb = Omdb_api()
         self._itunes = Itunes_api()
-
+        self._google_play = Googleplay_scraper()
     # return a movie list available by titles
-    def search_by_title(self, title):
-        movies_list = []
-        id_list = self._omdb.get_id_list(title)
 
-        if len(id_list) == 0:
-            return []
-        for item in id_list:
-            m = Movie()
-            # put the basic information of the movie into the movie item
-            self._omdb.set_movie_byid(item, m)
-            movies_list.append(m)
-        return movies_list
+    def search_by_title(self, title):
+        movielist = self._omdb.get_movieList(title)
+        moviedict = dict()
+        i = 0
+
+        for item in movielist:
+            itemdict = dict()
+            itemdict["title"] = item.getTitle()
+            itemdict["date"] = item.getDate()
+            itemdict['poster_link'] = item.getPoster()
+            itemdict['id'] = item.getId()
+            moviedict[i+1] = itemdict
+            i += 1
+        return {"keyword": title, "resultCount": i, "movies": moviedict}
+
+    def get_movie(self, id):
+        m = self._omdb.get_movie_byid(id)
+        return {"title": m.getTitle(), "date": m.getDate(), "poster_link": m.getPoster(),
+                "casts": m.getCasts(), "synopsis": m.getSynopsis(), "ratings":
+                {"imdb": m.getImdbRating(), "rt": m.getRtRating(), "mt": m.getMtRating()}}
+
+    def get_Itunes(self, title, date):
+        p = self._itunes.search_platform(title[1:len(title)-1], date)
+        if p == None:
+            return {"name": "iTunes", "link": "N/A", "price": "N/A"}
+        else:
+            return {"name": "iTunes", "link": p.getLink(), "price": p.getPrice()}
+
+    def get_googlePlay(self, title, date):
+        # print(title[1:len(title)-1])
+        p = self._google_play.search_platform(title[1:len(title)-1], date)
+        if p == None:
+            return {"name": "iTunes", "link": "N/A", "price": "N/A"}
+        else:
+            return {"name": "iTunes", "link": p.getLink(), "price": p.getPrice()}
 
 
 if __name__ == "__main__":
