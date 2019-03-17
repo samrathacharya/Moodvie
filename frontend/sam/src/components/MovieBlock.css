@@ -1,0 +1,33 @@
+.poster {
+  /* 51WBcgUe6lL */
+
+  /*position: absolute;*/
+  width: 181px;
+  height: 235px;
+  padding-bottom: 0.5em;
+  padding-bottom: 0.7em;
+}
+
+.movie_block {
+  width: 211px;
+  height: 341px;
+  font-size: 80%;
+  text-align: center;
+}
+
+.title {
+  font-family: Sarabun;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: normal;
+}
+.year {
+  font-family: Sarabun;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: normal;
+
+  color: #000000;
+}
