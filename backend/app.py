@@ -1,5 +1,7 @@
 from flask import Flask, jsonify
 from search_engine import Search_engine
+import subprocess
+import shlex
 app = Flask(__name__)
 engine = Search_engine()
 

@@ -17,7 +17,14 @@ youtobe_url="https://www.youtube.com/results?search_query=$movie_title+$movie_ye
 # egrep -o ">Transformers</span><"
 
 
+# get the price
 wget -q -O- "$youtobe_url" |
 egrep -o ">Watch from A[$]\d+.\d*" |
-egrep -o "[$]\d+.\d*"
+egrep -o "[$]\d+.\d*" #> result.txt
+
+# the link
+echo "$youtobe_url"
+
+
+exit 0
  
