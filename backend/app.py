@@ -14,7 +14,7 @@ def home():
 # GET /search/term=<string: title>
 @app.route('/search/term=<string:title>')
 def search_by_title(title):
-    new_title = title[1:len(title)-1]
+    new_title = title[0:len(title)]
     title = new_title
     return jsonify(engine.search_by_title(title))
 
