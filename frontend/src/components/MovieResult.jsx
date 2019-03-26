@@ -1,17 +1,34 @@
 import React, { Component } from "react";
 import MovieBlock from "./MovieBlock";
 import Search_bar from "./Search_bar";
+import axios from "axios";
 class MovieResult extends Component {
   state = {
-    term: "asas",
-    blocks: [
-      { id: 1, title: 0, date: 2000 },
-      { id: 2, title: 1, date: 2000 },
-      { id: 3, title: 2, date: 2000 },
-      { id: 4, title: 3, date: 2000 }
-    ]
+    term: "",
+    blocks: []
   };
+  async componentDidMount() {
+    //communicate to backend
+    const promise = axios.get(
+      "http://127.0.0.1:4897/search/term=" + this.props.match.params.term
+    );
+    const reponse = await promise;
+    //set the keyword to show
+    const term = reponse.data.keyword;
+    this.setState({ term });
 
+    //set the result movie blocks
+    const blocks = [];
+    this.setState({ blocks });
+    const result = reponse.data.movies;
+    for (let key in result) {
+      let ob = {};
+      ob = Object.assign(ob, result[key]);
+      blocks.push(ob);
+    }
+
+    this.setState({ blocks });
+  }
   renderMovieBlocks() {
     if (this.state.blocks.length === 0)
       return <h3>There is no result related to {this.state.term}</h3>;

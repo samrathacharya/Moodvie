@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 class MovieBlock extends Component {
   state = {
     id: this.props.title + this.props.date,

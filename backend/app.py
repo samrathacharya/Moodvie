@@ -2,7 +2,9 @@ from flask import Flask, jsonify
 from search_engine import Search_engine
 import subprocess
 import shlex
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 engine = Search_engine()
 
 
