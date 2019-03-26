@@ -1,6 +1,6 @@
 from subprocess import Popen, PIPE
 import json
-@app.route("/price/title=<string:title>&date=<string:year>")
+#@app.route("/price/title=<string:title>&date=<string:year>")
 def getYoutobePrice(title, year):
 
     # running the shell scrip to web scrap the youtobe price
@@ -14,7 +14,7 @@ def getYoutobePrice(title, year):
     # get the price
     price = info_list[0].decode('ascii')
 
-    check if the price is in correct format
+    #check if the price is in correct format
     if not price.startswith("$"):
         return jsonify({"result": "not found"})
     
@@ -33,7 +33,7 @@ def getYoutobePrice(title, year):
     # for testing
     print (json_data)
 
-    return jsonify(json_data)
+    return json_data
 
 # testing
-getYoutobePrice("rush_hour","1998")
+getYoutobePrice("dead_pool","2016")
