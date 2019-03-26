@@ -93,5 +93,4 @@ def getYoutobePrice(title, year):
     print (json_data)
 
     return jsonify(json_data)
-
 app.run(port=4897, debug=True)
