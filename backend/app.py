@@ -93,4 +93,31 @@ def getYoutobePrice(title, year):
     print (json_data)
 
     return jsonify(json_data)
+
+# get the review from rotten tomatoes
+# format: movie_title
+@app.route("/review/title=<string:title>")
+def getRtReview(title):
+
+    # running the shell scrip to web scrap the rt review
+    p =  Popen(['./webscraping/rt_review.sh', title], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    output, err = p.communicate(b"input data that is passed to subprocess' stdin")
+    rc = p.returncode
+
+    
+    # get the link 
+    review = output.decode('ascii')
+
+    # print the review (for testing)
+    print (review)
+
+    # making json object
+    data = {"movie_title": title, "rotten tomatoes review": review}
+
+    json_data = json.dumps(data)
+
+    # for testing
+    print (json_data)
+
+    return jsonify(json_data)
 app.run(port=4897, debug=True)
