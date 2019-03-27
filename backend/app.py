@@ -87,12 +87,12 @@ def getYoutobePrice(title, year):
     # making json object
     data = {"movie_title": title, "year": year, "youtobe_price": price, "youtobe_link": link}
 
-    json_data = json.dumps(data)
+    # json_data = json.dumps(data)
 
     # for testing
-    print (json_data)
+    # print (json_data)
 
-    return jsonify(json_data)
+    return jsonify(data)
 
 # get the review from rotten tomatoes
 # format: movie_title
@@ -114,10 +114,10 @@ def getRtReview(title):
     # making json object
     data = {"movie_title": title, "rotten tomatoes review": review}
 
-    json_data = json.dumps(data)
+    # json_data = json.dumps(data)
 
     # for testing
-    print (json_data)
+    #print (json_data)
 
-    return jsonify(json_data)
+    return jsonify(data)
 app.run(port=4897, debug=True)
