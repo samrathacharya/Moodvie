@@ -23,7 +23,7 @@ class Search_bar extends Component {
                 type="text"
                 className="form-control"
                 name="searchterm"
-                placeholder={this.state.bar_text}
+                placeholder="what do you want to watch today?"
               />
               <button className="btn btn-danger">Search</button>
             </form>
