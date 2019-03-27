@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import './movieblock.css';
+
 
 class MovieBlock extends Component {
   state = {
@@ -26,18 +28,17 @@ class MovieBlock extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="card" style={{ width: "16rem", float: "left" }}>
+        <div className="card">
+        <div className="image">
           <img
             src={this.state.imageUrl}
             alt={this.state.title}
             width="200"
-            height="200"
-          />
+            height="280"
+          /></div>
           <div className="card-body">
-            <h5 className="card-title">{this.state.title}</h5>
-            <p className="card-text">{this.state.date}</p>
-            <a href={this.state.movie_page} className="btn btn-primary">
-              Moodvie now!
+            <div className="card-title">{this.state.title} ({this.state.date}) </div>
+            <a href={this.state.movie_page} className="btn btn-primary"> >
             </a>
           </div>
         </div>

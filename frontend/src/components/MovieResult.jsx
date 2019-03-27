@@ -3,6 +3,7 @@ import MovieBlock from "./MovieBlock";
 import Search_bar from "./Search_bar";
 import axios from "axios";
 import Moodvie_icon from "./Moodvie_icon";
+import './result.css';
 class MovieResult extends Component {
   state = {
     term: "",
@@ -43,7 +44,7 @@ class MovieResult extends Component {
     return (
       <React.Fragment>
         <Moodvie_icon />
-        <div>
+        <div className="body">
           <div className="form-group">
             <form onSubmit={this.handleSubmit}>
               <input
@@ -57,8 +58,8 @@ class MovieResult extends Component {
               <button className="btn btn-danger">Search</button>
             </form>
           </div>
-        </div>
-        <h1>Result for {this.props.match.params.term}</h1>
+        
+        <div className="resultsfor">Result for {this.props.match.params.term}</div>
 
         {this.state.blocks.map(block => (
           <MovieBlock
@@ -68,7 +69,7 @@ class MovieResult extends Component {
             date={block.date}
             imageUrl={block.poster_link}
           />
-        ))}
+        ))}</div>
       </React.Fragment>
     );
   }
