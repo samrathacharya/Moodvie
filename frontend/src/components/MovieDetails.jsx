@@ -12,7 +12,6 @@ class MovieDetails extends Component {
     restriction: "PG-13",
     summary: "a movie",
     trailors: [],
-
     rating: []
   };
 
@@ -21,12 +20,19 @@ class MovieDetails extends Component {
       "http://127.0.0.1:4897/result_id=" + this.props.match.params.id
     );
     const reponse = await promise;
-    console.log(reponse);
+    const data = reponse.data;
+    const summary = data.synopsis;
+    this.setState({
+      title: data.title,
+      posterLink: data.poster_link,
+      summary: data.synopsis
+    });
+    console.log(data);
   }
   render() {
     return (
       <React.Fragment>
-        <h1>{this.props.match.params.id}</h1>;
+        <h1>{this.state.title}</h1>;<img src={this.state.posterLink} />
       </React.Fragment>
     );
   }
