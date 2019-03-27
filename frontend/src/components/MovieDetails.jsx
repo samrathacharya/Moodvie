@@ -21,6 +21,7 @@ class MovieDetails extends Component {
       "http://127.0.0.1:4897/result_id=" + this.props.match.params.id
     );
     const reponse = await promise;
+    console.log(reponse);
   }
   render() {
     return (
