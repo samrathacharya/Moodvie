@@ -15,7 +15,7 @@ class App extends Component {
           <Route path="/home" component={Home} />
           <Redirect from="/search" exact to="/home" />
           <Route path="/search/:term" component={MovieResult} />
-          <Route path="/moviedetails/:name/:yr" component={MovieDetails} />
+          <Route path="/moviedetails/:id" component={MovieDetails} />
 
           <Route path="/not-found" component={NotFound} />
           <Redirect to="/not-found" />
