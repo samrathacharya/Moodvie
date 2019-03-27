@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import Search_bar from "./Search_bar";
 import axios from "axios";
+import Moodvie_icon from "./Moodvie_icon";
 class MovieDetails extends Component {
   state = {
     id: this.props.id,
     title: "American god",
     posterLink: "http://picsum.photos/200",
-    year: "1998",
-    casts: "Emily Clark",
+    date: "1998",
+    casts: [],
     by: "Jame brown",
     restriction: "PG-13",
     summary: "a movie",
@@ -25,14 +26,27 @@ class MovieDetails extends Component {
     this.setState({
       title: data.title,
       posterLink: data.poster_link,
-      summary: data.synopsis
+      summary: data.synopsis,
+      date: data.date,
+      casts: data.casts
     });
     console.log(data);
+  }
+
+  castList() {
+    this.state.casts.map(actor => {
+      return <span class="badge badge-pill badge-primary">{actor}</span>;
+    });
   }
   render() {
     return (
       <React.Fragment>
+        <Moodvie_icon />
         <h1>{this.state.title}</h1>;<img src={this.state.posterLink} />
+        <h3>{this.state.summary}</h3>
+        {this.state.casts.map(actor => {
+          return <span class="badge badge-pill badge-success">{actor}</span>;
+        })}
       </React.Fragment>
     );
   }
