@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import './home.css';
+
 class Home extends Component {
   state = {};
   search_term = React.createRef();
@@ -8,20 +10,21 @@ class Home extends Component {
   };
   render() {
     return (
-      <div>
-        <div className="form-group">
-          <label htmlFor="searchterm">Moodvie</label>
+      <div className="body">
+        <div className="form-group ">
+          <div className="searchterm display-middle">Moodvie</div>
           <form onSubmit={this.handleSubmit}>
             <input
               id="searchterm"
               ref={this.search_term}
               type="text"
-              className="form-control"
+              className="form-control display-middle"
               name="searchterm"
               placeholder="What do you want to watch today?"
             />
-            <button className="btn btn-danger">Search</button>
+            <button className="btn btn-danger display-middle">Search</button>
           </form>
+          <div className="footer">Copyright Moodvie 2019</div>
         </div>
       </div>
     );
