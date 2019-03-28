@@ -4,6 +4,7 @@ import axios from "axios";
 import Moodvie_icon from "./Moodvie_icon";
 import Platform from "./Platform";
 import "./css/movie_detail.css";
+import "./css/badge.css";
 class MovieDetails extends Component {
   state = {
     title: "American god",
@@ -139,7 +140,7 @@ class MovieDetails extends Component {
         prim = "success";
         break;
       case 3:
-        prim = "danger";
+        prim = "dark";
         break;
       case 4:
         prim = "warning";
@@ -153,18 +154,22 @@ class MovieDetails extends Component {
 
   castList() {
     return (
-      <div className="cast">
-        {this.state.casts.map(actor => {
-          return (
-            //link to the wiki page of the actor
-            <a href={"https://en.wikipedia.org/wiki/" + actor}>
-              <span className={this.badge()} key={actor}>
-                <div>{actor}</div>
-              </span>
-            </a>
-          );
-        })}
-      </div>
+      <React.Fragment>
+        <div className="cast">
+          {this.state.casts.map(actor => {
+            return (
+              //link to the wiki page of the actor
+
+              <a href={"https://en.wikipedia.org/wiki/" + actor}>
+                <span className={this.badge()} key={actor}>
+                  <div>{actor}</div>
+                </span>
+              </a>
+            );
+          })}
+          <span class="badge badge-danger"> Rated - {this.state.rated}</span>
+        </div>
+      </React.Fragment>
     );
   }
   platformsList() {
@@ -178,9 +183,23 @@ class MovieDetails extends Component {
   ratingList() {
     return (
       <div>
-        <h4>imdb-{this.state.rating.imdb}</h4>
-        <h4>rt-{this.state.rating.rt}</h4>
-        <h4>mt-{this.state.rating.mt}</h4>
+        <h4>
+          <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
+            <span class="sm-link__label">imdb-{this.state.rating.imdb}</span>
+          </a>
+        </h4>
+        <h4>
+          <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
+            <span class="sm-link__label">
+              Rotten Tomatos-{this.state.rating.rt}
+            </span>
+          </a>
+        </h4>
+        <h4>
+          <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
+            <span class="sm-link__label">Mt-{this.state.rating.mt}</span>
+          </a>
+        </h4>
       </div>
     );
   }
@@ -226,7 +245,6 @@ class MovieDetails extends Component {
                 <p>{this.state.summary}</p>
               </div>
 
-              <h4>{this.state.rated}</h4>
               {this.ratingList()}
 
               {this.platformsList()}
