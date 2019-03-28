@@ -14,7 +14,8 @@ class Omdb_api():
         result_dictionay = response.json()
         if result_dictionay['Response'] == "False":
             return None
-        movie = Movie(id)
+        movie = Movie(
+            id, result_dictionay['Rated'], result_dictionay['Runtime'], result_dictionay['Director'])
         movie.setTitle(result_dictionay['Title'])
         movie.setDate(self.date_convert(result_dictionay['Released']))
         movie.setPoster(result_dictionay['Poster'])

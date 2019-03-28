@@ -3,7 +3,6 @@ import Search_bar from "./Search_bar";
 import axios from "axios";
 import Moodvie_icon from "./Moodvie_icon";
 import Platform from "./Platform";
-
 class MovieDetails extends Component {
   state = {
     title: "American god",
@@ -12,8 +11,10 @@ class MovieDetails extends Component {
     casts: [],
     by: "Jame brown",
     summary: "a movie",
-    rating: [],
-    platforms: []
+    rated: "",
+    rating: { imdb: "Not available", mt: "Not available", rt: "Not available" },
+    platforms: [],
+    runtime: ""
   };
 
   async componentDidMount() {
@@ -23,12 +24,24 @@ class MovieDetails extends Component {
     );
     const reponse = await promise;
     const data = reponse.data;
+    let rating = {
+      imdb: "Not available",
+      mt: "Not available",
+      rt: "Not available"
+    };
+    rating.imdb = data.ratings.imdb;
+    rating.rt = data.ratings.rt;
+    rating.mt = data.ratings.mt;
     this.setState({
       title: data.title,
       posterLink: data.poster_link,
       summary: data.synopsis,
       date: data.date,
-      casts: data.casts
+      casts: data.casts,
+      by: data.director,
+      rated: data.AgeRestriction,
+      runtime: data.runtime,
+      rating: rating
     });
 
     let platforms = [];
@@ -97,25 +110,57 @@ class MovieDetails extends Component {
   }
 
   castList() {
-    this.state.casts.map(actor => {
-      return <span class="badge badge-pill badge-primary">{actor}</span>;
-    });
+    return (
+      <div>
+        <h4>cast:</h4>
+        {this.state.casts.map(actor => {
+          return (
+            //link to the wiki page of the actor
+            <a href={"https://en.wikipedia.org/wiki/" + actor}>
+              <span className="badge badge-pill badge-success" key={actor}>
+                {actor}
+              </span>
+            </a>
+          );
+        })}
+      </div>
+    );
+  }
+  platformsList() {
+    return (
+      <div>
+        <h4>platforms</h4>
+        {this.state.platforms}
+      </div>
+    );
+  }
+  ratingList() {
+    return (
+      <div>
+        <h4>imdb-{this.state.rating.imdb}</h4>
+        <h4>rt-{this.state.rating.rt}</h4>
+        <h4>mt-{this.state.rating.mt}</h4>
+      </div>
+    );
   }
   render() {
     return (
       <React.Fragment>
         <Moodvie_icon />
         <h1>{this.state.title}</h1>;<img src={this.state.posterLink} />
+        <div className="wiki_logo">
+          <a href={"https://en.wikipedia.org/wiki/" + this.state.title}>
+            <img src={require("./icon/wiki.png")} />
+          </a>
+        </div>
         <h3>{this.state.summary}</h3>
         <h4>{this.state.date}</h4>
-        {this.state.casts.map(actor => {
-          return (
-            <span className="badge badge-pill badge-success" key={actor}>
-              {actor}
-            </span>
-          );
-        })}
-        {this.state.platforms}
+        <h4>{this.state.runtime}</h4>
+        <h4>{this.state.by}</h4>
+        <h4>{this.state.rated}</h4>
+        {this.ratingList()}
+        {this.castList()}
+        {this.platformsList()}
       </React.Fragment>
     );
   }
