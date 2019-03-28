@@ -38,8 +38,10 @@ class MovieBlock extends Component {
             height="270"
           /></div>
           <div className="card-body">
-            <div className="card-title">{this.state.title} ({this.state.date}) </div>
-            <a href={this.state.movie_page} className="btn btn-primary"> >
+            
+            <a href={this.state.movie_page}> 
+            {this.state.title}
+            ({this.state.date})
             </a>
           </div>
         </div>
