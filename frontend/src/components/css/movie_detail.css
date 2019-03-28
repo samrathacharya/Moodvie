@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css?family=Righteous");
+.base {
+  background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
+  background-attachment: fixed;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+.detail {
+  background-color: azure;
+  position: absolute;
+  height: 90%;
+  width: 100%;
+}
+.rhs-card {
+  position: absolute;
+  float: left;
+  top: 8%;
+  right: 8%;
+}
+.summary {
+  width: 20cm;
+  height: auto;
+}
+.info {
+  position: relative;
+  height: 10cm;
+  width: 25cm;
+  margin-left: 1.2cm;
+}
+.title {
+  margin-top: 1cm;
+  margin-bottom: 0.6cm;
+  font-weight: bold;
+  font-size: 200%;
+}
+
+.logo_img {
+  margin-left: 0.3cm;
+  width: 0.5cm;
+  height: 0.33cm;
+}
+
+.cast {
+  margin-top: 0.3cm;
+  margin-bottom: 0.3cm;
+  font-size: 130%;
+}

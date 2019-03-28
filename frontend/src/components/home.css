@@ -1,78 +1,75 @@
-@import url('https://fonts.googleapis.com/css?family=Righteous');
-
+@import url("https://fonts.googleapis.com/css?family=Righteous");
 
 .body {
   background-image: url("./moodvie-theme.png");
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed; 
+  background-attachment: fixed;
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
 .form-group {
-    height: 100vh;
-    width: 100vh;
-    overflow: hidden;
-    
+  height: 100vh;
+  width: 100vh;
+  overflow: hidden;
 }
 .searchterm {
-    font-family: 'Righteous', sans-serif;
-    font-size: 110px;
-    text-shadow: 3px 3px black;
-    color: #f9f7f7;
+  font-family: "Righteous", sans-serif;
+  font-size: 110px;
+  text-shadow: 3px 3px black;
+  color: #f9f7f7;
 }
 
 .display-middle {
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    -ms-transform:translate(-50%,-50%)
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }
 
-
 .form-control {
-    width: 40%;
-    top: 62vh;
-    padding: 5px;
-    height: 50px;
-    border-radius: 10px 10px 10px 10px;
-    outline: none;
-    color: black;
-    font-weight: 500;
-    font-size: 16px;
-    background-color: white;
+  width: 40%;
+  top: 62vh;
+  padding: 5px;
+  height: 50px;
+  border-radius: 10px 10px 10px 10px;
+  outline: none;
+  color: black;
+  font-weight: 500;
+  font-size: 16px;
+  background-color: white;
 }
 
 .btn-danger {
-    position: absolute;  
-    right: 100px;
-    top: 70vh;
-    width: 100px;
-    height: 45px;
-    border: 1px solid #000000;
-    background: #000000;
-    text-align: center;
-    color: #ffffff;
-    border-radius: 10px 10px 10px 10px;
-    cursor: pointer;
-    font-size: 20px;
+  position: absolute;
+  right: 100px;
+  top: 70vh;
+  width: 100px;
+  height: 45px;
+  border: 1px solid #000000;
+  background: #000000;
+  text-align: center;
+  color: #ffffff;
+  border-radius: 10px 10px 10px 10px;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .btn-danger:hover {
-    color: rgb(255, 255, 255, 0.7);
-    transition-delay: 0.2s;
-  }
+  color: rgb(255, 255, 255, 0.7);
+  transition-delay: 0.2s;
+}
 
-  .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    height: 30px;
-    width: 100%;
-    color: white;
-    text-align: center;
-    font-family: 'Sarabun', sans-serif;
-    font-size: 14px;
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 30px;
+  width: 100%;
+  color: white;
+  text-align: center;
+  font-family: "Sarabun", sans-serif;
+  font-size: 14px;
 }

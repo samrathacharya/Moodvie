@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import "./css/moodvie_icon.css";
 class Moodvie_icon extends Component {
   state = {};
   render() {
     return (
       <a href="/home">
-        <h1>Moodvie</h1>
+        <div className="moodvie_icon">Moodvie</div>
       </a>
     );
   }
