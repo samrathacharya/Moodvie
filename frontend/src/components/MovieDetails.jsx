@@ -14,7 +14,11 @@ class MovieDetails extends Component {
     rated: "",
     rating: { imdb: "Not available", mt: "Not available", rt: "Not available" },
     platforms: [],
-    runtime: ""
+    runtime: "",
+    trailor: {
+      link: "N/A",
+      pic: "N/A"
+    }
   };
 
   async componentDidMount() {
@@ -29,9 +33,7 @@ class MovieDetails extends Component {
       mt: "Not available",
       rt: "Not available"
     };
-    rating.imdb = data.ratings.imdb;
-    rating.rt = data.ratings.rt;
-    rating.mt = data.ratings.mt;
+
     this.setState({
       title: data.title,
       posterLink: data.poster_link,
@@ -44,6 +46,20 @@ class MovieDetails extends Component {
       rating: rating
     });
 
+    let tmp = new Date(this.state.date);
+    const promise2 = axios.get(
+      "http://127.0.0.1:4897/trailor/title=" +
+        data.title +
+        "&date=" +
+        tmp.getFullYear()
+    );
+    const reponse2 = await promise2;
+    const trailor = reponse2.data;
+    this.setState({ trailor: trailor });
+
+    rating.imdb = data.ratings.imdb;
+    rating.rt = data.ratings.rt;
+    rating.mt = data.ratings.mt;
     let platforms = [];
 
     //push the platforms
@@ -84,8 +100,6 @@ class MovieDetails extends Component {
     );
 
     //youtube
-
-    let tmp = new Date(this.state.date);
 
     let title_new = this.state.title.replace(" ", "_");
 
@@ -143,6 +157,17 @@ class MovieDetails extends Component {
       </div>
     );
   }
+
+  trailor() {
+    return (
+      <div>
+        <h1>trailors:</h1>
+        <a href={this.state.trailor.link}>
+          <img src={this.state.trailor.pic} alt="Not available" />
+        </a>
+      </div>
+    );
+  }
   render() {
     return (
       <React.Fragment>
@@ -161,6 +186,7 @@ class MovieDetails extends Component {
         {this.ratingList()}
         {this.castList()}
         {this.platformsList()}
+        {this.trailor()}
       </React.Fragment>
     );
   }

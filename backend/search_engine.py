@@ -3,6 +3,7 @@ from omdb_api import Omdb_api
 from itunes_api import Itunes_api
 from movie import Movie
 from google_play_api import Googleplay_scraper
+from youtube_api import youtube_api_reader
 
 
 class Search_engine():
@@ -10,6 +11,7 @@ class Search_engine():
         self._omdb = Omdb_api()
         self._itunes = Itunes_api()
         self._google_play = Googleplay_scraper()
+        self._youtube = youtube_api_reader()
     # return a movie list available by titles
 
     def search_by_title(self, title):
@@ -49,6 +51,13 @@ class Search_engine():
             return {"name": "iTunes", "link": "N/A", "price": "N/A"}
         else:
             return {"name": "iTunes", "link": p.getLink(), "price": p.getPrice()}
+
+    def get_trailer(self, title, yr):
+        term = title+" "+yr+" "+"trailor"
+        return self._youtube.youtube_search(part='snippet',
+                                            maxResults=1,
+                                            q=term,
+                                            )
 
 
 if __name__ == "__main__":
