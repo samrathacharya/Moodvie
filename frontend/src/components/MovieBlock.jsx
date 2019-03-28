@@ -28,19 +28,21 @@ class MovieBlock extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="card">
+        <div className="big-body">
+        <div className="box">
         <div className="image">
           <img
             src={this.state.imageUrl}
             alt={this.state.title}
-            width="200"
-            height="280"
+            width="180"
+            height="270"
           /></div>
           <div className="card-body">
             <div className="card-title">{this.state.title} ({this.state.date}) </div>
             <a href={this.state.movie_page} className="btn btn-primary"> >
             </a>
           </div>
+        </div>
         </div>
       </React.Fragment>
     );

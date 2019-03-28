@@ -44,20 +44,21 @@ class MovieResult extends Component {
     return (
       <React.Fragment>
         <Moodvie_icon />
-        <div className="body">
-          <div className="form-group">
+        <div className="i-told-you-before">
+          <div className="hi">
             <form onSubmit={this.handleSubmit}>
               <input
                 id="searchterm"
                 ref={this.search_term}
                 type="text"
-                className="form-control"
+                className="i-told-before-2"
                 name="searchterm"
                 placeholder="what do you want to watch today?"
               />
               <button className="btn btn-danger">Search</button>
             </form>
-          </div>
+            </div>
+          
         
         <div className="resultsfor">Result for {this.props.match.params.term}</div>
 
