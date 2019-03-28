@@ -3,21 +3,21 @@ import Search_bar from "./Search_bar";
 import axios from "axios";
 import Moodvie_icon from "./Moodvie_icon";
 import Platform from "./Platform";
+
 class MovieDetails extends Component {
   state = {
-    id: this.props.id,
     title: "American god",
     posterLink: "http://picsum.photos/200",
-    date: "1998",
+    date: "3000",
     casts: [],
     by: "Jame brown",
-    restriction: "PG-13",
     summary: "a movie",
-    trailors: [],
-    rating: []
+    rating: [],
+    platforms: []
   };
 
   async componentDidMount() {
+    // update the console info
     const promise = axios.get(
       "http://127.0.0.1:4897/result_id=" + this.props.match.params.id
     );
@@ -30,6 +30,70 @@ class MovieDetails extends Component {
       date: data.date,
       casts: data.casts
     });
+
+    let platforms = [];
+
+    //push the platforms
+
+    //itunes
+    platforms.push(
+      <Platform
+        key={"itunes"}
+        loading_link={
+          "http://localhost:4897/platforms/itunes/title=" +
+          '"' +
+          this.state.title +
+          '"' +
+          "&date=" +
+          this.state.date
+        }
+        name={"itunes"}
+        icon_root="./icon/itunes.png"
+      />
+    );
+
+    //google play
+
+    platforms.push(
+      <Platform
+        key={"google play"}
+        loading_link={
+          "http://localhost:4897/platforms/google_play/title=" +
+          '"' +
+          this.state.title +
+          '"' +
+          "&date=" +
+          this.state.date
+        }
+        name={"google play"}
+        icon_root="./icon/itunes.png"
+      />
+    );
+
+    //youtube
+
+    let tmp = new Date(this.state.date);
+
+    let title_new = this.state.title.replace(" ", "_");
+
+    platforms.push(
+      <Platform
+        key={"youtube"}
+        loading_link={
+          "http://localhost:4897/platforms/youtube/title=" +
+          title_new +
+          "&date=" +
+          tmp.getFullYear()
+        }
+        name={"youtube"}
+        icon_root="./icon/itunes.png"
+      />
+    );
+    // set the state
+    this.setState({ platforms: platforms });
+  }
+  constructor() {
+    super();
   }
 
   castList() {
@@ -51,33 +115,7 @@ class MovieDetails extends Component {
             </span>
           );
         })}
-        <div className="platform">
-          <Platform
-            key={this.state.id}
-            loading_link={
-              "http://localhost:4897/platforms/youtube/title=rush_hour&date=1998"
-            }
-            name={"itunes"}
-          />
-        </div>
-        <div className="platform">
-          <Platform
-            key={this.state.id}
-            loading_link={
-              "http://localhost:4897/platforms/youtube/title=rush_hour&date=1998"
-            }
-            name={"google play"}
-          />
-        </div>
-        <div className="platform">
-          <Platform
-            key={this.state.id}
-            loading_link={
-              "http://localhost:4897/platforms/youtube/title=rush_hour&date=1998"
-            }
-            name={"youtube"}
-          />
-        </div>
+        {this.state.platforms}
       </React.Fragment>
     );
   }
