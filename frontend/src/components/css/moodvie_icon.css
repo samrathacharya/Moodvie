@@ -1,0 +1,8 @@
+@import url("https://fonts.googleapis.com/css?family=Righteous");
+
+.moodvie_icon {
+  font-family: "Righteous", sans-serif;
+  font-size: 60px;
+  text-shadow: 3px 3px black;
+  color: #f9f7f7;
+}

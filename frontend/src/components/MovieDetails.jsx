@@ -3,6 +3,8 @@ import Search_bar from "./Search_bar";
 import axios from "axios";
 import Moodvie_icon from "./Moodvie_icon";
 import Platform from "./Platform";
+import "./css/movie_detail.css";
+import "./css/badge.css";
 class MovieDetails extends Component {
   state = {
     title: "American god",
@@ -46,17 +48,19 @@ class MovieDetails extends Component {
       rating: rating
     });
 
+    //set youtube
+    //youtube trailor
     let tmp = new Date(this.state.date);
-    const promise2 = axios.get(
+    /*const promise2 = axios.get(
       "http://127.0.0.1:4897/trailor/title=" +
         data.title +
         "&date=" +
         tmp.getFullYear()
     );
-    const reponse2 = await promise2;
-    const trailor = reponse2.data;
-    this.setState({ trailor: trailor });
-
+    //const reponse2 = await promise2;
+    //const trailor = reponse2.data;
+    //this.setState({ trailor: trailor });
+    */
     rating.imdb = data.ratings.imdb;
     rating.rt = data.ratings.rt;
     rating.mt = data.ratings.mt;
@@ -122,22 +126,50 @@ class MovieDetails extends Component {
   constructor() {
     super();
   }
+  badge() {
+    let ran = Math.floor(Math.random() * Math.floor(5));
+    let prim = "primary";
+    switch (ran) {
+      case 0:
+        prim = "primary";
+        break;
+      case 1:
+        prim = "secondary";
+        break;
+      case 2:
+        prim = "success";
+        break;
+      case 3:
+        prim = "dark";
+        break;
+      case 4:
+        prim = "warning";
+        break;
+      case 5:
+        prim = "info";
+        break;
+    }
+    return "badge badge-pill badge-" + prim;
+  }
 
   castList() {
     return (
-      <div>
-        <h4>cast:</h4>
-        {this.state.casts.map(actor => {
-          return (
-            //link to the wiki page of the actor
-            <a href={"https://en.wikipedia.org/wiki/" + actor}>
-              <span className="badge badge-pill badge-success" key={actor}>
-                {actor}
-              </span>
-            </a>
-          );
-        })}
-      </div>
+      <React.Fragment>
+        <div className="cast">
+          {this.state.casts.map(actor => {
+            return (
+              //link to the wiki page of the actor
+
+              <a href={"https://en.wikipedia.org/wiki/" + actor}>
+                <span className={this.badge()} key={actor}>
+                  <div>{actor}</div>
+                </span>
+              </a>
+            );
+          })}
+          <span class="badge badge-danger"> Rated - {this.state.rated}</span>
+        </div>
+      </React.Fragment>
     );
   }
   platformsList() {
@@ -151,9 +183,23 @@ class MovieDetails extends Component {
   ratingList() {
     return (
       <div>
-        <h4>imdb-{this.state.rating.imdb}</h4>
-        <h4>rt-{this.state.rating.rt}</h4>
-        <h4>mt-{this.state.rating.mt}</h4>
+        <h4>
+          <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
+            <span class="sm-link__label">imdb-{this.state.rating.imdb}</span>
+          </a>
+        </h4>
+        <h4>
+          <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
+            <span class="sm-link__label">
+              Rotten Tomatos-{this.state.rating.rt}
+            </span>
+          </a>
+        </h4>
+        <h4>
+          <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
+            <span class="sm-link__label">Mt-{this.state.rating.mt}</span>
+          </a>
+        </h4>
       </div>
     );
   }
@@ -171,22 +217,41 @@ class MovieDetails extends Component {
   render() {
     return (
       <React.Fragment>
-        <Moodvie_icon />
-        <h1>{this.state.title}</h1>;<img src={this.state.posterLink} />
-        <div className="wiki_logo">
-          <a href={"https://en.wikipedia.org/wiki/" + this.state.title}>
-            <img src={require("./icon/wiki.png")} />
-          </a>
+        <div className="base">
+          <Moodvie_icon />
+          <div className="detail">
+            <div className="rhs-card">
+              <img src={this.state.posterLink} />
+            </div>
+            <div className="info">
+              <div className="title">
+                <p>
+                  {this.state.title}
+                  <a href={"https://en.wikipedia.org/wiki/" + this.state.title}>
+                    <img
+                      className="logo_img"
+                      src={require("./icon/wiki.png")}
+                      float="left"
+                    />
+                  </a>
+                </p>
+              </div>
+
+              <h4>
+                {this.state.date}({this.state.runtime}) By {this.state.by}
+              </h4>
+              {this.castList()}
+              <div className="summary">
+                <p>{this.state.summary}</p>
+              </div>
+
+              {this.ratingList()}
+
+              {this.platformsList()}
+              {this.trailor()}
+            </div>
+          </div>
         </div>
-        <h3>{this.state.summary}</h3>
-        <h4>{this.state.date}</h4>
-        <h4>{this.state.runtime}</h4>
-        <h4>{this.state.by}</h4>
-        <h4>{this.state.rated}</h4>
-        {this.ratingList()}
-        {this.castList()}
-        {this.platformsList()}
-        {this.trailor()}
       </React.Fragment>
     );
   }
