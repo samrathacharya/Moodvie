@@ -56,6 +56,11 @@ def getGoogle(title, date):
     # print(title[1:len(title)-1])
     # print("here")
     return jsonify(engine.get_googlePlay(title, date))
+# get the google platforms of a movie by title and date
+# date formate: yr-mon-day in numeric
+@app.route("/trailor/title=<string:title>&date=<string:date>")
+def getTrailor(title, date):
+    return jsonify(engine.get_trailer(title, date))
 
 # get the youtobe price
 # format: movie_title year
@@ -83,12 +88,10 @@ def getYoutobePrice(title, year):
     link = info_list[1].decode('ascii')
 
     # print the price and link (for testing)
-    print(price)
-    print(link)
 
     # making json object
-    data = {"movie_title": title, "year": year,
-            "youtobe_price": price, "youtobe_link": link}
+    data = {"name": "youtube",
+            "price": price, "link": link}
 
     # json_data = json.dumps(data)
 

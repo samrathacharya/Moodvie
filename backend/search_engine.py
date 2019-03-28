@@ -3,6 +3,7 @@ from omdb_api import Omdb_api
 from itunes_api import Itunes_api
 from movie import Movie
 from google_play_api import Googleplay_scraper
+from youtube_api import youtube_api_reader
 
 
 class Search_engine():
@@ -10,6 +11,7 @@ class Search_engine():
         self._omdb = Omdb_api()
         self._itunes = Itunes_api()
         self._google_play = Googleplay_scraper()
+        self._youtube = youtube_api_reader()
     # return a movie list available by titles
 
     def search_by_title(self, title):
@@ -29,7 +31,9 @@ class Search_engine():
 
     def get_movie(self, id):
         m = self._omdb.get_movie_byid(id)
-        return {"title": m.getTitle(), "date": m.getDate(), "poster_link": m.getPoster(),
+        new_date = m.getDate().date()
+        print(new_date)
+        return {"director": m.getDirector(), "AgeRestriction": m.getAge(), "runtime": m.getRuntime(), "title": m.getTitle(), "date": str(new_date.year)+"-"+str(new_date.month)+"-"+str(new_date.day), "poster_link": m.getPoster(),
                 "casts": m.getCasts(), "synopsis": m.getSynopsis(), "ratings":
                 {"imdb": m.getImdbRating(), "rt": m.getRtRating(), "mt": m.getMtRating()}}
 
@@ -47,6 +51,13 @@ class Search_engine():
             return {"name": "iTunes", "link": "N/A", "price": "N/A"}
         else:
             return {"name": "iTunes", "link": p.getLink(), "price": p.getPrice()}
+
+    def get_trailer(self, title, yr):
+        term = title+" "+yr+" "+"trailor"
+        return self._youtube.youtube_search(part='snippet',
+                                            maxResults=1,
+                                            q=term,
+                                            )
 
 
 if __name__ == "__main__":
