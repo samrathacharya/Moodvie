@@ -3,6 +3,7 @@ import MovieBlock from "./MovieBlock";
 import Search_bar from "./Search_bar";
 import axios from "axios";
 import Moodvie_icon from "./Moodvie_icon";
+
 class MovieResult extends Component {
   state = {
     term: "",

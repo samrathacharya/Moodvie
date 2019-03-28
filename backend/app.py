@@ -83,12 +83,10 @@ def getYoutobePrice(title, year):
     link = info_list[1].decode('ascii')
 
     # print the price and link (for testing)
-    print(price)
-    print(link)
 
     # making json object
-    data = {"movie_title": title, "year": year,
-            "youtobe_price": price, "youtobe_link": link}
+    data = {"name": "youtube",
+            "price": price, "link": link}
 
     # json_data = json.dumps(data)
 
