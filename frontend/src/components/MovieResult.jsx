@@ -68,11 +68,11 @@ class MovieResult extends Component {
                 name="searchterm"
                 placeholder="What do you want to watch today?"
               />
+              <button id="searchButton" onClick={this.handleSubmit}>
+                Search
+              </button>
             </form>
           </div>
-          <button id="searchButton" onClick={this.handleSubmit}>
-            Search
-          </button>
         </div>
 
         <div className="i-told-you-before">
