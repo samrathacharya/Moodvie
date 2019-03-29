@@ -181,25 +181,54 @@ class MovieDetails extends Component {
     );
   }
   ratingList() {
+    let mt_string =
+      "https://www.metacritic.com/movie/" +
+      this.state.title.replace(" ", "-").toLowerCase();
+
+    let rt_string =
+      "https://www.rottentomatoes.com/search/?search=" + this.state.title;
+    let imdb_string =
+      "https://www.imdb.com/title/" + this.props.match.params.id;
     return (
-      <div>
-        <h4>
-          <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
-            <span class="sm-link__label">imdb-{this.state.rating.imdb}</span>
-          </a>
-        </h4>
-        <h4>
-          <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
-            <span class="sm-link__label">
-              Rotten Tomatos-{this.state.rating.rt}
-            </span>
-          </a>
-        </h4>
-        <h4>
-          <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
-            <span class="sm-link__label">Mt-{this.state.rating.mt}</span>
-          </a>
-        </h4>
+      <div className="ratingList">
+        <div className="ratingTitle">
+          <h2>Popular Ratings</h2>
+        </div>
+        <div className="rating">
+          <h4>
+            <a
+              href={imdb_string}
+              class="sm-link sm-link_padding-bottom sm-link3"
+            >
+              <img
+                className="reviewlogo"
+                src={require("./icon/imdb.jpeg")}
+                alt="rt"
+              />
+              <span class="sm-link__label">-{this.state.rating.imdb}</span>
+            </a>
+          </h4>
+          <h4>
+            <a href={rt_string} class="sm-link sm-link_padding-bottom sm-link3">
+              <img
+                className="reviewlogo"
+                src={require("./icon/rt.png")}
+                alt="imdb"
+              />
+              <span class="sm-link__label">-{this.state.rating.rt}</span>
+            </a>
+          </h4>
+          <h4>
+            <a href={mt_string} class="sm-link sm-link_padding-bottom sm-link3">
+              <img
+                className="reviewlogo"
+                src={require("./icon/mt.png")}
+                alt="mt"
+              />
+              <span class="sm-link__label">-{this.state.rating.mt}</span>
+            </a>
+          </h4>
+        </div>
       </div>
     );
   }
@@ -207,7 +236,7 @@ class MovieDetails extends Component {
   trailor() {
     return (
       <div>
-        <h1>trailors:</h1>
+        <h3>trailors:</h3>
         <a href={this.state.trailor.link}>
           <img src={this.state.trailor.pic} alt="Not available" />
         </a>
@@ -222,6 +251,7 @@ class MovieDetails extends Component {
           <div className="detail">
             <div className="rhs-card">
               <img src={this.state.posterLink} />
+              {this.ratingList()}
             </div>
             <div className="info">
               <div className="title">
@@ -245,10 +275,8 @@ class MovieDetails extends Component {
                 <p>{this.state.summary}</p>
               </div>
 
-              {this.ratingList()}
-
               {this.platformsList()}
-              {this.trailor()}
+              <div className="trailor">{this.trailor()}</div>
             </div>
           </div>
         </div>

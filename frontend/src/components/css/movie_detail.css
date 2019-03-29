@@ -1,23 +1,26 @@
 @import url("https://fonts.googleapis.com/css?family=Righteous");
+@import url("https://fonts.googleapis.com/css?family=Orbitron");
+@import url("https://fonts.googleapis.com/css?family=Audiowide");
+
 .base {
   background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
   background-attachment: fixed;
-  position: fixed;
+  position: absolute;
   height: 100%;
   width: 100%;
 }
 
 .detail {
-  background-color: azure;
+  background-color: white;
   position: absolute;
-  height: 90%;
+  height: 100%;
   width: 100%;
 }
 .rhs-card {
   position: absolute;
   float: left;
   top: 8%;
-  right: 8%;
+  right: 12%;
 }
 .summary {
   width: 20cm;
@@ -46,4 +49,23 @@
   margin-top: 0.3cm;
   margin-bottom: 0.3cm;
   font-size: 130%;
+}
+
+.reviewlogo {
+  width: 1cm;
+  height: 1cm;
+}
+.ratingList {
+  margin-right: 1cm;
+  margin-top: 1cm;
+  border-color: coral;
+}
+.ratingTitle {
+  font-family: "Orbitron", sans-serif;
+}
+.rating {
+  font-family: "Audiowide", sans-serif;
+}
+.trailor {
+  clear: both;
 }

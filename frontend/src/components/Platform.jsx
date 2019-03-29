@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import SpinnerPage from "./Spinner";
 import not_available from "./icon/not_available.png";
+import "./css/platform.css";
 class Platform extends Component {
   state = {
     loading_link: this.props.loading_link,
@@ -37,21 +38,17 @@ class Platform extends Component {
   }
   not_available() {
     return (
-      <h5>
-        <span className={this.badge()}>
-          {this.state.name + "-Not available:("}
-        </span>
-      </h5>
+      <span className="badge badge-dark">
+        {this.state.name + "-Not available:("}
+      </span>
     );
   }
 
   available(price, link) {
     return (
-      <h2>
-        <a href={link}>
-          <span className={this.badge()}>{this.state.name + "-" + price}</span>
-        </a>
-      </h2>
+      <a href={link}>
+        <span className={this.badge()}>{this.state.name + "-" + price}</span>
+      </a>
     );
   }
   async componentDidMount() {
