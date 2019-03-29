@@ -185,7 +185,12 @@ class MovieDetails extends Component {
       <div>
         <h4>
           <a href="#0" class="sm-link sm-link_padding-bottom sm-link3">
-            <span class="sm-link__label">imdb-{this.state.rating.imdb}</span>
+            <img
+              className="reviewlogo"
+              src={require("./icon/imdb.jpeg")}
+              alt="imdb"
+            />
+            <span class="sm-link__label">{this.state.rating.imdb}</span>
           </a>
         </h4>
         <h4>

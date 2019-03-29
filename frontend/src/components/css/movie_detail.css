@@ -17,7 +17,7 @@
   position: absolute;
   float: left;
   top: 8%;
-  right: 8%;
+  right: 12%;
 }
 .summary {
   width: 20cm;
@@ -46,4 +46,9 @@
   margin-top: 0.3cm;
   margin-bottom: 0.3cm;
   font-size: 130%;
+}
+
+.reviewlogo {
+  width: 1cm;
+  height: 1cm;
 }
