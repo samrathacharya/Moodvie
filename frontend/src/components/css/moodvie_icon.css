@@ -4,14 +4,7 @@
   font-family: "Righteous", sans-serif;
   font-size: 60px;
   text-shadow: 3px 3px black;
-  background: #f9f7f7;
-}
-
-.moodvie_result_icon {
-  font-family: "Righteous", sans-serif;
-  font-size: 60px;
-  text-shadow: 3px 3px black;
-  width: fit-content;
-  float: left;
-  padding-left: 4%;
+  text-align: left;
+  color: #f9f7f7;
+  height: 3cm;
 }
