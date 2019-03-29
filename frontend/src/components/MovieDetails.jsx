@@ -236,7 +236,7 @@ class MovieDetails extends Component {
   trailor() {
     return (
       <div>
-        <h1>trailors:</h1>
+        <h3>trailors:</h3>
         <a href={this.state.trailor.link}>
           <img src={this.state.trailor.pic} alt="Not available" />
         </a>
@@ -276,7 +276,7 @@ class MovieDetails extends Component {
               </div>
 
               {this.platformsList()}
-              {this.trailor()}
+              <div className="trailor">{this.trailor()}</div>
             </div>
           </div>
         </div>
