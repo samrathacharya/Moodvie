@@ -16,6 +16,7 @@ class App extends Component {
           <Redirect from="/search" exact to="/home" />
           <Route path="/search/:term" component={MovieResult} />
           <Route path="/moviedetails/:id" component={MovieDetails} />
+
           <Route path="/not-found" component={NotFound} />
           <Redirect to="/not-found" />
         </Switch>
