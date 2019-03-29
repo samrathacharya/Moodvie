@@ -486,14 +486,14 @@ a.sm-link {
 
 /*
 SETTINGS
-  --smLinkTextColor: #243aab;
-    --smLinkTextColorHover: #1b255a;
 */
 
 .sm-link {
   --smLinkPadding: 10px 15px;
-  --smLinkLineWeight: 10px;
-  --smLinkLineColor: pink;
+  --smLinkLineWeight: 5px;
+  --smLinkLineColor: #243aab;
+  --smLinkTextColor: #243aab;
+  --smLinkTextColorHover: #1b255a;
 }
 
 .sm-link_bg {
