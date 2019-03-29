@@ -4,5 +4,7 @@
   font-family: "Righteous", sans-serif;
   font-size: 60px;
   text-shadow: 3px 3px black;
+  text-align: left;
   color: #f9f7f7;
+  height: 3cm;
 }

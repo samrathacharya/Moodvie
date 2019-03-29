@@ -38,7 +38,7 @@ class Platform extends Component {
   not_available() {
     return (
       <h5>
-        <span className={this.badge()}>
+        <span className="badge badge-dark">
           {this.state.name + "-Not available:("}
         </span>
       </h5>
