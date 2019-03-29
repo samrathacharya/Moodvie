@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 
 import "./css/moodvie_icon.css";
+import Moodvie_icon from "./Moodive_result_icon";
 
 const textBoxStyle = {
   width: "400px"
 };
 
-class Moodvie_icon extends Component {
+class Moodvie_result_icon extends Component {
   state = {};
   render() {
     return (
@@ -17,4 +18,4 @@ class Moodvie_icon extends Component {
   }
 }
 
-export default Moodvie_icon;
+export default Moodvie_result_icon;

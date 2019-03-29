@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import './home.css';
+import "./css/home.css";
 
 class Home extends Component {
   state = {};
@@ -13,17 +13,19 @@ class Home extends Component {
       <div className="body">
         <div className="form-group ">
           <div className="searchterm display-middle">Moodvie</div>
+
           <form onSubmit={this.handleSubmit}>
             <input
               id="searchterm"
               ref={this.search_term}
               type="text"
-              className="form-control display-middle"
+              className="form-control "
               name="searchterm"
               placeholder="What do you want to watch today?"
             />
-            <button className="btn btn-danger display-middle">Search</button>
+            <button className="btn btn-danger ">Search</button>
           </form>
+
           <div className="footer">Copyright Moodvie 2019</div>
         </div>
       </div>

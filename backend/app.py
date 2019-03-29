@@ -60,11 +60,12 @@ def getGoogle(title, date):
 # date formate: yr-mon-day in numeric
 @app.route("/trailor/title=<string:title>&date=<string:date>")
 def getTrailor(title, date):
-    title= title.replace(" ","_")
+    title = title.replace(" ", "_")
     print(title)
-    p = Popen(['./webscraping/youtobe_trailer.sh', title, date], 
+    p = Popen(['./webscraping/youtobe_trailer.sh', title, date],
               stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    output, err = p.communicate(b"input data that is passed to subprocess' stdin")
+    output, err = p.communicate(
+        b"input data that is passed to subprocess' stdin")
     rc = p.returncode
 
     # remove newline
@@ -80,7 +81,8 @@ def getTrailor(title, date):
     # print(videoPic)
 
     # making json object
-    data = {"link": "https://www.youtube.com/watch?v="+videoCode, "pic": videoPic}
+    data = {"link": "https://www.youtube.com/watch?v=" +
+            videoCode, "pic": videoPic}
 
     #json_data = json.dumps(data)
 
@@ -109,7 +111,8 @@ def getYoutobePrice(title, year):
 
     # check if the price is in correct format
     if not price.startswith("$"):
-        return jsonify({"result": "not found"})
+        return jsonify({"name": "youtube",
+                        "price": "N/A", "link": "N/A"})
 
     # get the link
     link = info_list[1].decode('ascii')

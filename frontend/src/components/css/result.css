@@ -6,14 +6,46 @@
 
 .searchAndButton {
   margin-top: 35px;
-  float: left;
-  margin-left: 18.5%;
+  float: right;
+  height: 80%;
+
+  margin-top: 1.5%;
+  display: inline;
+  overflow: hidden;
+}
+.searchbtn {
+  top: 0.5cm;
+  display: inline;
+  text-align: center;
+  height: 2cm;
+  overflow: hidden;
+  float: right;
 }
 
+.btn-s:hover {
+  color: rgb(255, 255, 255, 0.7);
+  transition-delay: 0.2s;
+}
+.searchin {
+  float: right;
+  padding: 6px;
+  height: 2cm;
+
+  margin-top: 26px;
+  margin-right: 16px;
+  margin-left: 0%;
+  font-size: 17px;
+  display: inline;
+}
+.searchin input[type="text"] {
+  padding: 3px;
+  border: 2px #a6c0fe solid;
+  background-color: antiquewhite;
+  box-sizing: border-box;
+}
 .headerContainer {
   background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
-  height: 100px;
-  margin-bottom: 20px;
+  height: 120px;
 }
 
 .movieBlock {
@@ -23,7 +55,7 @@
 #searchButton {
   display: inline-block;
   font-weight: 400;
-  color: #212529;
+  color: #16528f;
   text-align: center;
   vertical-align: middle;
   -webkit-user-select: none;

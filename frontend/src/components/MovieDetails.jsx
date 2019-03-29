@@ -3,8 +3,17 @@ import Search_bar from "./Search_bar";
 import axios from "axios";
 import Moodvie_icon from "./Moodvie_icon";
 import Platform from "./Platform";
+import Moodvie_result_icon from "./Moodive_result_icon";
 import "./css/movie_detail.css";
 import "./css/badge.css";
+import "./css/button.css";
+const textBoxStyle = {
+  width: "400px"
+};
+
+const iconMargin = {
+  marginLeft: "10px"
+};
 class MovieDetails extends Component {
   state = {
     title: "American god",
@@ -167,7 +176,10 @@ class MovieDetails extends Component {
               </a>
             );
           })}
-          <span class="badge badge-danger"> Rated - {this.state.rated}</span>
+          <span className="badge badge-danger">
+            {" "}
+            Rated - {this.state.rated}
+          </span>
         </div>
       </React.Fragment>
     );
@@ -175,7 +187,7 @@ class MovieDetails extends Component {
   platformsList() {
     return (
       <div>
-        <h4>platforms</h4>
+        <h4>Platforms</h4>
         {this.state.platforms}
       </div>
     );
@@ -198,34 +210,40 @@ class MovieDetails extends Component {
           <h4>
             <a
               href={imdb_string}
-              class="sm-link sm-link_padding-bottom sm-link3"
+              className="sm-link sm-link_padding-bottom sm-link3"
             >
               <img
                 className="reviewlogo"
                 src={require("./icon/imdb.jpeg")}
                 alt="rt"
               />
-              <span class="sm-link__label">-{this.state.rating.imdb}</span>
+              <span className="sm-link__label">-{this.state.rating.imdb}</span>
             </a>
           </h4>
           <h4>
-            <a href={rt_string} class="sm-link sm-link_padding-bottom sm-link3">
+            <a
+              href={rt_string}
+              className="sm-link sm-link_padding-bottom sm-link3"
+            >
               <img
                 className="reviewlogo"
                 src={require("./icon/rt.png")}
                 alt="imdb"
               />
-              <span class="sm-link__label">-{this.state.rating.rt}</span>
+              <span className="sm-link__label">-{this.state.rating.rt}</span>
             </a>
           </h4>
           <h4>
-            <a href={mt_string} class="sm-link sm-link_padding-bottom sm-link3">
+            <a
+              href={mt_string}
+              className="sm-link sm-link_padding-bottom sm-link3"
+            >
               <img
                 className="reviewlogo"
                 src={require("./icon/mt.png")}
                 alt="mt"
               />
-              <span class="sm-link__label">-{this.state.rating.mt}</span>
+              <span className="sm-link__label">-{this.state.rating.mt}</span>
             </a>
           </h4>
         </div>
@@ -235,49 +253,76 @@ class MovieDetails extends Component {
 
   trailor() {
     return (
-      <div>
-        <h3>trailors:</h3>
+      <div className="trailor">
+        <h4>
+          Trailer
+          <a
+            href={
+              "https://www.youtube.com/results?search_query=" +
+              this.state.title +
+              " " +
+              this.state.date
+            }
+          >
+            <img
+              className="link_img"
+              src={require("./icon/play.png")}
+              float="left"
+            />
+          </a>
+        </h4>
         <a href={this.state.trailor.link}>
-          <img src={this.state.trailor.pic} alt="Not available" />
+          <img
+            className="trailerImg"
+            src={this.state.trailor.pic}
+            alt="Not available"
+          />
         </a>
       </div>
     );
   }
+  handleSubmit = e => {
+    console.log("1");
+    const term = e.target.searchterm.value;
+    this.setState({ term });
+    this.props.history.push("/search/" + e.target.searchterm.value);
+  };
   render() {
     return (
       <React.Fragment>
-        <div className="base">
-          <Moodvie_icon />
-          <div className="detail">
-            <div className="rhs-card">
-              <img src={this.state.posterLink} />
-              {this.ratingList()}
-            </div>
-            <div className="info">
-              <div className="title">
-                <p>
-                  {this.state.title}
-                  <a href={"https://en.wikipedia.org/wiki/" + this.state.title}>
-                    <img
-                      className="logo_img"
-                      src={require("./icon/wiki.png")}
-                      float="left"
-                    />
-                  </a>
-                </p>
-              </div>
+        <div className="headerContainer">
+          <Moodvie_result_icon />
+        </div>
 
-              <h4>
-                {this.state.date}({this.state.runtime}) By {this.state.by}
-              </h4>
-              {this.castList()}
-              <div className="summary">
-                <p>{this.state.summary}</p>
-              </div>
-
-              {this.platformsList()}
-              <div className="trailor">{this.trailor()}</div>
+        <div className="detail">
+          <div className="rhs-card">
+            <img src={this.state.posterLink} />
+            {this.ratingList()}
+          </div>
+          <div className="info">
+            <div className="title">
+              <p>
+                {this.state.title}
+                <a href={"https://en.wikipedia.org/wiki/" + this.state.title}>
+                  <img
+                    className="logo_img"
+                    src={require("./icon/wiki.png")}
+                    float="left"
+                  />
+                </a>
+              </p>
             </div>
+
+            <h4>
+              {this.state.date} ({this.state.runtime}) By {this.state.by}
+            </h4>
+            {this.castList()}
+            <div className="summary">
+              <p>{this.state.summary}</p>
+            </div>
+
+            {this.platformsList()}
+            {this.trailor()}
           </div>
         </div>
       </React.Fragment>
