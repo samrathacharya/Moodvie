@@ -60,7 +60,34 @@ def getGoogle(title, date):
 # date formate: yr-mon-day in numeric
 @app.route("/trailor/title=<string:title>&date=<string:date>")
 def getTrailor(title, date):
-    return jsonify(engine.get_trailer(title, date))
+    title= title.replace(" ","_")
+    print(title)
+    p = Popen(['./webscraping/youtobe_trailer.sh', title, date], 
+              stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    output, err = p.communicate(b"input data that is passed to subprocess' stdin")
+    rc = p.returncode
+
+    # remove newline
+    info_list = output.splitlines()
+
+    videoCode = info_list[0].decode('ascii')
+
+    videoPic = info_list[1].decode('ascii')
+
+    # FOR TESTING
+    # print(videoCode)
+
+    # print(videoPic)
+
+    # making json object
+    data = {"link": "https://www.youtube.com/watch?v="+videoCode, "pic": videoPic}
+
+    #json_data = json.dumps(data)
+
+    # testint
+    # print(json_data)
+
+    return jsonify(data)
 
 # get the youtobe price
 # format: movie_title year

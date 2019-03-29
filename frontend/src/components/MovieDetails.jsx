@@ -51,16 +51,16 @@ class MovieDetails extends Component {
     //set youtube
     //youtube trailor
     let tmp = new Date(this.state.date);
-    /*const promise2 = axios.get(
+    const promise2 = axios.get(
       "http://127.0.0.1:4897/trailor/title=" +
         data.title +
         "&date=" +
         tmp.getFullYear()
     );
-    //const reponse2 = await promise2;
-    //const trailor = reponse2.data;
-    //this.setState({ trailor: trailor });
-    */
+    const reponse2 = await promise2;
+    const trailor = reponse2.data;
+    this.setState({ trailor: trailor });
+
     rating.imdb = data.ratings.imdb;
     rating.rt = data.ratings.rt;
     rating.mt = data.ratings.mt;
