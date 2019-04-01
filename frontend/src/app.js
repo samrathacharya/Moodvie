@@ -20,8 +20,8 @@ class App extends Component {
           <Route path="/search/:term" component={MovieResult} />
           <Route path="/moviedetails/:id" component={MovieDetails} />
           <Route path="/user" component={UserProfile} />
-          <Route path="/user/watchlist" component={Watchlist} />
-          <Route path="/user/profile" component={ChangeProfile} />
+          <Route path="/watchlist" component={Watchlist} />
+          <Route path="/profile" component={ChangeProfile} />
           <Route path="/not-found" component={NotFound} />
           <Redirect to="/not-found" />
         </Switch>

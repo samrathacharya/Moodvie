@@ -4,6 +4,7 @@ import "../components/css/userProfile.css";
 import userImage from "../assets/user.jpg";
 
 class UserProfile extends Component {
+  // TODO: Save image in user state
   state = {
     name: "Sam",
     email: "samlikesjam@gmail.com",
@@ -29,35 +30,6 @@ class UserProfile extends Component {
         {/* Include navbar component */}
         <div className="headerContainer">
           <Moodvie_result_icon />
-
-          <div className="searchAndButton">
-            <form onSubmit={this.handleSubmit}>
-              <div>
-                <div className="searchin">
-                  <input
-                    id="searchterm"
-                    ref={this.search_term}
-                    type="text"
-                    className="i-told-before-2"
-                    style={textBoxStyle}
-                    name="searchterm"
-                    placeholder="What do you want to watch today?"
-                  />
-                </div>
-
-                <div className="searchbtn">
-                  <button
-                    id="searchButton"
-                    className="btn-s"
-                    onClick={this.handleSubmit}
-                  >
-                    {" "}
-                    Search
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
         </div>
 
         {/* User Profile */}
@@ -66,10 +38,10 @@ class UserProfile extends Component {
             <h2>Navigation</h2>
             <br />
             <p>
-              <a href="/user/profile"> Your Profile </a>
+              <a href="/profile"> Your Profile </a>
             </p>
             <p>
-              <a href="/user/watchlist">Your Watchlist</a>
+              <a href="/watchlist">Your Watchlist</a>
             </p>
           </div>
           <div className="profile">
@@ -80,7 +52,7 @@ class UserProfile extends Component {
             <div className="details">
               <h4>Name: {this.state.name}</h4>
               <h4>Email: {this.state.email}</h4>
-              <h4>Watch Later: {this.state.movies.len}</h4>
+              <h4>Watch Later: {this.state.movies.length}</h4>
             </div>
           </div>
         </div>
