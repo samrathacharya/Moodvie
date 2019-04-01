@@ -7,6 +7,8 @@ import Moodvie_result_icon from "./Moodive_result_icon";
 import "./css/movie_detail.css";
 import "./css/badge.css";
 import "./css/button.css";
+
+import SpinnerPage from "./Spinner";
 const textBoxStyle = {
   width: "400px"
 };
@@ -14,6 +16,7 @@ const textBoxStyle = {
 const iconMargin = {
   marginLeft: "10px"
 };
+
 class MovieDetails extends Component {
   state = {
     title: "American god",
@@ -26,10 +29,7 @@ class MovieDetails extends Component {
     rating: { imdb: "Not available", mt: "Not available", rt: "Not available" },
     platforms: [],
     runtime: "",
-    trailor: {
-      link: "N/A",
-      pic: "N/A"
-    }
+    trailor: <SpinnerPage />
   };
 
   async componentDidMount() {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./css/movieblock.css";
-
+import "./css/badge.css";
 class MovieBlock extends Component {
   state = {
     id: this.props.title + this.props.date,
@@ -30,16 +30,24 @@ class MovieBlock extends Component {
         <div className="big-body">
           <div className="box">
             <div className="image">
-              <img
-                src={this.state.imageUrl}
-                alt={this.state.title}
-                width="180"
-                height="270"
-              />
+              <a href={this.state.movie_page}>
+                {" "}
+                <img
+                  src={this.state.imageUrl}
+                  alt={this.state.title}
+                  width="180"
+                  height="270"
+                />
+              </a>
             </div>
             <div className="card-body">
-              <a href={this.state.movie_page}>
-                {this.state.title}({this.state.date})
+              <a
+                href={this.state.movie_page}
+                className="sm-link sm-link_padding-all sm-link1"
+              >
+                <span class="sm-link__label">
+                  {this.state.title}({this.state.date})
+                </span>
               </a>
             </div>
           </div>
