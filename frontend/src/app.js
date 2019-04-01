@@ -3,6 +3,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import Home from "./components/Home";
 import MovieResult from "./components/MovieResult";
 import MovieDetails from "./components/MovieDetails";
+import UserProfile from "./components/UserProfile";
 
 import NotFound from "./components/NotFound";
 class App extends Component {
@@ -16,6 +17,7 @@ class App extends Component {
           <Redirect from="/search" exact to="/home" />
           <Route path="/search/:term" component={MovieResult} />
           <Route path="/moviedetails/:id" component={MovieDetails} />
+          <Route path="/user" component={UserProfile} />
 
           <Route path="/not-found" component={NotFound} />
           <Redirect to="/not-found" />
