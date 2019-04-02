@@ -13,14 +13,13 @@ movie_title=`echo "$1" |
 youtobe_url="https://www.youtube.com/results?search_query=$movie_title+$movie_year"
 # amazone_url="https://www.amazon.com/s?k=$movie_title&i=instant-video"
 
-# wget -q -O- "$amazone_url" |
-# egrep -o ">Transformers</span><"
-
 
 # get the price
 wget -q -O- "$youtobe_url" |
 egrep -o ">Watch from A[$]\d+.\d*" |
-egrep -o "[$]\d+.\d*" #> result.txt
+egrep -o "[$]\d+.\d*" | 
+uniq #> result.txt
+
 
 # the link
 echo "$youtobe_url"
