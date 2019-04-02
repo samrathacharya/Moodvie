@@ -5,8 +5,12 @@ class Home extends Component {
   state = {};
   search_term = React.createRef();
   handleSubmit = e => {
-    e.preventDefault();
-    this.props.history.push("/search/" + e.target.searchterm.value);
+    if (e.target.searchterm == undefined) {
+      this.props.history.push("/search/");
+    } else {
+      e.preventDefault();
+      this.props.history.push("/search/" + e.target.searchterm.value);
+    }
   };
   render() {
     return (

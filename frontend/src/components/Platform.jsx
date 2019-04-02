@@ -46,7 +46,7 @@ class Platform extends Component {
 
   available(price, link) {
     return (
-      <a href={link}>
+      <a target="_blank" href={link}>
         <span className={this.badge()}>{this.state.name + "-" + price}</span>
       </a>
     );

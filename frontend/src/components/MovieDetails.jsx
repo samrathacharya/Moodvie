@@ -115,7 +115,7 @@ class MovieDetails extends Component {
     //youtube
 
     let title_new = this.state.title.replace(" ", "_");
-
+    console.log(this.state.date);
     platforms.push(
       <Platform
         key={"youtube"}
@@ -123,7 +123,8 @@ class MovieDetails extends Component {
           "http://localhost:4897/platforms/youtube/title=" +
           title_new +
           "&date=" +
-          tmp.getFullYear()
+          this.state.date
+          //tmp.getFullYear()
         }
         name={"youtube"}
         icon_root="./icon/itunes.png"
@@ -169,7 +170,10 @@ class MovieDetails extends Component {
             return (
               //link to the wiki page of the actor
 
-              <a href={"https://en.wikipedia.org/wiki/" + actor}>
+              <a
+                target="_blank"
+                href={"https://en.wikipedia.org/wiki/" + actor}
+              >
                 <span className={this.badge()} key={actor}>
                   <div>{actor}</div>
                 </span>
@@ -209,6 +213,7 @@ class MovieDetails extends Component {
         <div className="rating">
           <h4>
             <a
+              target="_blank"
               href={imdb_string}
               className="sm-link sm-link_padding-bottom sm-link3"
             >
@@ -222,6 +227,7 @@ class MovieDetails extends Component {
           </h4>
           <h4>
             <a
+              target="_blank"
               href={rt_string}
               className="sm-link sm-link_padding-bottom sm-link3"
             >
@@ -235,6 +241,7 @@ class MovieDetails extends Component {
           </h4>
           <h4>
             <a
+              target="_blank"
               href={mt_string}
               className="sm-link sm-link_padding-bottom sm-link3"
             >
@@ -257,6 +264,7 @@ class MovieDetails extends Component {
         <h4>
           Trailer
           <a
+            target="_blank"
             href={
               "https://www.youtube.com/results?search_query=" +
               this.state.title +
@@ -271,7 +279,7 @@ class MovieDetails extends Component {
             />
           </a>
         </h4>
-        <a href={this.state.trailor.link}>
+        <a target="_blank" href={this.state.trailor.link}>
           <img
             className="trailerImg"
             src={this.state.trailor.pic}
@@ -303,7 +311,10 @@ class MovieDetails extends Component {
             <div className="title">
               <p>
                 {this.state.title}
-                <a href={"https://en.wikipedia.org/wiki/" + this.state.title}>
+                <a
+                  target="_blank"
+                  href={"https://en.wikipedia.org/wiki/" + this.state.title}
+                >
                   <img
                     className="logo_img"
                     src={require("./icon/wiki.png")}

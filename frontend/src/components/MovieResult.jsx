@@ -45,9 +45,13 @@ class MovieResult extends Component {
     this.setState({ blocks });
   }
   handleSubmit = e => {
-    const term = e.target.searchterm.value;
-    this.setState({ term });
-    this.props.history.push("/search/" + e.target.searchterm.value);
+    if (e.target.searchterm == undefined) {
+      this.props.history.push("/search/");
+    } else {
+      const term = e.target.searchterm.value;
+      this.setState({ term });
+      this.props.history.push("/search/" + e.target.searchterm.value);
+    }
   };
 
   renderMovieBlocks() {
