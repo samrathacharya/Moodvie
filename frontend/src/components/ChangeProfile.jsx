@@ -3,26 +3,44 @@ import Moodvie_result_icon from "./Moodive_result_icon";
 import "../components/css/userProfile.css";
 
 class ChangeProfile extends Component {
-  state = {
-    name: "Sam",
-    email: "samlikesjam@gmail.com",
-    movies: [
-      { title: "Avengers Infinity War" },
-      { title: "Batman Returns" },
-      { title: "Get Out" },
-      { title: "Wolf Of Wall Street" },
-      { title: "Ace Ventura" }
-    ]
-  };
-
-  componentDidMount() {
-    this.setState({ name: this.state.name });
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "Sam",
+      email: "samlikesjam@gmail.com",
+      movies: [
+        { title: "Avengers Infinity War" },
+        { title: "Batman Returns" },
+        { title: "Get Out" },
+        { title: "Wolf Of Wall Street" },
+        { title: "Ace Ventura" }
+      ]
+    };
   }
 
-  handleChangeName = e => {
-    const term = e.target.searchterm.value;
-    this.setState({ name: term });
-  };
+  //Change Name
+  changeName(event) {
+    //prevent re-render
+    event.preventDefault();
+    //Grab newName from the form
+    let newName = this.refs.name.value;
+    this.setState({
+      name: newName
+    });
+    this.refs.name.value = "";
+  }
+
+  changeEmail(event) {
+    //prevent re-render
+    event.preventDefault();
+    //Grab newEmail from the form
+    let newEmail = this.refs.email.value;
+    this.setState({
+      email: newEmail
+    });
+    this.refs.email.value = "";
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -59,16 +77,11 @@ class ChangeProfile extends Component {
               <span className="detailField">
                 <b>Change Name:</b>
               </span>
-              <form onSubmit={this.handleChangeName}>
+              <form onSubmit={this.changeName.bind(this)}>
                 <div>
-                  <input
-                    id="searchterm"
-                    ref={this.state.name}
-                    type="text"
-                    name="searchterm"
-                  />
+                  <input type="text" ref="name" placeholder="Enter new name" />
                   <div className="searchbtn">
-                    <button onClick={this.handleChangeName}>Change</button>
+                    <button>Change</button>
                   </div>
                 </div>
               </form>
@@ -76,16 +89,15 @@ class ChangeProfile extends Component {
               <span className="detailField">
                 <b>Change email:</b>
               </span>
-              <form onSubmit={this.handleChangeName}>
+              <form onSubmit={this.changeEmail.bind(this)}>
                 <div>
                   <input
-                    id="searchterm"
-                    ref={this.state.name}
+                    ref="email"
                     type="text"
-                    name="searchterm"
+                    placeholder="Enter new email"
                   />
                   <div className="searchbtn">
-                    <button onClick={this.handleChangeName}>Change</button>
+                    <button>Change</button>
                   </div>
                 </div>
               </form>

@@ -9,20 +9,25 @@ class Watchlist extends Component {
       { key: 3, title: "Get Out" },
       { key: 4, title: "Wolf Of Wall Street" },
       { key: 5, title: "Ace Ventura" }
-    ]
+    ],
+    search: ""
   };
 
-  handleChange = event => {
-    //Turn Search to lower case
-    var query = event.target.value.toLowerCase();
-    console.log(query);
-    //list of movies
-    //Turn all titles to lower case
-    console.log();
-  };
+  updateSearch(event) {
+    this.setState({ search: event.target.value.substr(0, 20) });
+  }
 
   render() {
-    this.movieList = this.state.movies.map(movie => (
+    //Search for movies function
+    let filteredMovies = this.state.movies.filter(movie => {
+      return (
+        movie.title.toLowerCase().indexOf(this.state.search.toLowerCase()) !==
+        -1
+      );
+    });
+
+    //Render movies
+    this.movieList = filteredMovies.map(movie => (
       <li key={movie.key}>{movie.title}</li>
     ));
     return (
@@ -49,18 +54,14 @@ class Watchlist extends Component {
             <h4 className="welcome">
               <b>Your Watchlist:</b>
             </h4>
-            <form onSubmit={this.searchList} className="test">
-              <div>
-                <input
-                  className="searchForm"
-                  id="searchterm"
-                  type="text"
-                  name="searchterm"
-                  placeholder="Search For movie in watchlist"
-                  onChange={this.handleChange}
-                />
-              </div>
-            </form>
+
+            <input
+              className="searchForm"
+              type="text"
+              value={this.state.search}
+              placeholder="Search For movie in watchlist"
+              onChange={this.updateSearch.bind(this)}
+            />
             <br />
             <br />
             {this.movieList}
@@ -72,3 +73,12 @@ class Watchlist extends Component {
 }
 
 export default Watchlist;
+
+// handleChange = event => {
+//   //Turn Search to lower case
+//   var query = event.target.value.toLowerCase();
+//   console.log(query);
+//   //list of movies
+//   //Turn all titles to lower case
+//   console.log();
+// };
