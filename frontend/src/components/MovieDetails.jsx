@@ -115,7 +115,7 @@ class MovieDetails extends Component {
     //youtube
 
     let title_new = this.state.title.replace(" ", "_");
-
+    console.log(this.state.date)
     platforms.push(
       <Platform
         key={"youtube"}
@@ -123,7 +123,8 @@ class MovieDetails extends Component {
           "http://localhost:4897/platforms/youtube/title=" +
           title_new +
           "&date=" +
-          tmp.getFullYear()
+          this.state.date
+          //tmp.getFullYear()
         }
         name={"youtube"}
         icon_root="./icon/itunes.png"
