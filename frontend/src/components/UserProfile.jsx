@@ -45,14 +45,27 @@ class UserProfile extends Component {
             </p>
           </div>
           <div className="profile">
-            <h2 className="welcome">Welcome Sam!</h2>
+            <h2 className="welcome">
+              {" "}
+              <b>Welcome Sam!</b>
+            </h2>
             <div className="profileImageDiv">
               <img className="profileImage" src={userImage} />
             </div>
             <div className="details">
-              <h4>Name: {this.state.name}</h4>
-              <h4>Email: {this.state.email}</h4>
-              <h4>Watch Later: {this.state.movies.length}</h4>
+              <span className="detailField">
+                {" "}
+                <b>Name:</b>
+              </span>
+              {this.state.name} <br />
+              <span className="detailField">
+                <b>Email:</b>
+              </span>
+              {this.state.email} <br />
+              <span className="detailField">
+                <b>Watch Later: </b>
+              </span>
+              {this.state.movies.length} <br />
             </div>
           </div>
         </div>

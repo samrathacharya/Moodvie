@@ -66,4 +66,23 @@
 
 .details {
   margin: 30px;
+  font-size: 20px;
+}
+
+.detailField {
+  margin-right: 30px;
+}
+
+.searchForm {
+  width: 400px;
+  float: left;
+}
+
+.searchbtn {
+  float: left;
+}
+
+.test {
+  width: 500;
+  height: 40px;
 }

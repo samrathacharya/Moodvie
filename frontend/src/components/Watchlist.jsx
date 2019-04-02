@@ -12,6 +12,15 @@ class Watchlist extends Component {
     ]
   };
 
+  handleChange = event => {
+    //Turn Search to lower case
+    var query = event.target.value.toLowerCase();
+    console.log(query);
+    //list of movies
+    //Turn all titles to lower case
+    console.log();
+  };
+
   render() {
     this.movieList = this.state.movies.map(movie => (
       <li key={movie.key}>{movie.title}</li>
@@ -32,12 +41,28 @@ class Watchlist extends Component {
               <a href="/user"> Your User Page </a>
             </p>
             <p>
-              <a href="/watchlist">Your Watchlist</a>
+              <a href="/profile">Your Profile Page</a>
             </p>
           </div>
           <div className="profile">
             <div className="details" />
-            <h4 className="welcome">Your Watchlist:</h4>
+            <h4 className="welcome">
+              <b>Your Watchlist:</b>
+            </h4>
+            <form onSubmit={this.searchList} className="test">
+              <div>
+                <input
+                  className="searchForm"
+                  id="searchterm"
+                  type="text"
+                  name="searchterm"
+                  placeholder="Search For movie in watchlist"
+                  onChange={this.handleChange}
+                />
+              </div>
+            </form>
+            <br />
+            <br />
             {this.movieList}
           </div>
         </div>
