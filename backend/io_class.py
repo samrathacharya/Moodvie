@@ -3,8 +3,6 @@ import time
 import sqlite3
 import sys
 
-from Task import Task
-
 class Read(object):
     def __init__(self, read_method, read_position):
         self.__read_method = read_method
@@ -74,22 +72,10 @@ class Read_db_user(Read_db):
         for row in cursor:
             if row[0] == username and row[1] == pass_w:
                 self.close(conn)
-                return row[3]
+                return True
         self.close(conn)
-        return None
+        return False
 
-    # check type
-    def checkT(self, username):
-        db_handle = self.open()
-        conn = db_handle[0]
-        cur = db_handle[1]
-        data = cur.execute("select TYPE from user where USERNAME='"+username+"'")
-        arr = data.fetchall()
-        self.close(conn)
-        if(arr):
-            return arr[0][0]
-        else:
-            return False
 
 class Write(object):
     def __init__(self, write_method, write_position):
@@ -126,6 +112,7 @@ class Write_db_user(Write_db):
 
     # register a new account into the database
     def register(self, user_n, pass_w, e_mail):
+        print("hello\n")
         reader = Read_db_user("database/USER.db")
         if reader.checkU(user_n) and reader.checkE(e_mail):
             db_handle = self.open()

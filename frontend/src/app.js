@@ -6,6 +6,8 @@ import MovieDetails from "./components/MovieDetails";
 import UserProfile from "./components/UserProfile";
 import Watchlist from "./components/Watchlist";
 import ChangeProfile from "./components/ChangeProfile";
+import Register from "./components/Register";
+import Login from "./components/Login"
 
 import NotFound from "./components/NotFound";
 class App extends Component {
@@ -21,6 +23,8 @@ class App extends Component {
           <Route path="/moviedetails/:id" component={MovieDetails} />
           <Route path="/user" component={UserProfile} />
           <Route path="/watchlist" component={Watchlist} />
+          <Route path="/users/register" component={Register} />
+          <Route path="/users/login" component={Login} />
           <Route path="/profile" component={ChangeProfile} />
           <Route path="/not-found" component={NotFound} />
           <Redirect to="/not-found" />

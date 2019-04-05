@@ -1,9 +1,10 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from search_engine import Search_engine
 from subprocess import Popen, PIPE
 import subprocess
 import shlex
 from flask_cors import CORS
+from initialize import db_reader_u, db_writer_u
 app = Flask(__name__)
 CORS(app)
 engine = Search_engine()
@@ -158,5 +159,63 @@ def getRtReview(title):
 
     return jsonify(data)
 
+@app.route("/users/signup", methods=["GET","POST"])
+def register() :
 
+
+    # username = "Joey"
+    # email = "j"
+    # password = "j"
+    result = {}
+    if request.method == "POST":
+        username = request.get_json()['username']
+        email = request.get_json()['email']
+        password = request.get_json()['password']
+        if db_writer_u.register(username, password, email):
+            #
+            result["username"] = username
+            result["email"] = email
+            result["password"] = password
+            result["result"] = "success"
+            print("in the if\n")
+            #result={"result": "regestration success" }
+            return jsonify(result)
+                    
+        else:
+            # duplicate
+            print("in the else\n")
+            result={"result": "fail"}
+    else:
+        result={"result": "fail"}
+    #     print("failed\n")
+
+    return jsonify(result)
+
+@app.route("/users/login", methods=["GET","POST"])
+def login() :
+    # username = "Joey"
+    # email = "j"
+    # password = "j"
+    result = {}
+    if request.method == "POST":
+        username = request.get_json()['username']
+        password = request.get_json()['password']
+        if db_reader_u.checkAccount(username, password):
+            #
+            result["username"] = username
+            result["password"] = password
+            result["result"] = "success"
+            print("in the if\n")
+            #result={"result": "regestration success" }
+            return jsonify(result)
+                    
+        else:
+            # duplicate
+            print("in the else\n")
+            result={"result": "fail"}
+    else:
+        result={"result": "fail"}
+    #     print("failed\n")
+
+    return jsonify(result)
 app.run(port=4897, debug=True)
