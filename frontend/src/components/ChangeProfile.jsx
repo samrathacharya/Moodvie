@@ -1,21 +1,26 @@
 import React, { Component } from "react";
 import Moodvie_result_icon from "./Moodive_result_icon";
 import "../components/css/userProfile.css";
+import jwt_decode from "jwt-decode";
 
 class ChangeProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Sam",
-      email: "samlikesjam@gmail.com",
-      movies: [
-        { title: "Avengers Infinity War" },
-        { title: "Batman Returns" },
-        { title: "Get Out" },
-        { title: "Wolf Of Wall Street" },
-        { title: "Ace Ventura" }
-      ]
+      name: "",
+      email: "",
+      movies: ["H"]
     };
+  }
+
+  componentDidMount() {
+    const token = localStorage.usertoken;
+    const decoded = jwt_decode(token);
+    this.setState({
+      name: decoded.identity.username,
+      email: decoded.identity.email,
+      movies: decoded.identity.movies
+    });
   }
 
   //Change Name

@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch
+} from "react-router-dom";
 import Home from "./components/Home";
 import MovieResult from "./components/MovieResult";
 import MovieDetails from "./components/MovieDetails";
@@ -7,7 +12,8 @@ import UserProfile from "./components/UserProfile";
 import Watchlist from "./components/Watchlist";
 import ChangeProfile from "./components/ChangeProfile";
 import Register from "./components/Register";
-import Login from "./components/Login"
+import Login from "./components/Login";
+import { withRouter } from "react-router";
 
 import NotFound from "./components/NotFound";
 class App extends Component {
@@ -33,7 +39,5 @@ class App extends Component {
     );
   }
 }
-//
 
-//
 export default App;

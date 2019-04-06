@@ -3,6 +3,7 @@ import Moodvie_result_icon from "./Moodive_result_icon";
 import "../components/css/userProfile.css";
 import userImage from "../assets/user.jpg";
 import jwt_decode from "jwt-decode";
+import Navbar from "./navbar";
 
 class UserProfile extends Component {
   // TODO: Save image in user state
@@ -11,7 +12,7 @@ class UserProfile extends Component {
     this.state = {
       name: "",
       email: "",
-      movies: []
+      movies: ["H"]
     };
   }
 
@@ -19,7 +20,7 @@ class UserProfile extends Component {
     const token = localStorage.usertoken;
     const decoded = jwt_decode(token);
     this.setState({
-      name: decoded.identity.name,
+      name: decoded.identity.username,
       email: decoded.identity.email,
       movies: decoded.identity.movies
     });
@@ -37,7 +38,7 @@ class UserProfile extends Component {
       <React.Fragment>
         {/* Include navbar component */}
         <div className="headerContainer">
-          <Moodvie_result_icon />
+          <Navbar />
         </div>
 
         {/* User Profile */}
@@ -55,7 +56,7 @@ class UserProfile extends Component {
           <div className="profile">
             <h2 className="welcome">
               {" "}
-              <b>Welcome Sam!</b>
+              <b>Welcome {this.state.name}</b>
             </h2>
             <div className="profileImageDiv">
               <img className="profileImage" src={userImage} />
@@ -73,7 +74,8 @@ class UserProfile extends Component {
               <span className="detailField">
                 <b>Watch Later: </b>
               </span>
-              {this.state.movies.length} <br />
+              Hi
+              {/* {this.state.movies.length} <br /> */}
             </div>
           </div>
         </div>
