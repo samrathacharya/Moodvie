@@ -17,13 +17,18 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    const token = localStorage.usertoken;
-    const decoded = jwt_decode(token);
-    this.setState({
-      name: decoded.identity.username,
-      email: decoded.identity.email,
-      movies: decoded.identity.movies
-    });
+    
+    if (localStorage.getItem('usertoken')) {
+      const token = localStorage.usertoken;
+      const decoded = jwt_decode(token);
+      this.setState({
+        name: decoded.identity.username,
+        email: decoded.identity.email,
+        movies: decoded.identity.movies
+      });
+    } else {
+      this.props.history.push('/')
+    }
   }
 
   render() {
