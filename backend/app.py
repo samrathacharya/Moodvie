@@ -211,16 +211,17 @@ def login() :
             # result["password"] = password
             # result["result"] = "success"
             print("in the if\n")
-            access_token = create_access_token(identity = {'username':username})
-            result = jsonify({"token": access_token})
+            email = db_reader_u.getEmailByUsername(username)
+            access_token = create_access_token(identity = {'username':username, 'email':email})
+            result = jsonify({"token": access_token, "result":"success"})
             #result={"result": "regestration success" }
                     
         else:
             # duplicate
             print("in the else\n")
-            result= jsonify({"error": "Invalid username and password"})
+            result= jsonify({"error": "Invalid username and password","result":"failed"})
     else:
-        result= jsonify({"error": "Invalid username and password"})
+        result= jsonify({"error": "Invalid username and password","result":"failed"})
     #     print("failed\n")
 
     return result

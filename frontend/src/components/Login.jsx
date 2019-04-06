@@ -29,7 +29,7 @@ class Login extends Component {
             localStorage.setItem('usertoken',res.data.token)
             console.log(res)
             if(res.data.result === "success") {
-                this.props.history.push("/home")
+                this.props.history.push("/user")
             }
         })
     }

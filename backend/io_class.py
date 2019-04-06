@@ -76,6 +76,20 @@ class Read_db_user(Read_db):
         self.close(conn)
         return False
 
+    # get email
+    def getEmailByUsername(self, username):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        cursor = cur.execute("SELECT USERNAME,PASSWORD,EMAIL from user where USERNAME='"+username+"'")
+        for row in cursor:
+            if row[0] == username:
+                email = row[2]
+                self.close(conn)
+                return email
+        self.close(conn)
+        return False
+
 
 class Write(object):
     def __init__(self, write_method, write_position):
