@@ -18,8 +18,9 @@ class UserProfile extends Component {
 
   componentDidMount() {
     
-    if (localStorage.getItem('usertoken')) {
+    if (localStorage.getItem('usertoken') !== null) {
       const token = localStorage.usertoken;
+      console.log(token)
       const decoded = jwt_decode(token);
       this.setState({
         name: decoded.identity.username,
