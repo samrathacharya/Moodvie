@@ -5,6 +5,8 @@ import subprocess
 import shlex
 from flask_cors import CORS
 from initialize import db_reader_u, db_writer_u
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import create_access_token
 app = Flask(__name__)
 CORS(app)
 engine = Search_engine()
