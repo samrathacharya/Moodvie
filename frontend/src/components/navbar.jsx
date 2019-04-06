@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import Moodvie_result_icon from "./Moodive_result_icon";
 import "./css/button.css";
 import "./css/result.css";
-import { Link, Redirect, Route } from "react-router-dom";
-import { withRouter } from "react-router";
+import { withRouter, Redirect, Link } from "react-router-dom";
 import Home from "./Home";
 
 const textBoxStyle = {
@@ -17,13 +16,18 @@ const iconMargin = {
 class Landing extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   logout(e) {
     e.preventDefault();
     localStorage.removeItem("usertoken");
     this.props.history.push("/");
+  }
+
+  checkToken() {
+    if (localStorage.getItem("usertoken") === null) {
+      return <Redirect to="/home" />;
+    }
   }
 
   render() {
@@ -60,8 +64,13 @@ class Landing extends Component {
         </div>
       </React.Fragment>
     );
-    return <div>{localStorage.usertoken ? userLink : loginLink}</div>;
+    return (
+      <div>
+        {this.checkToken}
+        {localStorage.usertoken ? userLink : loginLink}
+      </div>
+    );
   }
 }
 
-export default Landing;
+export default withRouter(Landing);
