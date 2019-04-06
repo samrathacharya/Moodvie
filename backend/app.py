@@ -211,7 +211,7 @@ def login() :
             # result["password"] = password
             # result["result"] = "success"
             print("in the if\n")
-            access_token = create_access_token(identity = username)
+            access_token = create_access_token(identity = {'username':username})
             result = jsonify({"token": access_token})
             #result={"result": "regestration success" }
                     
