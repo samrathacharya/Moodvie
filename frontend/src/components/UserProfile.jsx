@@ -2,20 +2,28 @@ import React, { Component } from "react";
 import Moodvie_result_icon from "./Moodive_result_icon";
 import "../components/css/userProfile.css";
 import userImage from "../assets/user.jpg";
+import jwt_decode from "jwt-decode";
 
 class UserProfile extends Component {
   // TODO: Save image in user state
-  state = {
-    name: "Sam",
-    email: "samlikesjam@gmail.com",
-    movies: [
-      { title: "Avengers Infinity War" },
-      { title: "Batman Returns" },
-      { title: "Get Out" },
-      { title: "Wolf Of Wall Street" },
-      { title: "Ace Ventura" }
-    ]
-  };
+  constructor() {
+    super();
+    this.state = {
+      name: "",
+      email: "",
+      movies: []
+    };
+  }
+
+  componentDidMount() {
+    const token = localStorage.usertoken;
+    const decoded = jwt_decode(token);
+    this.setState({
+      name: decoded.identity.name,
+      email: decoded.identity.email,
+      movies: decoded.identity.movies
+    });
+  }
 
   render() {
     const textBoxStyle = {
