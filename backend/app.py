@@ -13,6 +13,8 @@ CORS(app)
 engine = Search_engine()
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
+
+app.config['JWT_SECRET_KEY'] = 'secret'
 @app.route('/')
 def home():
     return "hello world"
@@ -209,10 +211,9 @@ def login() :
             # result["password"] = password
             # result["result"] = "success"
             print("in the if\n")
-            access_token = create_access_token(identity = {'username': username})
+            access_token = create_access_token(identity = username)
             result = jsonify({"token": access_token})
             #result={"result": "regestration success" }
-            return jsonify(result)
                     
         else:
             # duplicate
