@@ -7,11 +7,12 @@ from flask_cors import CORS
 from initialize import db_reader_u, db_writer_u
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import create_access_token
+from flask_bcrypt import Bcrypt
 app = Flask(__name__)
 CORS(app)
 engine = Search_engine()
-
-
+jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
 @app.route('/')
 def home():
     return "hello world"
@@ -204,20 +205,22 @@ def login() :
         password = request.get_json()['password']
         if db_reader_u.checkAccount(username, password):
             #
-            result["username"] = username
-            result["password"] = password
-            result["result"] = "success"
+            # result["username"] = username
+            # result["password"] = password
+            # result["result"] = "success"
             print("in the if\n")
+            access_token = create_access_token(identity = {'username': username})
+            result = jsonify({"token": access_token})
             #result={"result": "regestration success" }
             return jsonify(result)
                     
         else:
             # duplicate
             print("in the else\n")
-            result={"result": "fail"}
+            result= jsonify({"error": "Invalid username and password"})
     else:
-        result={"result": "fail"}
+        result= jsonify({"error": "Invalid username and password"})
     #     print("failed\n")
 
-    return jsonify(result)
+    return result
 app.run(port=4897, debug=True)
