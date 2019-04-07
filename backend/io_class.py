@@ -70,7 +70,9 @@ class Read_db_user(Read_db):
         cur = db_handle[1]
         cursor = cur.execute("SELECT USERNAME,PASSWORD,EMAIL from user")
         for row in cursor:
+            print(row[0])
             if row[0] == username and row[1] == pass_w:
+                
                 self.close(conn)
                 return True
         self.close(conn)
@@ -156,3 +158,23 @@ class Write_db_user(Write_db):
                 # name already exist
 
                 return 102
+
+    # def change_email(self, old_e, new_e):
+    #     reader = Read_db_user("database/USER.db")
+    #     if reader.checkE(old_n) :
+    #         # no such user
+    #         return 101
+    #     else :
+    #         if reader.checkU(new_n):
+    #             db_handle = self.open()
+    #             conn = db_handle[0]
+    #             cur = db_handle[1]
+    #             print(old_n)
+    #             print(new_n)
+    #             cur.execute("UPDATE user SET USERNAME='"+new_n+"' WHERE USERNAME='"+old_n+"'")
+    #             self.close(conn)
+    #             return 103
+    #         else :
+    #             # name already exist
+
+    #             return 102
