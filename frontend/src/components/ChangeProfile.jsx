@@ -3,6 +3,7 @@ import Moodvie_result_icon from "./Moodive_result_icon";
 import "../components/css/userProfile.css";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import Navbar from "./navbar";
 
 class ChangeProfile extends Component {
   constructor(props) {
@@ -35,18 +36,26 @@ class ChangeProfile extends Component {
     if (newName === "") {
       return;
     } else {
-      //Pass in newName to backend
-      const promise = axios.post("http://127.0.0.1:4897/profile", {
-        oldUsername: this.state.name,
-        newUsername: newName,
-        oldEmail: this.state.email,
-        newEmail: this.state.email
-      });
+      //1. Changae name in backend
+      const promise = axios
+        .post("http://127.0.0.1:4897/profile", {
+          oldUsername: this.state.name,
+          newUsername: newName,
+          oldEmail: this.state.email,
+          newEmail: this.state.email
+        })
+        .then(res => {
+          localStorage.setItem("usertoken", res.data.token);
+          console.log(res);
+        });
+      //2. Change name in frontend
       this.setState({
         name: newName,
         isNameButtonDisabled: true
       });
       this.refs.name.value = "";
+
+      //3. Change name in localStorage
     }
   }
 
@@ -65,6 +74,8 @@ class ChangeProfile extends Component {
         oldEmail: this.state.email,
         newEmail: newEmail
       });
+      console.log(newEmail);
+      console.log(this.state.email);
       this.refs.email.value = "";
       this.setState({
         email: newEmail,
@@ -78,7 +89,7 @@ class ChangeProfile extends Component {
       <React.Fragment>
         {/* Include navbar component */}
         <div className="headerContainer">
-          <Moodvie_result_icon />
+          <Navbar />
         </div>
 
         {/* User Profile */}
