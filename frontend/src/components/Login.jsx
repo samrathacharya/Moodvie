@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { login } from "./UserFunctions";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 class Login extends Component {
   constructor() {
@@ -69,9 +69,7 @@ class Login extends Component {
                 Login
               </button>
 
-              <button className="btn btn-lg btn-primary btn-block">
-                <Link to="users/register">Sign Up!</Link>
-              </button>
+              <Link to="/users/register">Sign Up!</Link>
             </form>
           </div>
         </div>
@@ -80,4 +78,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);
