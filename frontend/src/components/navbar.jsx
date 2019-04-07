@@ -24,12 +24,6 @@ class Landing extends Component {
     this.props.history.push("/");
   }
 
-  checkToken() {
-    if (localStorage.getItem("usertoken") === null) {
-      return <Redirect to="/home" />;
-    }
-  }
-
   render() {
     const loginLink = (
       <React.Fragment>
@@ -57,19 +51,11 @@ class Landing extends Component {
                 LogOut
               </a>
             </li>
-            <li>
-              <Link to="user">My Profile</Link>
-            </li>
           </ul>
         </div>
       </React.Fragment>
     );
-    return (
-      <div>
-        {this.checkToken}
-        {localStorage.usertoken ? userLink : loginLink}
-      </div>
-    );
+    return <div>{localStorage.usertoken ? userLink : loginLink}</div>;
   }
 }
 

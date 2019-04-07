@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Moodvie_result_icon from "./Moodive_result_icon";
 import "../components/css/userProfile.css";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 class ChangeProfile extends Component {
   constructor(props) {
@@ -9,7 +10,9 @@ class ChangeProfile extends Component {
     this.state = {
       name: "",
       email: "",
-      movies: ["H"]
+      movies: ["H"],
+      isNameButtonDisabled: false,
+      isEmailButtonDisabled: false
     };
   }
 
@@ -29,10 +32,22 @@ class ChangeProfile extends Component {
     event.preventDefault();
     //Grab newName from the form
     let newName = this.refs.name.value;
-    this.setState({
-      name: newName
-    });
-    this.refs.name.value = "";
+    if (newName === "") {
+      return;
+    } else {
+      //Pass in newName to backend
+      const promise = axios.post("http://127.0.0.1:4897/profile", {
+        oldUsername: this.state.name,
+        newUsername: newName,
+        oldEmail: this.state.email,
+        newEmail: this.state.email
+      });
+      this.setState({
+        name: newName,
+        isNameButtonDisabled: true
+      });
+      this.refs.name.value = "";
+    }
   }
 
   changeEmail(event) {
@@ -40,10 +55,22 @@ class ChangeProfile extends Component {
     event.preventDefault();
     //Grab newEmail from the form
     let newEmail = this.refs.email.value;
-    this.setState({
-      email: newEmail
-    });
-    this.refs.email.value = "";
+    if (newEmail === "") {
+      return;
+    } else {
+      //Pass in newName to backend
+      const promise = axios.post("http://127.0.0.1:4897/profile", {
+        oldUsername: this.state.name,
+        newUsername: this.state.name,
+        oldEmail: this.state.email,
+        newEmail: newEmail
+      });
+      this.refs.email.value = "";
+      this.setState({
+        email: newEmail,
+        isEmailButtonDisabled: true
+      });
+    }
   }
 
   render() {
@@ -86,7 +113,9 @@ class ChangeProfile extends Component {
                 <div>
                   <input type="text" ref="name" placeholder="Enter new name" />
                   <div className="searchbtn">
-                    <button>Change</button>
+                    <button disabled={this.state.isNameButtonDisabled}>
+                      Change
+                    </button>
                   </div>
                 </div>
               </form>
@@ -102,7 +131,9 @@ class ChangeProfile extends Component {
                     placeholder="Enter new email"
                   />
                   <div className="searchbtn">
-                    <button>Change</button>
+                    <button disabled={this.state.isEmailButtonDisabled}>
+                      Change
+                    </button>
                   </div>
                 </div>
               </form>
