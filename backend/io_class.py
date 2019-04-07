@@ -126,7 +126,6 @@ class Write_db_user(Write_db):
 
     # register a new account into the database
     def register(self, user_n, pass_w, e_mail):
-        print("hello\n")
         reader = Read_db_user("database/USER.db")
         if reader.checkU(user_n) and reader.checkE(e_mail):
             db_handle = self.open()
@@ -137,3 +136,23 @@ class Write_db_user(Write_db):
             return True
         else:
             return False
+
+    def change_name(self, old_n, new_n):
+        reader = Read_db_user("database/USER.db")
+        if reader.checkU(old_n) :
+            # no such user
+            return 101
+        else :
+            if reader.checkU(new_n):
+                db_handle = self.open()
+                conn = db_handle[0]
+                cur = db_handle[1]
+                print(old_n)
+                print(new_n)
+                cur.execute("UPDATE user SET USERNAME='"+new_n+"' WHERE USERNAME='"+old_n+"'")
+                self.close(conn)
+                return 103
+            else :
+                # name already exist
+
+                return 102

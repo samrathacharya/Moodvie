@@ -225,4 +225,24 @@ def login() :
     #     print("failed\n")
 
     return result
+
+@app.route("/profile",methods=["GET","POST"])
+def ChangeProfile():
+    if request.method == "POST":
+        old_n = request.get_json()['oldUsername']
+        new_n = request.get_json()['newUsername']
+        old_e = request.get_json()['oldEmail']
+        new_e = request.get_json()['newEmail']
+        # email = request.get_json()['email']
+        if db_writer_u.change_name(old_n, new_n) == 103:
+            print("Change name done\n")
+            access_token = create_access_token(identity = {'username':new_n, 'email':new_e})
+            result = jsonify({"token": access_token, "result":"success"})
+        else:
+            print("Change name failed\n")
+            result= jsonify({"error": "Invalid username and password","result":"failed"})
+
+
+    return result
+
 app.run(port=4897, debug=True)
