@@ -234,13 +234,13 @@ def ChangeProfile():
         old_e = request.get_json()['oldEmail']
         new_e = request.get_json()['newEmail']
         # email = request.get_json()['email']
-        if db_writer_u.change_name(old_n, new_n) == 103:
-            print("Change name done\n")
+        if db_writer_u.change_profile(old_n, old_e, new_n, new_e):
+            print("Change name/email done\n")
             access_token = create_access_token(identity = {'username':new_n, 'email':new_e})
             result = jsonify({"token": access_token, "result":"success"})
         else:
-            print("Change name failed\n")
-            result= jsonify({"error": "Invalid username and password","result":"failed"})
+            print("Change name/email failed\n")
+            result= jsonify({"error": "Invalid username/email","result":"failed"})
 
 
     return result
