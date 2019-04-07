@@ -45,6 +45,7 @@ class ChangeProfile extends Component {
           newEmail: this.state.email
         })
         .then(res => {
+          localStorage.clear();
           localStorage.setItem("usertoken", res.data.token);
           console.log(res);
         });
@@ -68,12 +69,18 @@ class ChangeProfile extends Component {
       return;
     } else {
       //Pass in newName to backend
-      const promise = axios.post("http://127.0.0.1:4897/profile", {
-        oldUsername: this.state.name,
-        newUsername: this.state.name,
-        oldEmail: this.state.email,
-        newEmail: newEmail
-      });
+      const promise = axios
+        .post("http://127.0.0.1:4897/profile", {
+          oldUsername: this.state.name,
+          newUsername: this.state.name,
+          oldEmail: this.state.email,
+          newEmail: newEmail
+        })
+        .then(res => {
+          localStorage.clear();
+          localStorage.setItem("usertoken", res.data.token);
+          console.log(res);
+        });
       console.log(newEmail);
       console.log(this.state.email);
       this.refs.email.value = "";
