@@ -28,7 +28,7 @@ class UserProfile extends Component {
         movies: decoded.identity.movies
       });
     } else {
-      this.props.history.push('/')
+      this.props.history.push('/users/login')
     }
   }
 
