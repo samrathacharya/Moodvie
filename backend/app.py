@@ -1,14 +1,20 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from search_engine import Search_engine
 from subprocess import Popen, PIPE
 import subprocess
 import shlex
 from flask_cors import CORS
+from initialize import db_reader_u, db_writer_u
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import create_access_token
+from flask_bcrypt import Bcrypt
 app = Flask(__name__)
 CORS(app)
 engine = Search_engine()
+jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
 
-
+app.config['JWT_SECRET_KEY'] = 'secret'
 @app.route('/')
 def home():
     return "hello world"
@@ -158,5 +164,85 @@ def getRtReview(title):
 
     return jsonify(data)
 
+@app.route("/users/signup", methods=["GET","POST"])
+def register() :
+
+
+    # username = "Joey"
+    # email = "j"
+    # password = "j"
+    result = {}
+    if request.method == "POST":
+        username = request.get_json()['username']
+        email = request.get_json()['email']
+        password = request.get_json()['password']
+        if db_writer_u.register(username, password, email):
+            #
+            result["username"] = username
+            result["email"] = email
+            result["password"] = password
+            result["result"] = "success"
+            print("in the if\n")
+            #result={"result": "regestration success" }
+            return jsonify(result)
+                    
+        else:
+            # duplicate
+            print("in the else\n")
+            result={"result": "fail"}
+    else:
+        result={"result": "fail"}
+    #     print("failed\n")
+
+    return jsonify(result)
+
+@app.route("/users/login", methods=["GET","POST"])
+def login() :
+    # username = "Joey"
+    # email = "j"
+    # password = "j"
+    result = {}
+    if request.method == "POST":
+        username = request.get_json()['username']
+        password = request.get_json()['password']
+        if db_reader_u.checkAccount(username, password):
+            #
+            # result["username"] = username
+            # result["password"] = password
+            # result["result"] = "success"
+            print("in the if\n")
+            email = db_reader_u.getEmailByUsername(username)
+            access_token = create_access_token(identity = {'username':username, 'email':email})
+            result = jsonify({"token": access_token, "result":"success"})
+            #result={"result": "regestration success" }
+                    
+        else:
+            # duplicate
+            print("in the else\n")
+            result= jsonify({"error": "Invalid username and password","result":"failed"})
+    else:
+        result= jsonify({"error": "Invalid username and password","result":"failed"})
+    #     print("failed\n")
+
+    return result
+
+@app.route("/profile",methods=["GET","POST"])
+def ChangeProfile():
+    if request.method == "POST":
+        old_n = request.get_json()['oldUsername']
+        new_n = request.get_json()['newUsername']
+        old_e = request.get_json()['oldEmail']
+        new_e = request.get_json()['newEmail']
+        # email = request.get_json()['email']
+        if db_writer_u.change_profile(old_n, old_e, new_n, new_e):
+            print("Change name/email done\n")
+            access_token = create_access_token(identity = {'username':new_n, 'email':new_e})
+            result = jsonify({"token": access_token, "result":"success"})
+        else:
+            print("Change name/email failed\n")
+            result= jsonify({"error": "Invalid username/email","result":"failed"})
+
+
+    return result
 
 app.run(port=4897, debug=True)

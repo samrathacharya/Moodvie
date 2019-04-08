@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Moodvie_result_icon from "./Moodive_result_icon";
+import Navbar from "./navbar";
 
 class Watchlist extends Component {
   state = {
@@ -34,7 +35,7 @@ class Watchlist extends Component {
       <React.Fragment>
         {/* Include navbar component */}
         <div className="headerContainer">
-          <Moodvie_result_icon />
+          <Navbar />
         </div>
 
         {/* User Profile */}

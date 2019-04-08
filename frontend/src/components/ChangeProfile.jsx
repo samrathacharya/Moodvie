@@ -1,21 +1,30 @@
 import React, { Component } from "react";
 import Moodvie_result_icon from "./Moodive_result_icon";
 import "../components/css/userProfile.css";
+import jwt_decode from "jwt-decode";
+import axios from "axios";
+import Navbar from "./navbar";
 
 class ChangeProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Sam",
-      email: "samlikesjam@gmail.com",
-      movies: [
-        { title: "Avengers Infinity War" },
-        { title: "Batman Returns" },
-        { title: "Get Out" },
-        { title: "Wolf Of Wall Street" },
-        { title: "Ace Ventura" }
-      ]
+      name: "",
+      email: "",
+      movies: ["H"],
+      isNameButtonDisabled: false,
+      isEmailButtonDisabled: false
     };
+  }
+
+  componentDidMount() {
+    const token = localStorage.usertoken;
+    const decoded = jwt_decode(token);
+    this.setState({
+      name: decoded.identity.username,
+      email: decoded.identity.email,
+      movies: decoded.identity.movies
+    });
   }
 
   //Change Name
@@ -24,10 +33,31 @@ class ChangeProfile extends Component {
     event.preventDefault();
     //Grab newName from the form
     let newName = this.refs.name.value;
-    this.setState({
-      name: newName
-    });
-    this.refs.name.value = "";
+    if (newName === "") {
+      return;
+    } else {
+      //1. Changae name in backend
+      const promise = axios
+        .post("http://127.0.0.1:4897/profile", {
+          oldUsername: this.state.name,
+          newUsername: newName,
+          oldEmail: this.state.email,
+          newEmail: this.state.email
+        })
+        .then(res => {
+          localStorage.clear();
+          localStorage.setItem("usertoken", res.data.token);
+          console.log(res);
+        });
+      //2. Change name in frontend
+      this.setState({
+        name: newName,
+        isNameButtonDisabled: true
+      });
+      this.refs.name.value = "";
+
+      //3. Change name in localStorage
+    }
   }
 
   changeEmail(event) {
@@ -35,10 +65,30 @@ class ChangeProfile extends Component {
     event.preventDefault();
     //Grab newEmail from the form
     let newEmail = this.refs.email.value;
-    this.setState({
-      email: newEmail
-    });
-    this.refs.email.value = "";
+    if (newEmail === "") {
+      return;
+    } else {
+      //Pass in newName to backend
+      const promise = axios
+        .post("http://127.0.0.1:4897/profile", {
+          oldUsername: this.state.name,
+          newUsername: this.state.name,
+          oldEmail: this.state.email,
+          newEmail: newEmail
+        })
+        .then(res => {
+          localStorage.clear();
+          localStorage.setItem("usertoken", res.data.token);
+          console.log(res);
+        });
+      console.log(newEmail);
+      console.log(this.state.email);
+      this.refs.email.value = "";
+      this.setState({
+        email: newEmail,
+        isEmailButtonDisabled: true
+      });
+    }
   }
 
   render() {
@@ -46,7 +96,7 @@ class ChangeProfile extends Component {
       <React.Fragment>
         {/* Include navbar component */}
         <div className="headerContainer">
-          <Moodvie_result_icon />
+          <Navbar />
         </div>
 
         {/* User Profile */}
@@ -81,7 +131,9 @@ class ChangeProfile extends Component {
                 <div>
                   <input type="text" ref="name" placeholder="Enter new name" />
                   <div className="searchbtn">
-                    <button>Change</button>
+                    <button disabled={this.state.isNameButtonDisabled}>
+                      Change
+                    </button>
                   </div>
                 </div>
               </form>
@@ -97,7 +149,9 @@ class ChangeProfile extends Component {
                     placeholder="Enter new email"
                   />
                   <div className="searchbtn">
-                    <button>Change</button>
+                    <button disabled={this.state.isEmailButtonDisabled}>
+                      Change
+                    </button>
                   </div>
                 </div>
               </form>

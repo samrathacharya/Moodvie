@@ -3,8 +3,6 @@ import time
 import sqlite3
 import sys
 
-from Task import Task
-
 class Read(object):
     def __init__(self, read_method, read_position):
         self.__read_method = read_method
@@ -72,24 +70,28 @@ class Read_db_user(Read_db):
         cur = db_handle[1]
         cursor = cur.execute("SELECT USERNAME,PASSWORD,EMAIL from user")
         for row in cursor:
+            print(row[0])
             if row[0] == username and row[1] == pass_w:
+                
                 self.close(conn)
-                return row[3]
+                return True
         self.close(conn)
-        return None
+        return False
 
-    # check type
-    def checkT(self, username):
+    # get email
+    def getEmailByUsername(self, username):
         db_handle = self.open()
         conn = db_handle[0]
         cur = db_handle[1]
-        data = cur.execute("select TYPE from user where USERNAME='"+username+"'")
-        arr = data.fetchall()
+        cursor = cur.execute("SELECT USERNAME,PASSWORD,EMAIL from user where USERNAME='"+username+"'")
+        for row in cursor:
+            if row[0] == username:
+                email = row[2]
+                self.close(conn)
+                return email
         self.close(conn)
-        if(arr):
-            return arr[0][0]
-        else:
-            return False
+        return False
+
 
 class Write(object):
     def __init__(self, write_method, write_position):
@@ -133,6 +135,56 @@ class Write_db_user(Write_db):
             cur = db_handle[1]
             cur.execute("INSERT INTO user(USERNAME,PASSWORD,EMAIL) VALUES(?,?,?)",(user_n,pass_w,e_mail))
             self.close(conn)
+            return True
+        else:
+            return False
+
+    def change_name(self, old_n, new_n):
+        if old_n == new_n:
+            return 103
+        reader = Read_db_user("database/USER.db")
+        if reader.checkU(old_n) :
+            # no such user
+            return 101
+        else :
+            if reader.checkU(new_n):
+                db_handle = self.open()
+                conn = db_handle[0]
+                cur = db_handle[1]
+                print(old_n)
+                print(new_n)
+                cur.execute("UPDATE user SET USERNAME='"+new_n+"' WHERE USERNAME='"+old_n+"'")
+                self.close(conn)
+                return 103
+            else :
+                # name already exist
+
+                return 102
+
+    def change_email(self, old_e, new_e):
+        if old_e == new_e:
+            return 103
+        reader = Read_db_user("database/USER.db")
+        if reader.checkE(old_e) :
+            # no such email
+            return 101
+        else :
+            if reader.checkE(new_e):
+                db_handle = self.open()
+                conn = db_handle[0]
+                cur = db_handle[1]
+                print(old_e)
+                print(new_e)
+                cur.execute("UPDATE user SET EMAIL='"+new_e+"' WHERE EMAIL='"+old_e+"'")
+                self.close(conn)
+                return 103
+            else :
+                # email already exist
+
+                return 102
+
+    def change_profile(self, old_n, old_e, new_n, new_e):
+        if self.change_email(old_e, new_e)==103 and self.change_name(old_n, new_n)==103:
             return True
         else:
             return False
