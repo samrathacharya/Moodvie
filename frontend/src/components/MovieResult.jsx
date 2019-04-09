@@ -47,6 +47,7 @@ class MovieResult extends Component {
   handleSubmit = e => {
     if (e.target.searchterm == undefined) {
       this.props.history.push("/search/");
+      console.log(e.target);
     } else {
       const term = e.target.searchterm.value;
       this.setState({ term });
@@ -102,11 +103,7 @@ class MovieResult extends Component {
                 </div>
 
                 <div className="searchbtn">
-                  <button
-                    id="searchButton"
-                    className="btn-s"
-                    onClick={this.handleSubmit}
-                  >
+                  <button id="searchButton" className="btn-s" type="submit">
                     {" "}
                     Search
                   </button>

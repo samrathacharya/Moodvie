@@ -87,3 +87,8 @@
   font-family: "Sarabun", sans-serif;
   font-size: 14px;
 }
+.signup {
+  position: fixed;
+  top: 70%;
+  left: 60%;
+}

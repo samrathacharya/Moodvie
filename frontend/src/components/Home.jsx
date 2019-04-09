@@ -29,6 +29,16 @@ class Home extends Component {
             />
             <button className="btn btn-danger ">Search</button>
           </form>
+          <div className="signup">
+            <h4>
+              <a href="/users/login">
+                <span class="badge badge-pill badge-primary">Login?</span>
+              </a>
+              <a href="/users/register">
+                <span class="badge badge-pill badge-warning">Sign Up!</span>
+              </a>
+            </h4>
+          </div>
 
           <div className="footer">Copyright Moodvie 2019</div>
         </div>

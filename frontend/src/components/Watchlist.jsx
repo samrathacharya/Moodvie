@@ -17,7 +17,31 @@ class Watchlist extends Component {
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0, 20) });
   }
-
+  badge() {
+    let ran = Math.floor(Math.random() * Math.floor(5));
+    let prim = "primary";
+    switch (ran) {
+      case 0:
+        prim = "primary";
+        break;
+      case 1:
+        prim = "secondary";
+        break;
+      case 2:
+        prim = "success";
+        break;
+      case 3:
+        prim = "dark";
+        break;
+      case 4:
+        prim = "warning";
+        break;
+      case 5:
+        prim = "info";
+        break;
+    }
+    return "badge badge-" + prim;
+  }
   render() {
     //Search for movies function
     let filteredMovies = this.state.movies.filter(movie => {
@@ -29,7 +53,11 @@ class Watchlist extends Component {
 
     //Render movies
     this.movieList = filteredMovies.map(movie => (
-      <li key={movie.key}>{movie.title}</li>
+      <a href="http://localhost:3000/moviedetails/tt4154756">
+        <h4 key={movie.key}>
+          <span class={this.badge()}>{movie.title}</span>
+        </h4>
+      </a>
     ));
     return (
       <React.Fragment>
