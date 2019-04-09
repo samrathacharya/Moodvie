@@ -55,7 +55,7 @@ class Login extends Component {
               {/* <div className="form-group"> */}
               <label htmlFor="Password">Password</label>
               <input
-                type="text"
+                type="password"
                 name="password"
                 placeholder="Enter password"
                 value={this.state.password}
