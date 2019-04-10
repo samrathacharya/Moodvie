@@ -8,7 +8,8 @@ class Platform extends Component {
     loading_link: this.props.loading_link,
     name: this.props.name,
     platform_block: <SpinnerPage />,
-    icon_root: "none"
+    icon_root: "none",
+    id: this.props.id
   };
 
   badge() {
@@ -57,7 +58,15 @@ class Platform extends Component {
     const reponse = await promise;
     const data = reponse.data;
     //TODO: Push price data to backend
-    console.log(data.price);
+    let platform = {
+      name: this.state.name,
+      price: data.price
+    };
+    axios
+      .post("http://127.0.0.1:4897/result_id=" + this.state.id, { platform })
+      .then(res => {});
+    console.log(platform);
+
     this.props.action(data.price);
     if (data.link == "N/A") {
       this.setState({

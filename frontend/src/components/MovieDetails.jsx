@@ -18,43 +18,19 @@ const iconMargin = {
 };
 
 class MovieDetails extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      title: "American god",
-      posterLink: "http://picsum.photos/200",
-      date: "3000",
-      casts: [],
-      by: "Jame brown",
-      summary: "a movie",
-      rated: "",
-      rating: {
-        imdb: "Not available",
-        mt: "Not available",
-        rt: "Not available"
-      },
-      platforms: [],
-      runtime: "",
-      trailor: <SpinnerPage />,
-      price: ""
-    };
-
-    this.childHandler = this.childHandler.bind(this);
-  }
-
-  childHandler(dataFromChild) {
-    console.log(
-      "%cPrevious Parent State: " + JSON.stringify(this.state),
-      "color:orange"
-    );
-    this.setState(
-      {
-        price: dataFromChild
-      },
-      () => console.log("Updated Parent State:", this.state)
-    );
-  }
+  state = {
+    title: "American god",
+    posterLink: "http://picsum.photos/200",
+    date: "3000",
+    casts: [],
+    by: "Jame brown",
+    summary: "a movie",
+    rated: "",
+    rating: { imdb: "Not available", mt: "Not available", rt: "Not available" },
+    platforms: [],
+    runtime: "",
+    trailor: <SpinnerPage />
+  };
 
   async componentDidMount() {
     let id = this.props.match.params.id;
@@ -69,9 +45,22 @@ class MovieDetails extends Component {
     };
 
     //Pass in data to backend
-    console.log(id);
-    console.log(this.state.data);
-    console.log();
+    let toSend = {
+      id: id,
+      title: data.title,
+      posterLink: data.poster_link,
+      summary: data.synopsis,
+      date: data.date,
+      casts: data.casts,
+      by: data.director,
+      rated: data.AgeRestriction,
+      runtime: data.runtime,
+      rating: rating
+    };
+    console.log(toSend);
+    axios
+      .post("http://127.0.0.1:4897/result_id=" + id, { toSend })
+      .then(res => {});
 
     this.setState({
       title: data.title,
@@ -119,6 +108,7 @@ class MovieDetails extends Component {
         }
         name={"itunes"}
         icon_root="./icon/itunes.png"
+        id={this.state.id}
       />
     );
 
@@ -137,7 +127,7 @@ class MovieDetails extends Component {
         }
         name={"google play"}
         icon_root="./icon/itunes.png"
-        action={this.childHandler}
+        id={this.state.id}
       />
     );
 
@@ -157,12 +147,15 @@ class MovieDetails extends Component {
         }
         name={"youtube"}
         icon_root="./icon/itunes.png"
+        id={this.state.id}
       />
     );
     // set the state
     this.setState({ platforms: platforms });
   }
-
+  constructor() {
+    super();
+  }
   badge() {
     let ran = Math.floor(Math.random() * Math.floor(5));
     let prim = "primary";
