@@ -12,6 +12,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import Moodvie_icon from "./Moodvie_icon";
 import { withRouter } from "react-router";
 import history from "./history";
+import { Button } from "@material-ui/core";
 const styles = theme => ({
   root: {
     width: "100%"
@@ -93,7 +94,7 @@ function SearchAppBar(props) {
           >
             <Moodvie_icon />
           </Typography>
-
+          <Button>Login</Button>
           <div className={classes.grow} />
           <div className={classes.search}>
             <div className={classes.searchIcon}>

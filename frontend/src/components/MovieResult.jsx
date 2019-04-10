@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import MovieBlock from "./MovieBlock";
-import Search_bar from "./Search_bar";
 import axios from "axios";
-import Moodvie_icon from "./Moodvie_icon";
-import Moodvie_result_icon from "./Moodive_result_icon";
 import "./css/button.css";
-import "./css/result.css";
 import SearchAppBar from "./NavBarTop.jsx";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";

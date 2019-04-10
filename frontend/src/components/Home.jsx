@@ -72,35 +72,3 @@ class Home extends Component {
   }
 }
 export default withStyles(styles)(Home);
-/*
-<form onSubmit={this.handleSubmit}>
-          <input
-            id="searchterm"
-            ref={this.search_term}
-            type="text"
-            className="form-control "
-            name="searchterm"
-            placeholder="What do you want to watch today?"
-          />
-          <button className="btn btn-danger ">Search</button>
-        </form>
-
-        <a href="/users/login">
-          <span class="badge badge-pill badge-primary">Login?</span>
-        </a>
-        <a href="/users/register">
-          <span class="badge badge-pill badge-warning">Sign Up!</span>
-        </a>*/
-/*
-<TextField
-            id="filled-full-width"
-            style={{ margin: 8 }}
-            placeholder="Movie"
-            helperText="What do you want to watch today?"
-            margin="normal"
-            variant="filled"
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-*/
