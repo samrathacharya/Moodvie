@@ -4,5 +4,11 @@ from io_class import *
 # db reader for user
 db_reader_u = Read_db_user("database/USER.db")
 
-#db writer for user
+# db writer for user
 db_writer_u = Write_db_user("database/USER.db")
+
+# db reader for movie
+db_reader_m = Read_db_movie("database/MOVIE.db")
+
+# db writer for movie
+db_writer_m = Write_db_movie("database/MOVIE.db")

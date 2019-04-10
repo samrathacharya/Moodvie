@@ -45,21 +45,21 @@ class MovieDetails extends Component {
     };
 
     //Pass in data to backend
-    let toSend = {
-      id: id,
-      title: data.title,
-      posterLink: data.poster_link,
-      summary: data.synopsis,
-      date: data.date,
-      casts: data.casts,
-      by: data.director,
-      rated: data.AgeRestriction,
-      runtime: data.runtime,
-      rating: rating
-    };
-    console.log(toSend);
+    // let toSend = {
+    //   id: id,
+    //   title: data.title,
+    //   posterLink: data.poster_link,
+    //   summary: data.synopsis,
+    //   date: data.date,
+    //   casts: data.casts,
+    //   by: data.director,
+    //   rated: data.AgeRestriction,
+    //   runtime: data.runtime,
+    //   rating: rating
+    // };
+    //console.log(toSend);
     axios
-      .post("http://127.0.0.1:4897/result_id=" + id, { toSend })
+      .post("http://127.0.0.1:4897/result_id=" + id)
       .then(res => {});
 
     this.setState({
@@ -81,7 +81,9 @@ class MovieDetails extends Component {
       "http://127.0.0.1:4897/trailor/title=" +
         data.title +
         "&date=" +
-        tmp.getFullYear()
+        tmp.getFullYear() +
+        "&id=" +
+        id
     );
     const reponse2 = await promise2;
     const trailor = reponse2.data;
@@ -93,7 +95,7 @@ class MovieDetails extends Component {
     let platforms = [];
 
     //push the platforms
-
+      console.log(id)
     //itunes
     platforms.push(
       <Platform
@@ -104,7 +106,9 @@ class MovieDetails extends Component {
           this.state.title +
           '"' +
           "&date=" +
-          this.state.date
+          this.state.date +
+          "&id=" +
+          id
         }
         name={"itunes"}
         icon_root="./icon/itunes.png"
@@ -123,7 +127,9 @@ class MovieDetails extends Component {
           this.state.title +
           '"' +
           "&date=" +
-          this.state.date
+          this.state.date +
+          "&id=" +
+          id
         }
         name={"google play"}
         icon_root="./icon/itunes.png"
@@ -142,7 +148,9 @@ class MovieDetails extends Component {
           "http://localhost:4897/platforms/youtube/title=" +
           title_new +
           "&date=" +
-          this.state.date
+          this.state.date +
+          "&id=" +
+          id
           //tmp.getFullYear()
         }
         name={"youtube"}

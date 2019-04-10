@@ -58,16 +58,14 @@ class Platform extends Component {
     const reponse = await promise;
     const data = reponse.data;
     //TODO: Push price data to backend
-    let platform = {
-      name: this.state.name,
-      price: data.price
-    };
     axios
-      .post("http://127.0.0.1:4897/result_id=" + this.state.id, { platform })
+      .post("http://127.0.0.1:4897/result_id=" + this.state.id, {
+        name: this.state.name,
+        price: data.price
+      })
       .then(res => {});
-    console.log(platform);
+  //console.log(platform);
 
-    this.props.action(data.price);
     if (data.link == "N/A") {
       this.setState({
         platform_block: this.not_available()

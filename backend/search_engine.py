@@ -31,11 +31,12 @@ class Search_engine():
 
     def get_movie(self, id):
         m = self._omdb.get_movie_byid(id)
-        new_date = m.getDate().date()
-        print(new_date)
-        return {"director": m.getDirector(), "AgeRestriction": m.getAge(), "runtime": m.getRuntime(), "title": m.getTitle(), "date": str(new_date.year)+"-"+str(new_date.month)+"-"+str(new_date.day), "poster_link": m.getPoster(),
-                "casts": m.getCasts(), "synopsis": m.getSynopsis(), "ratings":
-                {"imdb": m.getImdbRating(), "rt": m.getRtRating(), "mt": m.getMtRating()}}
+        if (m is not None):
+            new_date = m.getDate().date()
+            print(new_date)
+            return {"director": m.getDirector(), "AgeRestriction": m.getAge(), "runtime": m.getRuntime(), "title": m.getTitle(), "date": str(new_date.year)+"-"+str(new_date.month)+"-"+str(new_date.day), "poster_link": m.getPoster(),
+                    "casts": m.getCasts(), "synopsis": m.getSynopsis(), "ratings":
+                    {"imdb": m.getImdbRating(), "rt": m.getRtRating(), "mt": m.getMtRating()}}
 
     def get_Itunes(self, title, date):
         p = self._itunes.search_platform(title[1:len(title)-1], date)
