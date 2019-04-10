@@ -44,9 +44,13 @@ def basic_movie_info(id):
             title = info['title'].replace(' ', '_')
             # print(title)
 
+            n = 0
             for cast in info['casts']:
-                cas += '|'
+                n += 1
                 cas += cast
+                if (n != info['casts'].__len__()):
+                    cas += '|'
+                
             db_writer_m.insert_movie(id,info['title'], info['poster_link'], info['synopsis'], info['date'], cas, info['director'], info['AgeRestriction'], info['runtime'], info['ratings']['imdb'], info['ratings']['mt'],info['ratings']['rt'],"N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A") 
             return jsonify(info)
     else:
@@ -109,7 +113,7 @@ def getGoogle(title, date, id):
         print("update google price successful")
     else:
         print(info)
-    return jsonify(engine.get_googlePlay(title, date))
+    return jsonify(info)
 # get the google platforms of a movie by title and date
 # date formate: yr-mon-day in numeric
 @app.route("/trailor/title=<string:title>&date=<string:date>&id=<string:id>")
