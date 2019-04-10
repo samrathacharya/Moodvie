@@ -23,8 +23,7 @@ class UserProfile extends Component {
       const decoded = jwt_decode(token);
       this.setState({
         name: decoded.identity.username,
-        email: decoded.identity.email,
-        movies: decoded.identity.movies
+        email: decoded.identity.email
       });
     } else {
       this.props.history.push("/users/login");

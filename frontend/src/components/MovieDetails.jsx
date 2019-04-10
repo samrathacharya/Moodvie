@@ -47,8 +47,7 @@ class MovieDetails extends Component {
     const decoded = jwt_decode(token);
     var user = decoded.identity.username;
     //Send user to backend
-    axios.post("http://127.0.0.1:4897/addtoWatchlist", {
-      username: user,
+    axios.post("http://127.0.0.1:4897/" + user + "/watchlist", {
       movieId: this.state.id
     });
   }
@@ -336,6 +335,10 @@ class MovieDetails extends Component {
     this.props.history.push("/search/" + e.target.searchterm.value);
   };
   render() {
+    const watchlistButton = (
+      <button onClick={this.addToWatchlist}>Add to Watchlist!</button>
+    );
+    const noButton = <div />;
     return (
       <React.Fragment>
         <div className="headerContainer">
@@ -369,9 +372,7 @@ class MovieDetails extends Component {
             </h4>
             {this.castList()}
             <div>
-              <p>
-                <button onClick={this.addToWatchlist}>Add to Watchlist!</button>
-              </p>
+              <p>{localStorage.usertoken ? watchlistButton : noButton}</p>
             </div>
             <div className="summary">
               <p>{this.state.summary}</p>
