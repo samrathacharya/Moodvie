@@ -1,18 +1,45 @@
 import React, { Component } from "react";
 import Moodvie_result_icon from "./Moodive_result_icon";
 import Navbar from "./navbar";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 class Watchlist extends Component {
-  state = {
-    movies: [
-      { key: 1, title: "Avengers Infinity War" },
-      { key: 2, title: "Batman Returns" },
-      { key: 3, title: "Get Out" },
-      { key: 4, title: "Wolf Of Wall Street" },
-      { key: 5, title: "Ace Ventura" }
-    ],
-    search: ""
-  };
+  constructor() {
+    super();
+    this.state = {
+      user: "",
+      movies: [
+        { key: 1, title: "Avengers Infinity War" },
+        { key: 2, title: "Batman Returns" },
+        { key: 3, title: "Get Out" },
+        { key: 4, title: "Wolf Of Wall Street" },
+        { key: 5, title: "Ace Ventura" }
+      ],
+      search: ""
+    };
+
+    this.updateSearch = this.updateSearch.bind(this);
+    this.getUsername = this.getUsername.bind(this);
+  }
+
+  getUsername() {
+    const token = localStorage.usertoken;
+    const decoded = jwt_decode(token);
+    return decoded.identity.username;
+  }
+
+  componentDidMount() {
+    //Get username
+    let user = this.getUsername();
+    console.log(user);
+    //Load movies from database
+    axios
+      .get("http://127.0.0.1:4897/" + user + "/watchlist")
+      .then(function(res) {
+        console.log(res.data);
+      });
+  }
 
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0, 20) });

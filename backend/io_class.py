@@ -63,6 +63,7 @@ class Read_db_user(Read_db):
             print("False for email\n")
             self.close(conn)
             return False
+
     # check login validity
     def checkAccount(self, username,pass_w):
         db_handle = self.open()
@@ -70,7 +71,7 @@ class Read_db_user(Read_db):
         cur = db_handle[1]
         cursor = cur.execute("SELECT USERNAME,PASSWORD,EMAIL from user")
         for row in cursor:
-            print(row[0])
+            # print(row[0])
             if row[0] == username and row[1] == pass_w:
                 
                 self.close(conn)
@@ -89,6 +90,74 @@ class Read_db_user(Read_db):
                 email = row[2]
                 self.close(conn)
                 return email
+        self.close(conn)
+        return False
+
+class Read_db_movie(Read_db):
+    def __init__(self, read_position):
+        Read_db.__init__(self, read_position)
+
+    # checkID
+    def checkID(self, m_ID):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        arr = cur.execute("select * from movie where ID='"+m_ID+"'")
+        if arr.fetchall() == []:
+            # does not have the movie
+            self.close(conn)
+            return True
+        else:
+            # already have the movie
+            self.close(conn)
+            return False
+
+    # check if the price is updated
+    def check_price(self, m_ID, platform):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        if (platform == "Youtobe"):
+            arr = cur.execute("select ID, PRICE_Y, YP_LINK from movie where ID='"+m_ID+"'")
+        elif (platform == "Itunes"):
+            arr = cur.execute("select ID, PRICE_I, IP_LINK from movie where ID='"+m_ID+"'")
+        elif (platform == "Google"):
+            arr = cur.execute("select ID, PRICE_G, GP_LINK from movie where ID='"+m_ID+"'")
+        else:
+            return False
+        for row in arr:
+            if row[0] == m_ID:
+                info = row
+                self.close(conn)
+                return info
+        self.close(conn)
+        return False
+
+    # check if the trailer link is updated
+    def check_trailer(self, m_id):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        arr = cur.execute("select ID, TRAILER_LINK, TRAILER_PIC from movie where ID='"+m_id+"'")
+        for row in arr:
+            if row[0] == m_id:
+                info = row
+                self.close(conn)
+                return info
+        self.close(conn)
+        return False
+
+    # get information of the movie
+    def get_info(self, m_ID):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        cursor = cur.execute("SELECT ID, TITLE, POSTERLINK, SUMMARY, DATE, CASTS, BY, RATED, RUNTIME, RATING_IMDB, RATING_MT, RATING_RT, PRICE_Y, PRICE_G, PRICE_I,YP_LINK, GP_LINK, IP_LINK from movie where ID='"+m_ID+"'")
+        for row in cursor:
+            if row[0] == m_ID:
+                info = row
+                self.close(conn)
+                return info
         self.close(conn)
         return False
 
@@ -151,8 +220,8 @@ class Write_db_user(Write_db):
                 db_handle = self.open()
                 conn = db_handle[0]
                 cur = db_handle[1]
-                print(old_n)
-                print(new_n)
+                # print(old_n)
+                # print(new_n)
                 cur.execute("UPDATE user SET USERNAME='"+new_n+"' WHERE USERNAME='"+old_n+"'")
                 self.close(conn)
                 return 103
@@ -173,8 +242,8 @@ class Write_db_user(Write_db):
                 db_handle = self.open()
                 conn = db_handle[0]
                 cur = db_handle[1]
-                print(old_e)
-                print(new_e)
+                # print(old_e)
+                # print(new_e)
                 cur.execute("UPDATE user SET EMAIL='"+new_e+"' WHERE EMAIL='"+old_e+"'")
                 self.close(conn)
                 return 103
@@ -188,3 +257,61 @@ class Write_db_user(Write_db):
             return True
         else:
             return False
+
+class Write_db_movie(Write_db):
+    def __init__(self, write_position):
+        Write_db.__init__(self, write_position)
+
+    # store a movie
+    def insert_movie(self,m_ID, m_title, m_poster_link, m_summary, m_date, m_casts, m_by, m_rated, m_runtime, m_rting_imdb, m_rting_mt, m_rting_rt, m_price_y, m_price_G, m_price_I,YP_LINK, GP_LINK, IP_LINK, trailer_link, trailer_pic):
+        reader = Read_db_movie("database/MOVIE.db")
+        if reader.checkID(m_ID):
+            db_handle = self.open()
+            conn = db_handle[0]
+            cur = db_handle[1]
+            cur.execute("INSERT INTO movie(ID, TITLE, POSTERLINK, SUMMARY, DATE, CASTS, BY, RATED, RUNTIME, RATING_IMDB, RATING_MT, RATING_RT, PRICE_Y, PRICE_G, PRICE_I, YP_LINK, GP_LINK, IP_LINK, TRAILER_LINK, TRAILER_PIC) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(m_ID, m_title, m_poster_link, m_summary, m_date, m_casts, m_by, m_rated, m_runtime, m_rting_imdb, m_rting_mt, m_rting_rt, m_price_y, m_price_G, m_price_I,YP_LINK, GP_LINK, IP_LINK,trailer_link, trailer_pic))
+            self.close(conn)
+            return True
+        else:
+            return False
+
+    # update price
+    def update_price(self, m_ID, n_price, n_pirce_link, platform):
+        if platform == "Youtube":
+            db_handle = self.open()
+            conn = db_handle[0]
+            cur = db_handle[1]
+            cur.execute("UPDATE movie SET PRICE_Y='"+n_price+"',YP_LINK='"+n_pirce_link+"' WHERE ID='"+m_ID+"'")
+            self.close(conn)
+        elif platform == "Itunes":
+            db_handle = self.open()
+            conn = db_handle[0]
+            cur = db_handle[1]
+            cur.execute("UPDATE movie SET PRICE_I='"+n_price+"',IP_LINK='"+n_pirce_link+"' WHERE ID='"+m_ID+"'")
+            self.close(conn)
+        elif platform == "Google":
+            db_handle = self.open()
+            conn = db_handle[0]
+            cur = db_handle[1]
+            cur.execute("UPDATE movie SET PRICE_G='"+n_price+"',GP_LINK='"+n_price_link+"'  WHERE ID='"+m_ID+"'")
+            self.close(conn)
+        else:
+            return False
+
+
+        return True
+
+    def update_trailer(self, m_id, link, pic):
+        reader = Read_db_movie("database/MOVIE.db")
+        if (reader.checkID(m_id)):
+            print("does not have the movie for updating trailer")
+        else:
+            db_handle = self.open()
+            conn = db_handle[0]
+            cur = db_handle[1]
+            cur.execute("UPDATE movie SET TRAILER_LINK='"+link+"', TRAILER_PIC='"+pic+"'  WHERE ID='"+m_id+"'")
+            self.close(conn)
+            print("trailor updating success")
+            return True
+
+        return False

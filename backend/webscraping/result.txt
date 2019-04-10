@@ -1,2 +1,1 @@
-$4.99
-$4.99
+{'director': u'Jon Favreau', 'poster_link': u'https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg', 'synopsis': u'After being held captive in an Afghan cave, billionaire engineer Tony Stark creates a unique weaponized suit of armor to fight evil.', 'runtime': u'126 min', 'title': u'Iron Man', 'date': '2008-5-2', 'casts': [u'Robert Downey Jr.', u'Terrence Howard', u'Jeff Bridges', u'Gwyneth Paltrow'], 'AgeRestriction': u'PG-13', 'ratings': {'rt':u'93%', 'mt': u'79/100', 'imdb': u'7.9'}}

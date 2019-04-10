@@ -4,7 +4,7 @@ from subprocess import Popen, PIPE
 import subprocess
 import shlex
 from flask_cors import CORS
-from initialize import db_reader_u, db_writer_u
+from initialize import db_reader_u, db_writer_u, db_reader_m, db_writer_m
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import create_access_token
 from flask_bcrypt import Bcrypt
@@ -30,14 +30,38 @@ def search_by_title(title):
 
 # get the Details result about a movie
 # GET /result_id=<string:id>
-@app.route("/result_id=<string:id>")
+@app.route("/result_id=<string:id>", methods=["GET","POST"])
 def basic_movie_info(id):
 
     new_id = id[0:len(id)-0]
     id = new_id
 
-    return jsonify(engine.get_movie(id))
 
+    if db_reader_m.checkID(id):
+        info = engine.get_movie(id)
+        cas = ""
+        if (info is not None):
+            title = info['title'].replace(' ', '_')
+            # print(title)
+
+            n = 0
+            for cast in info['casts']:
+                n += 1
+                cas += cast
+                if (n != info['casts'].__len__()):
+                    cas += '|'
+                
+            db_writer_m.insert_movie(id,info['title'], info['poster_link'], info['synopsis'], info['date'], cas, info['director'], info['AgeRestriction'], info['runtime'], info['ratings']['imdb'], info['ratings']['mt'],info['ratings']['rt'],"N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A") 
+            return jsonify(info)
+    else:
+        info1 = db_reader_m.get_info(id)
+        # print("here")
+        # print(info)
+        casts = info1[5].split("|")
+
+        data = {'director': info1[6], 'poster_link': info1[2], 'synopsis': info1[3], 'runtime': info1[8], 'title': info1[1], 'date': info1[4], 'casts': casts, 'AgeRestriction': info1[7], 'ratings': {'rt': info1[11], 'mt': info1[10], 'imdb': info1[9]}}
+
+    return jsonify(data)
 
 # get the platforms of a movie by title and date
 # date formate: yr-mon-day in numeric
@@ -49,23 +73,59 @@ def getPlatforms(title, date):
 
 # get the Itunes platforms of a movie by title and date
 # date formate: yr-mon-day in numeric
-@app.route("/platforms/itunes/title=<string:title>&date=<string:date>")
-def getItunes(title, date):
+@app.route("/platforms/itunes/title=<string:title>&date=<string:date>&id=<string:id>")
+def getItunes(title, date, id):
     # print(title[1:len(title)-1])
-    return jsonify(engine.get_Itunes(title, date))
+    info = db_reader_m.check_price(id, "Itunes")
+
+    if (info):
+        pass
+    else:
+        # print("++++++++++++++++++itunes+++++++++++++++++=")
+        return jsonify({"name": "itunes", "price": info[1], "link": info[2]})
+
+    info = engine.get_Itunes(title,date)
+    if (db_writer_m.update_price(id, "$"+str(info['price']), str(info['link']), "Itunes")):
+        print("update itunes price successful")
+    else:
+        print(info)
+
+    return jsonify(info)
 
 
 # get the google platforms of a movie by title and date
 # date formate: yr-mon-day in numeric
-@app.route("/platforms/google_play/title=<string:title>&date=<string:date>")
-def getGoogle(title, date):
+@app.route("/platforms/google_play/title=<string:title>&date=<string:date>&id=<string:id>")
+def getGoogle(title, date, id):
     # print(title[1:len(title)-1])
-    # print("here")
-    return jsonify(engine.get_googlePlay(title, date))
+    info = db_reader_m.check_price(id, "Google")
+
+    if (info):
+        #pass
+        return jsonify({"name": "google", "price": info[1], "link": info[2]})
+    else:
+        return jsonify({"name": "google", "price": info[1], "link": info[2]})
+    # else:
+    #     return jsonify({"name": "google", "price": info[1], "link": info[2]})
+
+    info = engine.get_googlePlay(title,date)
+    if (db_writer_m.update_price(id, "$"+str(info['price']), str(info['link']), "Google")):
+        print("update google price successful")
+    else:
+        print(info)
+    return jsonify(info)
 # get the google platforms of a movie by title and date
 # date formate: yr-mon-day in numeric
-@app.route("/trailor/title=<string:title>&date=<string:date>")
-def getTrailor(title, date):
+@app.route("/trailor/title=<string:title>&date=<string:date>&id=<string:id>")
+def getTrailor(title, date, id):
+
+    info = db_reader_m.check_trailer(id)
+
+    if (info):
+        pass
+    else:
+        return jsonify({"link": info[1], "pic": info[2]})
+
     title = title.replace(" ", "_")
     print(title)
     p = Popen(['./webscraping/youtobe_trailer.sh', title, date],
@@ -90,25 +150,32 @@ def getTrailor(title, date):
     data = {"link": "https://www.youtube.com/watch?v=" +
             videoCode, "pic": videoPic}
 
-    #json_data = json.dumps(data)
-
-    # testint
+    if (db_writer_m.update_trailer(id, "https://www.youtube.com/watch?v=" +
+            videoCode,videoPic)):
+        print("trailer updated")
     # print(json_data)
 
     return jsonify(data)
 
 # get the youtobe price
 # format: movie_title year
-@app.route("/platforms/youtube/title=<string:title>&date=<string:year>")
-def getYoutobePrice(title, year):
+@app.route("/platforms/youtube/title=<string:title>&date=<string:year>&id=<string:id>")
+def getYoutobePrice(title, year, id):
+    info = db_reader_m.check_price(id, "Youtobe")
 
+    if (info):
+        pass
+    else:
+        data = {"name": "youtube", "price": info[1], "link": info[2]}
+        return jsonify(data)
+    
     # running the shell scrip to web scrap the youtobe price
     p = Popen(['./webscraping/youtobe_price.sh', title, year],
               stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate(
         b"input data that is passed to subprocess' stdin")
     rc = p.returncode
-    print(output)
+
     # split the output line by line
     info_list = output.splitlines()
 
@@ -123,17 +190,14 @@ def getYoutobePrice(title, year):
     # get the link
     link = info_list[1].decode('ascii')
 
-    # print the price and link (for testing)
-
     # making json object
     data = {"name": "youtube",
             "price": price, "link": link}
 
-    # json_data = json.dumps(data)
 
-    # for testing
-    # print (json_data)
-
+    if(db_writer_m.update_price(id,price,link,"Youtube")):
+        print ("update youtobe price successful")
+    
     return jsonify(data)
 
 # get the review from rotten tomatoes
@@ -152,7 +216,7 @@ def getRtReview(title):
     review = output.decode('ascii')
 
     # print the review (for testing)
-    print(review)
+    # print(review)
 
     # making json object
     data = {"movie_title": title, "rotten tomatoes review": review}
@@ -182,13 +246,13 @@ def register() :
             result["email"] = email
             result["password"] = password
             result["result"] = "success"
-            print("in the if\n")
+            # print("in the if\n")
             #result={"result": "regestration success" }
             return jsonify(result)
                     
         else:
             # duplicate
-            print("in the else\n")
+            # print("in the else\n")
             result={"result": "fail"}
     else:
         result={"result": "fail"}
@@ -210,7 +274,7 @@ def login() :
             # result["username"] = username
             # result["password"] = password
             # result["result"] = "success"
-            print("in the if\n")
+            # print("in the if\n")
             email = db_reader_u.getEmailByUsername(username)
             access_token = create_access_token(identity = {'username':username, 'email':email})
             result = jsonify({"token": access_token, "result":"success"})
@@ -218,7 +282,7 @@ def login() :
                     
         else:
             # duplicate
-            print("in the else\n")
+            # print("in the else\n")
             result= jsonify({"error": "Invalid username and password","result":"failed"})
     else:
         result= jsonify({"error": "Invalid username and password","result":"failed"})

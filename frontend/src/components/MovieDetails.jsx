@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import Search_bar from "./Search_bar";
 import axios from "axios";
 import Moodvie_icon from "./Moodvie_icon";
 import Platform from "./Platform";
 import Moodvie_result_icon from "./Moodive_result_icon";
+
+import jwt_decode from "jwt-decode";
 import "./css/movie_detail.css";
 import "./css/badge.css";
 import "./css/button.css";
@@ -18,25 +19,43 @@ const iconMargin = {
 };
 
 class MovieDetails extends Component {
-  state = {
-    title: "American god",
-    posterLink: "http://picsum.photos/200",
-    date: "3000",
-    casts: [],
-    by: "Jame brown",
-    summary: "a movie",
-    rated: "",
-    rating: { imdb: "Not available", mt: "Not available", rt: "Not available" },
-    platforms: [],
-    runtime: "",
-    trailor: <SpinnerPage />
-  };
+  constructor() {
+    super();
+    this.state = {
+      title: "American god",
+      posterLink: "http://picsum.photos/200",
+      date: "3000",
+      casts: [],
+      by: "Jame brown",
+      summary: "a movie",
+      rated: "",
+      rating: {
+        imdb: "Not available",
+        mt: "Not available",
+        rt: "Not available"
+      },
+      platforms: [],
+      runtime: "",
+      trailor: <SpinnerPage />,
+      id: ""
+    };
+    this.addToWatchlist = this.addToWatchlist.bind(this);
+  }
+  addToWatchlist() {
+    //Get username
+    const token = localStorage.usertoken;
+    const decoded = jwt_decode(token);
+    var user = decoded.identity.username;
+    //Send user to backend
+    axios.post("http://127.0.0.1:4897/" + user + "/watchlist", {
+      movieId: this.state.id
+    });
+  }
 
   async componentDidMount() {
+    let id = this.props.match.params.id;
     // update the console info
-    const promise = axios.get(
-      "http://127.0.0.1:4897/result_id=" + this.props.match.params.id
-    );
+    const promise = axios.get("http://127.0.0.1:4897/result_id=" + id);
     const reponse = await promise;
     const data = reponse.data;
     let rating = {
@@ -44,6 +63,24 @@ class MovieDetails extends Component {
       mt: "Not available",
       rt: "Not available"
     };
+
+    //Pass in data to backend
+    // let toSend = {
+    //   id: id,
+    //   title: data.title,
+    //   posterLink: data.poster_link,
+    //   summary: data.synopsis,
+    //   date: data.date,
+    //   casts: data.casts,
+    //   by: data.director,
+    //   rated: data.AgeRestriction,
+    //   runtime: data.runtime,
+    //   rating: rating
+    // };
+    //console.log(toSend);
+    axios
+      .post("http://127.0.0.1:4897/result_id=" + id)
+      .then(res => {});
 
     this.setState({
       title: data.title,
@@ -54,7 +91,8 @@ class MovieDetails extends Component {
       by: data.director,
       rated: data.AgeRestriction,
       runtime: data.runtime,
-      rating: rating
+      rating: rating,
+      id: id
     });
 
     //set youtube
@@ -64,7 +102,9 @@ class MovieDetails extends Component {
       "http://127.0.0.1:4897/trailor/title=" +
         data.title +
         "&date=" +
-        tmp.getFullYear()
+        tmp.getFullYear() +
+        "&id=" +
+        id
     );
     const reponse2 = await promise2;
     const trailor = reponse2.data;
@@ -76,7 +116,7 @@ class MovieDetails extends Component {
     let platforms = [];
 
     //push the platforms
-
+      console.log(id)
     //itunes
     platforms.push(
       <Platform
@@ -87,10 +127,13 @@ class MovieDetails extends Component {
           this.state.title +
           '"' +
           "&date=" +
-          this.state.date
+          this.state.date +
+          "&id=" +
+          id
         }
         name={"itunes"}
         icon_root="./icon/itunes.png"
+        id={this.state.id}
       />
     );
 
@@ -105,10 +148,13 @@ class MovieDetails extends Component {
           this.state.title +
           '"' +
           "&date=" +
-          this.state.date
+          this.state.date +
+          "&id=" +
+          id
         }
         name={"google play"}
         icon_root="./icon/itunes.png"
+        id={this.state.id}
       />
     );
 
@@ -123,19 +169,20 @@ class MovieDetails extends Component {
           "http://localhost:4897/platforms/youtube/title=" +
           title_new +
           "&date=" +
-          this.state.date
+          this.state.date +
+          "&id=" +
+          id
           //tmp.getFullYear()
         }
         name={"youtube"}
         icon_root="./icon/itunes.png"
+        id={this.state.id}
       />
     );
     // set the state
     this.setState({ platforms: platforms });
   }
-  constructor() {
-    super();
-  }
+
   badge() {
     let ran = Math.floor(Math.random() * Math.floor(5));
     let prim = "primary";
@@ -296,6 +343,10 @@ class MovieDetails extends Component {
     this.props.history.push("/search/" + e.target.searchterm.value);
   };
   render() {
+    const watchlistButton = (
+      <button onClick={this.addToWatchlist}>Add to Watchlist!</button>
+    );
+    const noButton = <div />;
     return (
       <React.Fragment>
         <div className="headerContainer">
@@ -328,6 +379,9 @@ class MovieDetails extends Component {
               {this.state.date} ({this.state.runtime}) By {this.state.by}
             </h4>
             {this.castList()}
+            <div>
+              <p>{localStorage.usertoken ? watchlistButton : noButton}</p>
+            </div>
             <div className="summary">
               <p>{this.state.summary}</p>
             </div>
