@@ -6,7 +6,10 @@ import Moodvie_icon from "./Moodvie_icon";
 import Moodvie_result_icon from "./Moodive_result_icon";
 import "./css/button.css";
 import "./css/result.css";
-
+import SearchAppBar from "./NavBarTop.jsx";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import { Typography } from "@material-ui/core";
 const textBoxStyle = {
   width: "400px"
 };
@@ -66,15 +69,13 @@ class MovieResult extends Component {
     return (
       <React.Fragment>
         {this.state.blocks.map(block => (
-          <div className="movieBlock">
-            <MovieBlock
-              key={block.id}
-              title={block.title}
-              id={block.id}
-              date={block.date}
-              imageUrl={block.poster_link}
-            />
-          </div>
+          <MovieBlock
+            key={block.id}
+            title={block.title}
+            id={block.id}
+            date={block.date}
+            imageUrl={block.poster_link}
+          />
         ))}
       </React.Fragment>
     );
@@ -83,41 +84,24 @@ class MovieResult extends Component {
   render() {
     return (
       <React.Fragment>
-        {" "}
-        <div className="headerContainer">
-          <Moodvie_result_icon />
-
-          <div className="searchAndButton">
-            <form onSubmit={this.handleSubmit}>
-              <div>
-                <div className="searchin">
-                  <input
-                    id="searchterm"
-                    ref={this.search_term}
-                    type="text"
-                    className="i-told-before-2"
-                    style={textBoxStyle}
-                    name="searchterm"
-                    placeholder="What do you want to watch today?"
-                  />
-                </div>
-
-                <div className="searchbtn">
-                  <button id="searchButton" className="btn-s" type="submit">
-                    {" "}
-                    Search
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div className="i-told-you-before">
-          <div className="resultsfor">
-            <b>Showing results for "{this.props.match.params.term}" </b>
-          </div>
-          {this.renderMovieBlocks()}
-        </div>
+        <Grid container>
+          <Paper style={{ padding: 40, marginTop: 40, marginBottom: 10 }}>
+            <Grid item>
+              <SearchAppBar />
+            </Grid>
+            <Grid>
+              <Typography
+                component="h3"
+                variant="display1"
+                gutterBottom
+                style={{ padding: 5, marginTop: 5, marginBottom: 10 }}
+              >
+                Showing results for "{this.props.match.params.term}"{" "}
+              </Typography>
+            </Grid>
+            <Grid>{this.renderMovieBlocks()}</Grid>
+          </Paper>
+        </Grid>
       </React.Fragment>
     );
   }

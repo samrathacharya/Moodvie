@@ -53,16 +53,11 @@ class Home extends Component {
               <Input
                 fullWidth="true"
                 margin="dense"
-                name="searchterm"
                 classes={{ root: classes.input }}
               />
             </Paper>
 
-            <IconButton
-              type="submit"
-              className={classes.iconButton}
-              aria-label="Search"
-            >
+            <IconButton className={classes.iconButton} aria-label="Search">
               <SearchIcon />
             </IconButton>
           </form>

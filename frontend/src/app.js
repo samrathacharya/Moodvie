@@ -14,8 +14,9 @@ import ChangeProfile from "./components/ChangeProfile";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import { withRouter } from "react-router";
-
+import SearchAppBar from "./components/NavBarTop.jsx";
 import NotFound from "./components/NotFound";
+import Test from "./components/test.jsx";
 class App extends Component {
   state = {};
   render() {
@@ -33,6 +34,7 @@ class App extends Component {
           <Route path="/users/login" component={Login} />
           <Route path="/profile" component={ChangeProfile} />
           <Route path="/not-found" component={NotFound} />
+          <Route path="/test" component={Test} />
           <Redirect to="/not-found" />
         </Switch>
       </React.Fragment>

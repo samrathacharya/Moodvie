@@ -1,8 +1,38 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import "./css/movieblock.css";
 import "./css/badge.css";
+import "./css/src.css";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import classNames from "classnames";
+
+const styles = {
+  poster: {
+    "margin-left": "auto",
+    "margin-right": "auto",
+    width: "200px",
+    height: "250px",
+    "object-fit": "fill"
+  },
+  root: {
+    width: "200px",
+
+    height: "310px",
+    float: "left",
+    "margin-left": "3%",
+    "margin-bottom": "3%",
+    display: "inline-block"
+  }
+};
 class MovieBlock extends Component {
   state = {
     id: this.props.title + this.props.date,
@@ -24,63 +54,30 @@ class MovieBlock extends Component {
     return "upcoming";
   }
   GoMoviePage() {}
+
   render() {
+    const { classes } = this.props;
     return (
       <React.Fragment>
-        <div className="big-body">
-          <div className="box">
-            <div className="image">
-              <a href={this.state.movie_page}>
-                {" "}
-                <img
-                  src={this.state.imageUrl}
-                  alt={this.state.title}
-                  width="180"
-                  height="270"
-                />
-              </a>
-            </div>
-            <div className="card-body">
-              <a
-                href={this.state.movie_page}
-                className="sm-link sm-link_padding-all sm-link1"
-              >
-                <span class="sm-link__label">
-                  {this.state.title}({this.state.date})
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
+        <a href={this.state.movie_page} style={{ textDecoration: "none" }}>
+          <Card classes={{ root: classes.root }}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                image={this.state.imageUrl}
+                classes={{ root: classes.poster }}
+              />
+            </CardActionArea>
+            <CardActions>
+              <Typography>
+                {this.state.title}({this.state.date})
+              </Typography>
+            </CardActions>
+          </Card>
+        </a>
       </React.Fragment>
     );
   }
 }
-/*
 
-
-  <h4 className={this.title_color()}>
-          {this.state.title} - {this.availalble()}
-        </h4>
-        <img src={this.state.imageUrl} alt={this.state.title} />
-        <Link to={this.state.movie_page}>{this.state.date}</Link>
-
-        
-        <div class="card" style="width: 18rem;">
-          <img
-            src={this.state.imageUrl}
-            class="card-img-top"
-            alt={this.state.title}
-          />
-          <div class="card-body">
-            <h5 class="card-title">{this.state.title}</h5>
-            <p class="card-text">{this.state.date}</p>
-            <a href={this.state.movie_page} class="btn btn-primary">
-              Go somewhere
-            </a>
-          </div>
-        </div>
-
-*/
-
-export default MovieBlock;
+export default withStyles(styles)(MovieBlock);

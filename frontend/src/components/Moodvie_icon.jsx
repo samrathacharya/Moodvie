@@ -6,7 +6,7 @@ class Moodvie_icon extends Component {
   state = {};
   render() {
     return (
-      <a href="/home">
+      <a href="/home" style={{ textDecoration: "none" }}>
         <div className="moodvie_icon">Moodvie</div>
       </a>
     );
