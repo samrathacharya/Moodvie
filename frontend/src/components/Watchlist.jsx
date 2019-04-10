@@ -102,12 +102,3 @@ class Watchlist extends Component {
 }
 
 export default Watchlist;
-
-// handleChange = event => {
-//   //Turn Search to lower case
-//   var query = event.target.value.toLowerCase();
-//   console.log(query);
-//   //list of movies
-//   //Turn all titles to lower case
-//   console.log();
-// };

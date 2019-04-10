@@ -18,25 +18,32 @@ const iconMargin = {
 };
 
 class MovieDetails extends Component {
-  state = {
-    title: "American god",
-    posterLink: "http://picsum.photos/200",
-    date: "3000",
-    casts: [],
-    by: "Jame brown",
-    summary: "a movie",
-    rated: "",
-    rating: { imdb: "Not available", mt: "Not available", rt: "Not available" },
-    platforms: [],
-    runtime: "",
-    trailor: <SpinnerPage />
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      title: "American god",
+      posterLink: "http://picsum.photos/200",
+      date: "3000",
+      casts: [],
+      by: "Jame brown",
+      summary: "a movie",
+      rated: "",
+      rating: {
+        imdb: "Not available",
+        mt: "Not available",
+        rt: "Not available"
+      },
+      platforms: [],
+      runtime: "",
+      trailor: <SpinnerPage />
+    };
+  }
 
   async componentDidMount() {
+    let id = this.props.match.params.id;
     // update the console info
-    const promise = axios.get(
-      "http://127.0.0.1:4897/result_id=" + this.props.match.params.id
-    );
+    const promise = axios.get("http://127.0.0.1:4897/result_id=" + id);
     const reponse = await promise;
     const data = reponse.data;
     let rating = {
@@ -44,6 +51,11 @@ class MovieDetails extends Component {
       mt: "Not available",
       rt: "Not available"
     };
+
+    //Pass in data to backend
+    console.log(id);
+    console.log(data.title);
+    console.log();
 
     this.setState({
       title: data.title,
@@ -133,9 +145,7 @@ class MovieDetails extends Component {
     // set the state
     this.setState({ platforms: platforms });
   }
-  constructor() {
-    super();
-  }
+
   badge() {
     let ran = Math.floor(Math.random() * Math.floor(5));
     let prim = "primary";

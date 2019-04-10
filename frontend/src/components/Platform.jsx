@@ -56,7 +56,8 @@ class Platform extends Component {
     const promise = axios.get(this.state.loading_link);
     const reponse = await promise;
     const data = reponse.data;
-
+    //TODO: Push price data to backend
+    console.log(data.price);
     if (data.link == "N/A") {
       this.setState({
         platform_block: this.not_available()
