@@ -58,6 +58,7 @@ class Platform extends Component {
     const data = reponse.data;
     //TODO: Push price data to backend
     console.log(data.price);
+    this.props.action(data.price);
     if (data.link == "N/A") {
       this.setState({
         platform_block: this.not_available()

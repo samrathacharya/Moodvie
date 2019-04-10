@@ -36,8 +36,24 @@ class MovieDetails extends Component {
       },
       platforms: [],
       runtime: "",
-      trailor: <SpinnerPage />
+      trailor: <SpinnerPage />,
+      price: ""
     };
+
+    this.childHandler = this.childHandler.bind(this);
+  }
+
+  childHandler(dataFromChild) {
+    console.log(
+      "%cPrevious Parent State: " + JSON.stringify(this.state),
+      "color:orange"
+    );
+    this.setState(
+      {
+        price: dataFromChild
+      },
+      () => console.log("Updated Parent State:", this.state)
+    );
   }
 
   async componentDidMount() {
@@ -54,7 +70,7 @@ class MovieDetails extends Component {
 
     //Pass in data to backend
     console.log(id);
-    console.log(data.title);
+    console.log(this.state.data);
     console.log();
 
     this.setState({
@@ -121,6 +137,7 @@ class MovieDetails extends Component {
         }
         name={"google play"}
         icon_root="./icon/itunes.png"
+        action={this.childHandler}
       />
     );
 
