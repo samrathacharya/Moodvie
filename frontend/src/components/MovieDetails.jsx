@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import Search_bar from "./Search_bar";
 import axios from "axios";
 import Moodvie_icon from "./Moodvie_icon";
 import Platform from "./Platform";
 import Moodvie_result_icon from "./Moodive_result_icon";
+
+import jwt_decode from "jwt-decode";
 import "./css/movie_detail.css";
 import "./css/badge.css";
 import "./css/button.css";
@@ -18,19 +19,39 @@ const iconMargin = {
 };
 
 class MovieDetails extends Component {
-  state = {
-    title: "American god",
-    posterLink: "http://picsum.photos/200",
-    date: "3000",
-    casts: [],
-    by: "Jame brown",
-    summary: "a movie",
-    rated: "",
-    rating: { imdb: "Not available", mt: "Not available", rt: "Not available" },
-    platforms: [],
-    runtime: "",
-    trailor: <SpinnerPage />
-  };
+  constructor() {
+    super();
+    this.state = {
+      title: "American god",
+      posterLink: "http://picsum.photos/200",
+      date: "3000",
+      casts: [],
+      by: "Jame brown",
+      summary: "a movie",
+      rated: "",
+      rating: {
+        imdb: "Not available",
+        mt: "Not available",
+        rt: "Not available"
+      },
+      platforms: [],
+      runtime: "",
+      trailor: <SpinnerPage />,
+      id: ""
+    };
+    this.addToWatchlist = this.addToWatchlist.bind(this);
+  }
+  addToWatchlist() {
+    //Get username
+    const token = localStorage.usertoken;
+    const decoded = jwt_decode(token);
+    var user = decoded.identity.username;
+    //Send user to backend
+    axios.post("http://127.0.0.1:4897/addtoWatchlist", {
+      username: user,
+      movieId: this.state.id
+    });
+  }
 
   async componentDidMount() {
     let id = this.props.match.params.id;
@@ -71,7 +92,8 @@ class MovieDetails extends Component {
       by: data.director,
       rated: data.AgeRestriction,
       runtime: data.runtime,
-      rating: rating
+      rating: rating,
+      id: id
     });
 
     //set youtube
@@ -153,9 +175,7 @@ class MovieDetails extends Component {
     // set the state
     this.setState({ platforms: platforms });
   }
-  constructor() {
-    super();
-  }
+
   badge() {
     let ran = Math.floor(Math.random() * Math.floor(5));
     let prim = "primary";
@@ -348,6 +368,11 @@ class MovieDetails extends Component {
               {this.state.date} ({this.state.runtime}) By {this.state.by}
             </h4>
             {this.castList()}
+            <div>
+              <p>
+                <button onClick={this.addToWatchlist}>Add to Watchlist!</button>
+              </p>
+            </div>
             <div className="summary">
               <p>{this.state.summary}</p>
             </div>

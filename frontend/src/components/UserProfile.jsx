@@ -17,10 +17,9 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    
-    if (localStorage.getItem('usertoken') !== null) {
+    if (localStorage.getItem("usertoken") !== null) {
       const token = localStorage.usertoken;
-      console.log(token)
+      console.log(token);
       const decoded = jwt_decode(token);
       this.setState({
         name: decoded.identity.username,
@@ -28,7 +27,7 @@ class UserProfile extends Component {
         movies: decoded.identity.movies
       });
     } else {
-      this.props.history.push('/users/login')
+      this.props.history.push("/users/login");
     }
   }
 
