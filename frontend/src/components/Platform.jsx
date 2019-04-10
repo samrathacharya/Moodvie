@@ -66,8 +66,6 @@ class Platform extends Component {
       .post("http://127.0.0.1:4897/result_id=" + this.state.id, { platform })
       .then(res => {});
     console.log(platform);
-
-    this.props.action(data.price);
     if (data.link == "N/A") {
       this.setState({
         platform_block: this.not_available()
