@@ -17,7 +17,8 @@ const iconMargin = {
 class MovieResult extends Component {
   state = {
     term: "",
-    blocks: []
+    blocks: [],
+    rendered: false
   };
 
   search_term = React.createRef();
@@ -40,7 +41,7 @@ class MovieResult extends Component {
       ob = Object.assign(ob, result[key]);
       blocks.push(ob);
     }
-
+    this.setState({ rendered: true });
     this.setState({ blocks });
   }
   handleSubmit = e => {
@@ -55,7 +56,7 @@ class MovieResult extends Component {
   };
 
   renderMovieBlocks() {
-    if (this.state.blocks.length === 0)
+    if (this.state.blocks.length === 0 && this.state.rendered)
       return (
         <div>
           <h3>Sorry,there is no result related for {this.state.term}</h3>

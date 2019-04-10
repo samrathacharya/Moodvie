@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./css/home.css";
 import TextField from "@material-ui/core/TextField";
+import Dialog_bar from "./Dialog";
 import {
   Paper,
   Input,
@@ -67,6 +68,9 @@ class Home extends Component {
             </IconButton>
           </form>
         </Grid>
+        <div className="login">
+          <Dialog_bar />
+        </div>
       </React.Fragment>
     );
   }

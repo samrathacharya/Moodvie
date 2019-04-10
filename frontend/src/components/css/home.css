@@ -77,7 +77,12 @@
   color: rgb(255, 255, 255, 0.7);
   transition-delay: 0.2s;
 }
-
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+}
 .footer {
   position: fixed;
   left: 0;
@@ -92,5 +97,10 @@
 .signup {
   position: fixed;
   top: 70%;
+  left: 60%;
+}
+.login {
+  position: absolute;
+  top: 65%;
   left: 60%;
 }

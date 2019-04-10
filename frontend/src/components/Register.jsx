@@ -1,97 +1,177 @@
-import React,{ Component } from 'react'
-import { register } from './UserFunctions'
-import "./css/rejister.css";
+import React, { Component } from "react";
+import { register } from "./UserFunctions";
+import SearchAppBar from "./NavBarTop.jsx";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Mail from "@material-ui/icons/Mail";
+import Paper from "@material-ui/core/Paper";
+import "./css/Regist.css";
+import { Typography, Button } from "@material-ui/core";
 
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
+import MenuItem from "@material-ui/core/MenuItem";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 class Register extends Component {
-    constructor() {
-        super()
-        this.state = {
-            username: '',
-            email: '',
-            password: ''
-        }
+  handleChange = prop => event => {
+    this.setState({ [prop]: event.target.value });
+  };
 
-        this.onChange = this.onChange.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
-    }
+  handleClickShowPassword = () => {
+    this.setState(state => ({ showPassword: !state.showPassword }));
+  };
+  constructor() {
+    super();
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+      showPassword: false
+    };
 
-    onChange(e) {
-        this.setState({[e.target.name]: e.target.value})
-    }
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
-    onSubmit(e) {
-        e.preventDefault()
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
-        const newUser = {
-            username: this.state.username,
-            email: this.state.email,
-            password: this.state.password
-        }
-        register(newUser)
-        .then(res => {
-            console.log(res)
-            if (res.data.result === "success") {
-                this.props.history.push("/home")
-            }
-        })
+  onSubmit(e) {
+    e.preventDefault();
 
-        
-    }
+    const newUser = {
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password
+    };
+    register(newUser).then(res => {
+      console.log(res);
+      if (res.data.result === "success") {
+        this.props.history.push("/home");
+      }
+    });
+  }
 
-    render() {
-        return (
-            <React.Fragment>
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-6 mt-5 mx-auto">
-                        <form onSubmit={this.onSubmit} methods="POST">
-                            <h1 className="h3 mb-3 font-weight-normal">Register</h1>
-                            {/* <div className="form-group"> */}
-                                <label htmlFor="username">username</label>
-                                <input type="text"
-                                    name="username"
-                                    placeholder="Enter username"
-                                    value={this.state.username}
-                                    onChange={this.onChange}
-                                /><br />
-                            {/* </div> */}
-                            {/* <div className="form-group"> */}
-                                <label htmlFor="password">Email</label>
-                                <input type="text"
-                                    name="email"
-                                    placeholder="Enter Email"
-                                    value={this.state.Email}
-                                    onChange={this.onChange}
-                                /><br />
-                            {/* </div> */}
-                            {/* <div className="form-group"> */}
-                                <label htmlFor="password">Password</label>
-                                <input type="text"
-                                    name="password"
-                                    placeholder="Enter Password"
-                                    value={this.state.password}
-                                    onChange={this.onChange}
-                                /><br />
-                            {/* </div> */}
-                            <button type="submit"
-                                className="btn btn-lg btn-primary btn-block">
-                                Register   
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                {/* <form>
-      <label>First Name</label>
-      <input type="text" name="first"/><br />
-      <label>Last Name</label>
-      <input type="text" name="last"/><br />
-      <label>Email</label>
-      <input type="text" name="email"/><br />
-    </form> */}
-            </div>
-            </React.Fragment>
-        )
-    }
+  render() {
+    return (
+      <React.Fragment>
+        <Grid container>
+          <Paper
+            style={{
+              padding: 50,
+              marginTop: 20,
+              marginBottom: 10,
+              position: "absolute",
+              top: "15%",
+              left: "40%"
+            }}
+          >
+            <Grid item>
+              <SearchAppBar />
+            </Grid>
+            <Grid>
+              <Typography component="h3" variant="display1" gutterBottom>
+                sign up-
+                <AccountCircle />
+              </Typography>
+
+              <div className="regist_row">
+                <Grid container spacing={8} alignItems="flex-end">
+                  <Grid item>
+                    <TextField id="input-with-icon-grid" label="UserName" />
+                  </Grid>
+                </Grid>
+              </div>
+              <div className="regist_row">
+                <Grid container spacing={8} alignItems="flex-end">
+                  <Grid item>
+                    <TextField
+                      id="input-with-icon-grid"
+                      type={this.state.showPassword ? "text" : "password"}
+                      label="Password"
+                      value={this.state.password}
+                      onChange={this.handleChange("password")}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="Toggle password visibility"
+                              onClick={this.handleClickShowPassword}
+                            >
+                              {this.state.showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </div>
+              <div className="regist_row">
+                <Grid container spacing={8} alignItems="flex-end">
+                  <Grid item>
+                    <TextField id="input-with-icon-grid" label="Email" />
+                  </Grid>
+                </Grid>
+              </div>
+              <div className="regist_row">
+                <Button variant="contained" color="secondary">
+                  CONFIRM
+                </Button>
+              </div>
+            </Grid>
+          </Paper>
+        </Grid>
+      </React.Fragment>
+    );
+  }
 }
 
-export default Register
+export default Register;
+
+/*
+
+<form onSubmit={this.onSubmit} methods="POST">
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Enter username"
+                  value={this.state.username}
+                  onChange={this.onChange}
+                />
+                <br />
+
+                <input
+                  type="text"
+                  name="email"
+                  placeholder="Enter Email"
+                  value={this.state.Email}
+                  onChange={this.onChange}
+                />
+                <br />
+
+                <input
+                  type="text"
+                  name="password"
+                  placeholder="Enter Password"
+                  value={this.state.password}
+                  onChange={this.onChange}
+                />
+                <br />
+
+                <button
+                  type="submit"
+                  className="btn btn-lg btn-primary btn-block"
+                >
+                  Register
+                </button>
+              </form>
+*/

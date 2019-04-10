@@ -10,10 +10,15 @@ import { withStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import Moodvie_icon from "./Moodvie_icon";
-import { withRouter } from "react-router";
+import { withRouter, Redirect, Link } from "react-router-dom";
 import history from "./history";
 import { Button } from "@material-ui/core";
+import jwt_decode from "jwt-decode";
+
+import Dialog_bar from "./Dialog";
 const styles = theme => ({
+  login_profile_button: { border: "0.5px solid pink", margin: "1px" },
+
   root: {
     width: "100%"
   },
@@ -69,9 +74,9 @@ const styles = theme => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: 150,
+      width: 180,
       "&:focus": {
-        width: 300
+        width: 270
       }
     }
   }
@@ -82,6 +87,7 @@ function SearchAppBar(props) {
   function handleSubmit(e) {
     history.push("/search/" + e.target.searchterm.value);
   }
+
   return (
     <div className={classes.root}>
       <AppBar classes={{ root: classes.backapp }} postion="relative">
@@ -94,8 +100,9 @@ function SearchAppBar(props) {
           >
             <Moodvie_icon />
           </Typography>
-          <Button>Login</Button>
+
           <div className={classes.grow} />
+          <Dialog_bar />
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
