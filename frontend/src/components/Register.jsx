@@ -81,7 +81,13 @@ class Register extends Component {
                 </Typography>
 
                 <div className="regist_row">
-                  <Grid container spacing={8} alignItems="flex-end">
+                  <Grid container spacing={8} alignItems="flex-end" 
+                    id="input-with-icon-grid"
+                    type="text"
+                    label="username"
+                    value={this.state.username}
+                    onChange={this.handleChange("username")} 
+                  >
                     <Grid item>
                       <TextField id="input-with-icon-grid" label="UserName" />
                     </Grid>
@@ -119,7 +125,13 @@ class Register extends Component {
                 <div className="regist_row">
                   <Grid container spacing={8} alignItems="flex-end">
                     <Grid item>
-                      <TextField id="input-with-icon-grid" label="Email" />
+                      <TextField id="input-with-icon-grid" label="Email" 
+                      id="input-with-icon-grid"
+                      label="Email"
+                      type="text"
+                      value={this.state.email}
+                      onChange={this.handleChange("email")}
+                      />
                     </Grid>
                   </Grid>
                 </div>
