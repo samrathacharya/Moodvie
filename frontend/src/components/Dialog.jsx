@@ -33,14 +33,17 @@ const styles = {
   }
 };
 class Dialog_bar extends Component {
-  state = {
-    name: undefined,
-    login: false,
-    openLogin: false,
-    openSignup: false,
-    openProfile: false
-  };
-  componentDidMount() {
+  constructor() {
+    super();
+    this.state = {
+      name: undefined,
+      login: false,
+      openLogin: false,
+      openSignup: false,
+      openProfile: false
+    };
+  }
+  DidMount() {
     if (localStorage.getItem("usertoken") !== null) {
       const token = localStorage.usertoken;
       const decoded = jwt_decode(token);
@@ -51,8 +54,9 @@ class Dialog_bar extends Component {
     }
   }
   handleLogin = e => {
-    console.log("hello")
     e.preventDefault();
+    console.log(e.target.name.value);
+    console.log(e.target.pw.value);
     const user = {
       username: e.target.name.value,
       password: e.target.pw.value
@@ -111,14 +115,14 @@ class Dialog_bar extends Component {
             aria-labelledby="form-dialog-title"
           >
             <DialogTitle id="form-dialog-title">Login</DialogTitle>
-            <form noValidate onSubmit={this.handleLogin}>
+            <form onSubmit={this.handleLogin}>
               <DialogContent>
                 <TextField
                   autoFocus
                   margin="dense"
                   id="name"
                   name="name"
-                  label="UserName"
+                  label="User Name"
                   type="Text"
                   fullWidth
                 />
@@ -162,7 +166,7 @@ class Dialog_bar extends Component {
   }
 }
 
-export default withStyles(styles)(Dialog_bar);
+export default withRouter(withStyles(styles)(Dialog_bar));
 
 /*
 

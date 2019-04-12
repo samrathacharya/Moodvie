@@ -74,59 +74,61 @@ class Register extends Component {
               <SearchAppBar />
             </Grid>
             <Grid>
-              <Typography component="h3" variant="display1" gutterBottom>
-                sign up-
-                <AccountCircle />
-              </Typography>
+              <form onSubmit={this.onSubmit}>
+                <Typography component="h3" variant="display1" gutterBottom>
+                  sign up-
+                  <AccountCircle />
+                </Typography>
 
-              <div className="regist_row">
-                <Grid container spacing={8} alignItems="flex-end">
-                  <Grid item>
-                    <TextField id="input-with-icon-grid" label="UserName" />
+                <div className="regist_row">
+                  <Grid container spacing={8} alignItems="flex-end">
+                    <Grid item>
+                      <TextField id="input-with-icon-grid" label="UserName" />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </div>
-              <div className="regist_row">
-                <Grid container spacing={8} alignItems="flex-end">
-                  <Grid item>
-                    <TextField
-                      id="input-with-icon-grid"
-                      type={this.state.showPassword ? "text" : "password"}
-                      label="Password"
-                      value={this.state.password}
-                      onChange={this.handleChange("password")}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="Toggle password visibility"
-                              onClick={this.handleClickShowPassword}
-                            >
-                              {this.state.showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }}
-                    />
+                </div>
+                <div className="regist_row">
+                  <Grid container spacing={8} alignItems="flex-end">
+                    <Grid item>
+                      <TextField
+                        id="input-with-icon-grid"
+                        type={this.state.showPassword ? "text" : "password"}
+                        label="Password"
+                        value={this.state.password}
+                        onChange={this.handleChange("password")}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="Toggle password visibility"
+                                onClick={this.handleClickShowPassword}
+                              >
+                                {this.state.showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </div>
-              <div className="regist_row">
-                <Grid container spacing={8} alignItems="flex-end">
-                  <Grid item>
-                    <TextField id="input-with-icon-grid" label="Email" />
+                </div>
+                <div className="regist_row">
+                  <Grid container spacing={8} alignItems="flex-end">
+                    <Grid item>
+                      <TextField id="input-with-icon-grid" label="Email" />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </div>
-              <div className="regist_row">
-                <Button variant="contained" color="secondary">
-                  CONFIRM
-                </Button>
-              </div>
+                </div>
+                <div className="regist_row">
+                  <Button type="submit" variant="contained" color="secondary">
+                    CONFIRM
+                  </Button>
+                </div>
+              </form>
             </Grid>
           </Paper>
         </Grid>
