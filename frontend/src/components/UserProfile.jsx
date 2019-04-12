@@ -19,12 +19,13 @@ class UserProfile extends Component {
   componentDidMount() {
     if (localStorage.getItem("usertoken") !== null) {
       const token = localStorage.usertoken;
-      console.log(token);
       const decoded = jwt_decode(token);
+      console.log(decoded.identity.username);
       this.setState({
         name: decoded.identity.username,
         email: decoded.identity.email
       });
+      console.log(this.state.name)
     } else {
       this.props.history.push("/users/login");
     }
