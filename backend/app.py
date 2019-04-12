@@ -4,7 +4,7 @@ from subprocess import Popen, PIPE
 import subprocess
 import shlex
 from flask_cors import CORS
-from initialize import db_reader_u, db_writer_u, db_reader_m, db_writer_m, db_writer_w
+from initialize import db_reader_u, db_writer_u, db_reader_m, db_writer_m, db_writer_w, db_reader_w
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import create_access_token
 from flask_bcrypt import Bcrypt
@@ -313,11 +313,12 @@ def ChangeProfile():
 def watchlist(username):
     if request.method == "POST":
         m_id = request.get_json()["movieId"]
-        print(m_id)
         db_writer_w.add_to_watchlist(username, m_id)
         
 
+    w_list = db_reader_w.get_watchlist(username)
 
+    print(w_list)
 
     return "haha"
 

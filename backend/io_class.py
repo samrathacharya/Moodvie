@@ -180,6 +180,34 @@ class Read_db_watchlist(Read_db):
             self.close(conn)
             return False
 
+    # get list
+    def get_watchlist(self, u_name):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        cur.execute("select * from watchlist where USERNAME='"+u_name+"'")
+        a_list = cur.fetchall()
+        # if arr.fetchall() == []:
+        #     # does not have it
+        #     self.close(conn)
+        #     return None
+        # else:
+        #     # already have it
+        #     # w_list = []
+        #     # print(arr)
+        #     # for row in arr:
+        #     #     print("hello")
+        #     #     if row[0] == u_name:
+        #     #         w_list.append(row[1])
+        #     w_list = cur.fetchall()
+        
+        for i in a_list:
+            print(i)
+
+            self.close(conn)
+            return []
+
+
 class Write(object):
     def __init__(self, write_method, write_position):
         self.__write_method = write_method

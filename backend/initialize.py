@@ -15,3 +15,6 @@ db_writer_m = Write_db_movie("database/MOVIE.db")
 
 # db writer for movie
 db_writer_w = Write_db_watchlist("database/USER.db")
+
+# db reader for movie
+db_reader_w = Read_db_watchlist("database/USER.db")
