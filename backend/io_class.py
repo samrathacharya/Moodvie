@@ -161,6 +161,24 @@ class Read_db_movie(Read_db):
         self.close(conn)
         return False
 
+class Read_db_watchlist(Read_db):
+    def __init__(self, read_position):
+        Read_db.__init__(self, read_position)
+
+    # check !
+    def checkDuplicate(self, u_name, m_id):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        arr = cur.execute("select * from watchlist where USERNAME='"+u_name+"' AND MOVIEID='"+m_id+"' ")
+        if arr.fetchall() == []:
+            # does not have it
+            self.close(conn)
+            return True
+        else:
+            # already have it
+            self.close(conn)
+            return False
 
 class Write(object):
     def __init__(self, write_method, write_position):
@@ -315,3 +333,22 @@ class Write_db_movie(Write_db):
             return True
 
         return False
+
+
+class Write_db_watchlist(Write_db):
+    def __init__(self, write_position):
+        Write_db.__init__(self, write_position)
+
+    # add to watchlist
+    def add_to_watchlist(self, user_n, m_id):
+        reader = Read_db_watchlist("database/USER.db")
+        if (reader.checkDuplicate(user_n, m_id)):
+            db_handle = self.open()
+            conn = db_handle[0]
+            cur = db_handle[1]
+            cur.execute("INSERT INTO watchlist(USERNAME,MOVIEID) VALUES(?,?)",(user_n,m_id))
+            self.close(conn)
+            return True
+        else:
+            print("fuck u, you cant add it twice, go buy vip")
+            return False
