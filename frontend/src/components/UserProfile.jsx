@@ -17,8 +17,6 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    const token = localStorage.usertoken;
-    console.log(token);
     if (localStorage.getItem("usertoken") !== null) {
       const token = localStorage.usertoken;
       console.log(token);
