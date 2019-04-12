@@ -62,9 +62,9 @@ class Dialog_bar extends Component {
       password: e.target.pw.value
     };
     login(user).then(res => {
-      localStorage.setItem("usertoken", res.data.token);
       console.log(res);
       if (res.data.result === "success") {
+        localStorage.setItem("usertoken", res.data.token);
         this.props.history.push("/user");
       }
     });
