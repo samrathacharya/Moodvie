@@ -51,7 +51,8 @@ class Dialog_bar extends Component {
     }
   }
   handleLogin = e => {
-    e.preventdefault();
+    console.log("hello")
+    e.preventDefault();
     const user = {
       username: e.target.name.value,
       password: e.target.pw.value
@@ -110,14 +111,14 @@ class Dialog_bar extends Component {
             aria-labelledby="form-dialog-title"
           >
             <DialogTitle id="form-dialog-title">Login</DialogTitle>
-            <form onSubmit={this.handleLogin}>
+            <form noValidate onSubmit={this.handleLogin}>
               <DialogContent>
                 <TextField
                   autoFocus
                   margin="dense"
                   id="name"
                   name="name"
-                  label="User Name"
+                  label="UserName"
                   type="Text"
                   fullWidth
                 />

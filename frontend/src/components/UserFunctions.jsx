@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export function register(newUser) {
     console.log(newUser.username)
-    var result = "fail"
+    //var result = "fail"
     return axios
     .post('http://127.0.0.1:4897/users/signup', {
         username: newUser.username,
