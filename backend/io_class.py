@@ -124,14 +124,14 @@ class Read_db_movie(Read_db):
         elif (platform == "Google"):
             arr = cur.execute("select ID, PRICE_G, GP_LINK from movie where ID='"+m_ID+"'")
         else:
-            return False
+            return None
         for row in arr:
-            if row[0] == m_ID:
+            if row[0] == m_ID and row[1] != "N/A":
                 info = row
                 self.close(conn)
                 return info
         self.close(conn)
-        return False
+        return None
 
     # check if the trailer link is updated
     def check_trailer(self, m_id):
@@ -140,12 +140,12 @@ class Read_db_movie(Read_db):
         cur = db_handle[1]
         arr = cur.execute("select ID, TRAILER_LINK, TRAILER_PIC from movie where ID='"+m_id+"'")
         for row in arr:
-            if row[0] == m_id:
+            if row[0] == m_id and row[1] != "N/A":
                 info = row
                 self.close(conn)
                 return info
         self.close(conn)
-        return False
+        return None
 
     # get information of the movie
     def get_info(self, m_ID):
@@ -388,6 +388,6 @@ class Write_db_watchlist(Write_db):
         db_handle = self.open()
         conn = db_handle[0]
         cur = db_handle[1]
-        cur.execute("DELETE FROM watchlist WHERE USERNAME='"+user_n+"' AND MOVIEID='"+m_id+'"")
+        cur.execute("DELETE FROM watchlist WHERE USERNAME='"+user_n+"' AND MOVIEID='"+m_id+"'")
         self.close(conn)
         

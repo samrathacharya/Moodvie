@@ -78,19 +78,20 @@ def getItunes(title, date, id):
     # print(title[1:len(title)-1])
     info = db_reader_m.check_price(id, "Itunes")
 
-    if (info):
-        pass
+    if (info == None):
+        data = engine.get_Itunes(title,date)
+        if (db_writer_m.update_price(id, "$"+str(data['price']), str(data['link']), "Itunes")):
+            print("update itunes price successful")
+        else:
+            print(data)
+
+        return jsonify(data)
     else:
         # print("++++++++++++++++++itunes+++++++++++++++++=")
         return jsonify({"name": "itunes", "price": info[1], "link": info[2]})
 
-    info = engine.get_Itunes(title,date)
-    if (db_writer_m.update_price(id, "$"+str(info['price']), str(info['link']), "Itunes")):
-        print("update itunes price successful")
-    else:
-        print(info)
+    
 
-    return jsonify(info)
 
 
 # get the google platforms of a movie by title and date
@@ -100,20 +101,17 @@ def getGoogle(title, date, id):
     # print(title[1:len(title)-1])
     info = db_reader_m.check_price(id, "Google")
 
-    if (info):
-        #pass
-        return jsonify({"name": "google", "price": info[1], "link": info[2]})
+    if (info == None):
+        data = engine.get_googlePlay(title,date)
+        if (db_writer_m.update_price(id, "$"+str(data['price']), str(data['link']), "Google")):
+            print("update google price successful")
+        else:
+            print(data)
+        return jsonify(data)
     else:
         return jsonify({"name": "google", "price": info[1], "link": info[2]})
-    # else:
-    #     return jsonify({"name": "google", "price": info[1], "link": info[2]})
 
-    info = engine.get_googlePlay(title,date)
-    if (db_writer_m.update_price(id, "$"+str(info['price']), str(info['link']), "Google")):
-        print("update google price successful")
-    else:
-        print(info)
-    return jsonify(info)
+    
 # get the google platforms of a movie by title and date
 # date formate: yr-mon-day in numeric
 @app.route("/trailor/title=<string:title>&date=<string:date>&id=<string:id>")
@@ -121,7 +119,7 @@ def getTrailor(title, date, id):
 
     info = db_reader_m.check_trailer(id)
 
-    if (info):
+    if (info == None):
         pass
     else:
         return jsonify({"link": info[1], "pic": info[2]})
@@ -163,7 +161,7 @@ def getTrailor(title, date, id):
 def getYoutobePrice(title, year, id):
     info = db_reader_m.check_price(id, "Youtobe")
 
-    if (info):
+    if (info == None):
         pass
     else:
         data = {"name": "youtube", "price": info[1], "link": info[2]}
