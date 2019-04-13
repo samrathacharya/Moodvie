@@ -185,8 +185,11 @@ class Read_db_watchlist(Read_db):
         db_handle = self.open()
         conn = db_handle[0]
         cur = db_handle[1]
-        cur.execute("select * from watchlist where USERNAME='"+u_name+"'")
+        cur.execute("select MOVIEID from watchlist where USERNAME='"+u_name+"'")
         a_list = cur.fetchall()
+        # print(a_list.__len__())
+        # print(a_list[0])
+        # print(a_list[1])
         # if arr.fetchall() == []:
         #     # does not have it
         #     self.close(conn)
@@ -201,11 +204,10 @@ class Read_db_watchlist(Read_db):
         #     #         w_list.append(row[1])
         #     w_list = cur.fetchall()
         
-        for i in a_list:
-            print(i)
+        
 
-            self.close(conn)
-            return []
+        self.close(conn)
+        return a_list
 
 
 class Write(object):

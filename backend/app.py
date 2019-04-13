@@ -318,8 +318,17 @@ def watchlist(username):
 
     w_list = db_reader_w.get_watchlist(username)
 
-    print(w_list)
+    # print(w_list)
 
-    return "haha"
+    jw_list = {}
+    i = 0
+    for m in w_list:
+        # print(m)
+        jw_list[i] = m
+        i += 1
+
+
+    print (jw_list)
+    return jsonify(jw_list)
 
 app.run(port=4897, debug=True)
