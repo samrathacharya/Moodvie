@@ -382,3 +382,12 @@ class Write_db_watchlist(Write_db):
         else:
             print("fuck u, you cant add it twice, go buy vip")
             return False
+
+    # delete from watchlist
+    def delete_from_watchlist(self, user_n, m_id):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        cur.execute("DELETE FROM watchlist WHERE USERNAME='"+user_n+"' AND MOVIEID='"+m_id+'"")
+        self.close(conn)
+        
