@@ -5,7 +5,8 @@ import "./css/button.css";
 import SearchAppBar from "./NavBarTop.jsx";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import { Typography } from "@material-ui/core";
+import { Typography, Grow, Zoom } from "@material-ui/core";
+import Fade from "@material-ui/core/Fade";
 const textBoxStyle = {
   width: "400px"
 };
@@ -63,17 +64,29 @@ class MovieResult extends Component {
           <h4>Please try again</h4>
         </div>
       );
+    let blocks = this.state.blocks.map(block => (
+      <Grow style={{ transformOrigin: "0 0 0" }} in="true">
+        <MovieBlock
+          key={block.id}
+          title={block.title}
+          id={block.id}
+          date={block.date}
+          imageUrl={block.poster_link}
+        />
+      </Grow>
+    ));
     return (
       <React.Fragment>
-        {this.state.blocks.map(block => (
-          <MovieBlock
-            key={block.id}
-            title={block.title}
-            id={block.id}
-            date={block.date}
-            imageUrl={block.poster_link}
-          />
-        ))}
+        <Typography
+          component="h3"
+          variant="display1"
+          gutterBottom
+          style={{ padding: 5, marginTop: 5, marginBottom: 10 }}
+        >
+          Showing results for "{this.props.match.params.term}"
+        </Typography>
+
+        {blocks}
       </React.Fragment>
     );
   }
@@ -82,21 +95,21 @@ class MovieResult extends Component {
     return (
       <React.Fragment>
         <Grid container>
-          <Paper style={{ padding: 40, marginTop: 40, marginBottom: 10 }}>
+          <Paper
+            style={{
+              padding: 40,
+              marginTop: 40,
+              marginBottom: 10,
+              height: "30cm",
+              width: "100%"
+            }}
+          >
             <Grid item>
               <SearchAppBar />
             </Grid>
-            <Grid>
-              <Typography
-                component="h3"
-                variant="display1"
-                gutterBottom
-                style={{ padding: 5, marginTop: 5, marginBottom: 10 }}
-              >
-                Showing results for "{this.props.match.params.term}"{" "}
-              </Typography>
-            </Grid>
-            <Grid>{this.renderMovieBlocks()}</Grid>
+            <Grow in="true">
+              <Grid>{this.renderMovieBlocks()}</Grid>
+            </Grow>
           </Paper>
         </Grid>
       </React.Fragment>

@@ -3,18 +3,37 @@ import axios from "axios";
 import SpinnerPage from "./Spinner";
 import not_available from "./icon/not_available.png";
 import "./css/platform.css";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import {
+  Grow,
+  Typography,
+  Zoom,
+  Icon,
+  Button,
+  Tooltip,
+  Fab,
+  Fade,
+  CardMedia
+} from "@material-ui/core";
 class Platform extends Component {
   state = {
     loading_link: this.props.loading_link,
     name: this.props.name,
-    platform_block: <SpinnerPage />,
+    platform_block: <CircularProgress />,
     icon_root: "none",
     id: this.props.id
   };
 
-  badge() {
-    let ran = Math.floor(Math.random() * Math.floor(5));
-    let prim = "primary";
+  not_available() {
+    return (
+      <Button variant="contained" disabled>
+        {this.state.name + "-:(  Not available"}
+      </Button>
+    );
+  }
+  color_button() {
+    let ran = Math.floor(Math.random() * Math.floor(3));
+    let prim = "";
     switch (ran) {
       case 0:
         prim = "primary";
@@ -22,39 +41,26 @@ class Platform extends Component {
       case 1:
         prim = "secondary";
         break;
-      case 2:
-        prim = "success";
-        break;
-      case 3:
-        prim = "danger";
-        break;
-      case 4:
-        prim = "warning";
-        break;
-      case 5:
-        prim = "info";
+      default:
+        prim = "";
         break;
     }
-    return "badge badge-" + prim;
+    return prim;
   }
-  not_available() {
-    return (
-      <span className="badge badge-dark">
-        {this.state.name + "-Not available:("}
-      </span>
-    );
-  }
-
   available(price, link) {
     return (
-      <a target="_blank" href={link}>
-        <span className={this.badge()}>{this.state.name + "-" + price}</span>
+      <a target="_blank" href={link} style={{ textDecoration: "none" }}>
+        <Button variant="contained" color={this.color_button()}>
+          {this.state.name + "-" + price}
+        </Button>
       </a>
     );
   }
   async componentDidMount() {
     console.log(this.state.loading_link);
+
     const promise = axios.get(this.state.loading_link);
+
     const reponse = await promise;
     const data = reponse.data;
     //TODO: Push price data to backend
@@ -64,7 +70,7 @@ class Platform extends Component {
         price: data.price
       })
       .then(res => {});
-  //console.log(platform);
+    //console.log(platform);
 
     if (data.link == "N/A") {
       this.setState({

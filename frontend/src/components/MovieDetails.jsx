@@ -1,21 +1,47 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Moodvie_icon from "./Moodvie_icon";
 import Platform from "./Platform";
-import Moodvie_result_icon from "./Moodive_result_icon";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
 import jwt_decode from "jwt-decode";
 import "./css/movie_detail.css";
 import "./css/badge.css";
 import "./css/button.css";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import SearchAppBar from "./NavBarTop";
+import {
+  Grow,
+  Typography,
+  Zoom,
+  Icon,
+  Button,
+  Tooltip,
+  Fab,
+  Fade,
+  CardMedia
+} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import Badge_b from "react-bootstrap/Badge";
+import { withStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/Add";
+import Watchlist from "./Watchlist";
 
-import SpinnerPage from "./Spinner";
-const textBoxStyle = {
-  width: "400px"
-};
+const styles = {
+  cast_button: {
+    margin: "3px",
+    font: "white"
+  },
+  summary: {
+    width: "50%"
+  },
 
-const iconMargin = {
-  marginLeft: "10px"
+  poster: {
+    "margin-left": "auto",
+    "margin-right": "auto",
+    width: "70%",
+    height: "auto",
+    "object-fit": "fill"
+  }
 };
 
 class MovieDetails extends Component {
@@ -30,19 +56,20 @@ class MovieDetails extends Component {
       summary: "a movie",
       rated: "",
       rating: {
-        imdb: "Not available",
-        mt: "Not available",
-        rt: "Not available"
+        imdb: "",
+        mt: "",
+        rt: ""
       },
       platforms: [],
       runtime: "",
-      trailor: <SpinnerPage />,
+      trailor: <CircularProgress />,
       id: ""
     };
     this.addToWatchlist = this.addToWatchlist.bind(this);
   }
   addToWatchlist() {
     //Get username
+    console.log("im added");
     const token = localStorage.usertoken;
     const decoded = jwt_decode(token);
     var user = decoded.identity.username;
@@ -78,9 +105,7 @@ class MovieDetails extends Component {
     //   rating: rating
     // };
     //console.log(toSend);
-    axios
-      .post("http://127.0.0.1:4897/result_id=" + id)
-      .then(res => {});
+    axios.post("http://127.0.0.1:4897/result_id=" + id).then(res => {});
 
     this.setState({
       title: data.title,
@@ -116,7 +141,7 @@ class MovieDetails extends Component {
     let platforms = [];
 
     //push the platforms
-      console.log(id)
+    console.log(id);
     //itunes
     platforms.push(
       <Platform
@@ -183,9 +208,9 @@ class MovieDetails extends Component {
     this.setState({ platforms: platforms });
   }
 
-  badge() {
-    let ran = Math.floor(Math.random() * Math.floor(5));
-    let prim = "primary";
+  color_button() {
+    let ran = Math.floor(Math.random() * Math.floor(3));
+    let prim = "";
     switch (ran) {
       case 0:
         prim = "primary";
@@ -193,54 +218,78 @@ class MovieDetails extends Component {
       case 1:
         prim = "secondary";
         break;
-      case 2:
-        prim = "success";
-        break;
-      case 3:
-        prim = "dark";
-        break;
-      case 4:
-        prim = "warning";
-        break;
-      case 5:
-        prim = "info";
+      default:
+        prim = "";
         break;
     }
-    return "badge badge-pill badge-" + prim;
+    return prim;
   }
-
+  /*
+<a
+                target="_blank"
+                href={"https://en.wikipedia.org/wiki/" + actor}
+                style={{ textDecoration: "none" }}
+              >
+                <span className={this.badge()} key={actor}>
+                  <div>{actor}</div>
+                </span>
+              </a>
+<a
+              target="_blank"
+              href="http://localhost:3000/users/register"
+              style={{ textDecoration: "none" }}
+            >
+              Sign Up!
+            </a>
+*/
   castList() {
+    const { classes } = this.props;
+
     return (
       <React.Fragment>
         <div className="cast">
           {this.state.casts.map(actor => {
             return (
               //link to the wiki page of the actor
-
-              <a
-                target="_blank"
-                href={"https://en.wikipedia.org/wiki/" + actor}
-              >
-                <span className={this.badge()} key={actor}>
-                  <div>{actor}</div>
-                </span>
-              </a>
+              <Zoom in="true">
+                <Button
+                  variant="outlined"
+                  key={actor}
+                  classes={{ root: classes.cast_button }}
+                  color={this.color_button()}
+                >
+                  <a
+                    target="_blank"
+                    href={"https://en.wikipedia.org/wiki/" + actor}
+                    style={{ textDecoration: "none" }}
+                  >
+                    {actor}
+                  </a>
+                </Button>
+              </Zoom>
             );
           })}
-          <span className="badge badge-danger">
+
+          <Button
+            variant="contained"
+            classes={{ root: classes.cast_button }}
+            color="primary"
+          >
             {" "}
             Rated - {this.state.rated}
-          </span>
+          </Button>
         </div>
       </React.Fragment>
     );
   }
   platformsList() {
     return (
-      <div>
-        <h4>Platforms</h4>
-        {this.state.platforms}
-      </div>
+      <React.Fragment>
+        <Typography component="h2" variant="display1">
+          Watch now on
+        </Typography>
+        <div style={{ "padding-top": "10px" }}>{this.state.platforms}</div>
+      </React.Fragment>
     );
   }
   ratingList() {
@@ -253,12 +302,12 @@ class MovieDetails extends Component {
     let imdb_string =
       "https://www.imdb.com/title/" + this.props.match.params.id;
     return (
-      <div className="ratingList">
-        <div className="ratingTitle">
-          <h2>Popular Ratings</h2>
-        </div>
+      <React.Fragment>
+        <Typography component="h2" variant="display1">
+          Popular ratings
+        </Typography>
         <div className="rating">
-          <h4>
+          <Typography>
             <a
               target="_blank"
               href={imdb_string}
@@ -269,10 +318,17 @@ class MovieDetails extends Component {
                 src={require("./icon/imdb.jpeg")}
                 alt="rt"
               />
-              <span className="sm-link__label">-{this.state.rating.imdb}</span>
+              <Typography
+                variant="display1"
+                style={{ "padding-top": "3%", "padding-left": "20%" }}
+              >
+                {this.state.rating.imdb}
+              </Typography>
             </a>
-          </h4>
-          <h4>
+          </Typography>
+        </div>
+        <div className="rating">
+          <Typography>
             <a
               target="_blank"
               href={rt_string}
@@ -283,10 +339,17 @@ class MovieDetails extends Component {
                 src={require("./icon/rt.png")}
                 alt="imdb"
               />
-              <span className="sm-link__label">-{this.state.rating.rt}</span>
+              <Typography
+                variant="display1"
+                style={{ "padding-top": "3%", "padding-left": "20%" }}
+              >
+                {this.state.rating.rt}
+              </Typography>
             </a>
-          </h4>
-          <h4>
+          </Typography>
+        </div>
+        <div className="rating">
+          <Typography>
             <a
               target="_blank"
               href={mt_string}
@@ -297,18 +360,23 @@ class MovieDetails extends Component {
                 src={require("./icon/mt.png")}
                 alt="mt"
               />
-              <span className="sm-link__label">-{this.state.rating.mt}</span>
+              <Typography
+                variant="display1"
+                style={{ "padding-top": "3%", "padding-left": "20%" }}
+              >
+                {this.state.rating.mt}
+              </Typography>
             </a>
-          </h4>
+          </Typography>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 
   trailor() {
     return (
-      <div className="trailor">
-        <h4>
+      <React.Fragment>
+        <Typography component="h2" variant="display1">
           Trailer
           <a
             target="_blank"
@@ -319,21 +387,18 @@ class MovieDetails extends Component {
               this.state.date
             }
           >
-            <img
-              className="link_img"
-              src={require("./icon/play.png")}
-              float="left"
-            />
+            <img className="link_img" src={require("./icon/play.png")} />
           </a>
-        </h4>
+        </Typography>
         <a target="_blank" href={this.state.trailor.link}>
           <img
+            style={{ "padding-top": "10px" }}
             className="trailerImg"
             src={this.state.trailor.pic}
             alt="Not available"
           />
         </a>
-      </div>
+      </React.Fragment>
     );
   }
   handleSubmit = e => {
@@ -343,21 +408,97 @@ class MovieDetails extends Component {
     this.props.history.push("/search/" + e.target.searchterm.value);
   };
   render() {
+    const { classes } = this.props;
     const watchlistButton = (
-      <button onClick={this.addToWatchlist}>Add to Watchlist!</button>
+      <Tooltip title="Add this movie to your watch list now!">
+        <Fab
+          size="small"
+          color="secondary"
+          aria-label="Add"
+          onClick={this.addToWatchlist}
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
     );
     const noButton = <div />;
     return (
       <React.Fragment>
-        <div className="headerContainer">
-          <Moodvie_result_icon />
-        </div>
+        <Grid container>
+          <Paper
+            style={{
+              padding: 40,
+              marginTop: 40,
+              marginBottom: 10,
+              height: "30cm",
+              width: "100%"
+            }}
+          >
+            <Grid item>
+              <SearchAppBar />
+            </Grid>
+            <Grid container>
+              <Grid item xs={7}>
+                <Zoom in="true">
+                  <Typography variant="h4" gutterBottom>
+                    {this.state.title}
+                    <a
+                      target="_blank"
+                      href={"https://en.wikipedia.org/wiki/" + this.state.title}
+                    >
+                      <img
+                        className="logo_img"
+                        src={require("./icon/wiki.png")}
+                        float="left"
+                      />
+                    </a>
+                  </Typography>
+                </Zoom>
 
-        <div className="detail">
-          <div className="rhs-card">
+                <Zoom in="true">
+                  <Typography variant="subtitle1" gutterBottom>
+                    {this.state.date} ({this.state.runtime}) By {this.state.by}
+                    {"               "}
+                    {localStorage.usertoken ? watchlistButton : noButton}
+                  </Typography>
+                </Zoom>
+                <Grid>{this.castList()}</Grid>
+
+                <Grid>
+                  <Zoom in="true">
+                    <Typography variant="h6" gutterBottom>
+                      {this.state.summary}
+                    </Typography>
+                  </Zoom>
+                </Grid>
+                <Grid style={{ "padding-top": "10px" }}>{this.trailor()}</Grid>
+                <Grid lg style={{ "padding-top": "10px" }}>
+                  {this.platformsList()}
+                </Grid>
+              </Grid>
+              <Grid item xs={5}>
+                <CardMedia
+                  component="img"
+                  image={this.state.posterLink}
+                  classes={{ root: classes.poster }}
+                />
+                <div style={{ "padding-left": "17%", "padding-top": "4%" }}>
+                  {this.ratingList()}
+                </div>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+      </React.Fragment>
+    );
+  }
+}
+
+export default withStyles(styles)(MovieDetails);
+/*
             <img src={this.state.posterLink} />
             {this.ratingList()}
-          </div>
+
           <div className="info">
             <div className="title">
               <p>
@@ -380,7 +521,7 @@ class MovieDetails extends Component {
             </h4>
             {this.castList()}
             <div>
-              <p>{localStorage.usertoken ? watchlistButton : noButton}</p>
+              <p></p>
             </div>
             <div className="summary">
               <p>{this.state.summary}</p>
@@ -388,11 +529,4 @@ class MovieDetails extends Component {
 
             {this.platformsList()}
             {this.trailor()}
-          </div>
-        </div>
-      </React.Fragment>
-    );
-  }
-}
-
-export default MovieDetails;
+*/

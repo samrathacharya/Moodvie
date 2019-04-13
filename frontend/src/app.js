@@ -32,7 +32,7 @@ class App extends Component {
           <Route path="/watchlist" component={Watchlist} />
           <Route path="/users/register" component={Register} />
           <Route path="/users/login" component={Login} />
-          <Route path="/profile" component={ChangeProfile} />
+          <Route path="/profile" component={UserProfile} />
           <Route path="/not-found" component={NotFound} />
           <Route path="/test" component={Test} />
           <Redirect to="/not-found" />
