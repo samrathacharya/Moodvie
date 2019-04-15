@@ -21,6 +21,7 @@ class Watchlist extends Component {
 
     this.updateSearch = this.updateSearch.bind(this);
     this.getUsername = this.getUsername.bind(this);
+    this.deleteMovie = this.deleteMovie.bind(this);
   }
 
   getUsername() {
@@ -29,16 +30,37 @@ class Watchlist extends Component {
     return decoded.identity.username;
   }
 
-  componentDidMount() {
-    //Get username
+  deleteMovie(id) {
     let user = this.getUsername();
-    console.log(user);
-    //Load movies from database
-    axios
-      .get("http://127.0.0.1:4897/" + user + "/watchlist")
-      .then(function(res) {
-        console.log(res.data);
-      });
+    console.log(id);
+
+    const promise = axios.post(
+      "http://127.0.0.1:4897/" + user + "/deletefromwatchlist",
+      {
+        movieID: id
+      }
+    );
+
+    const newMovies = this.state.movies.filter(movie => {
+      return movie.id !== id;
+    });
+
+    this.setState({
+      movies: [...newMovies]
+    });
+  }
+
+  async componentDidMount() {
+    //Get username
+    let nuser = this.getUsername();
+    const promise = axios.get("http://127.0.0.1:4897/" + nuser + "/watchlist");
+    const reponse = await promise;
+    const data = reponse.data;
+    this.setState({
+      user: nuser,
+      movies: data,
+      search: ""
+    });
   }
 
   updateSearch(event) {
@@ -71,6 +93,7 @@ class Watchlist extends Component {
   }
   render() {
     //Search for movies function
+    console.log(this.state.movies);
     let filteredMovies = this.state.movies.filter(movie => {
       return (
         movie.title.toLowerCase().indexOf(this.state.search.toLowerCase()) !==
@@ -80,11 +103,12 @@ class Watchlist extends Component {
 
     //Render movies
     this.movieList = filteredMovies.map(movie => (
-      <a href="http://localhost:3000/moviedetails/tt4154756">
-        <h4 key={movie.key}>
-          <span class={this.badge()}>{movie.title}</span>
-        </h4>
-      </a>
+      <h4 key={movie.key}>
+        <span class={this.badge()}>
+          <a href={movie.link}>{movie.title}</a>
+          <button onClick={() => this.deleteMovie(movie.id)}>Delete</button>
+        </span>
+      </h4>
     ));
     return (
       <React.Fragment>

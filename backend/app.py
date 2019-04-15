@@ -296,7 +296,11 @@ def ChangeProfile():
         old_e = request.get_json()['oldEmail']
         new_e = request.get_json()['newEmail']
         # email = request.get_json()['email']
-        if db_writer_u.change_profile(old_n, old_e, new_n, new_e):
+        # old_p = request.get_json()['oldPassword']
+        # new_p = request.get_json()['newPassword']
+        old_p = ""
+        new_p = ""
+        if db_writer_u.change_profile(old_n, old_e, new_n, new_e, old_p, new_p):
             print("Change name/email done\n")
             access_token = create_access_token(identity = {'username':new_n, 'email':new_e})
             result = jsonify({"token": access_token, "result":"success"})
@@ -308,25 +312,38 @@ def ChangeProfile():
     return result
 
 @app.route("/<string:username>/watchlist",methods=["GET","POST"])
-def watchlist(username):
+def addtowatchlist(username):
     if request.method == "POST":
         m_id = request.get_json()["movieId"]
         db_writer_w.add_to_watchlist(username, m_id)
         
+    elif request.method == "GET":
+        w_list = db_reader_w.get_watchlist(username)
 
-    w_list = db_reader_w.get_watchlist(username)
+        # print(w_list)
 
-    # print(w_list)
+        jw_list = []
+        i = 0
+        for m in w_list:
+            
+            m_id = ''.join(map(str, m))
+            # print(m_id)
+            tup= db_reader_m.get_title_by_id(m_id)
+            title = ''.join(tup[0])
+            # print(title)
+            jw_list.append({'title': title, 'link': "http://localhost:3000/moviedetails/"+m_id, 'id': m_id})
+            i += 1
 
-    jw_list = {}
-    i = 0
-    for m in w_list:
-        # print(m)
-        jw_list[i] = m
-        i += 1
 
+        # print (jw_list)
+        return jsonify(jw_list)
 
-    print (jw_list)
-    return jsonify(jw_list)
+@app.route("/<string:username>/deletefromwatchlist",methods=["GET","POST"])
+def delete_from_watchlist(username):
+    if request.method == "POST":
+        
+        m_id = request.get_json()["movieID"]
+        db_writer_w.delete_from_watchlist(username, m_id)
+        print(m_id)
 
-app.run(port=4897, debug=True)
+app.run(port=4897, debug=True, threaded=True)

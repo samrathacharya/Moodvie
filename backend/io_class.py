@@ -161,6 +161,16 @@ class Read_db_movie(Read_db):
         self.close(conn)
         return False
 
+    # get title by id
+    def get_title_by_id(self, m_id):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        cursor = cur.execute("SELECT TITLE from movie where ID='"+m_id+"'")
+        result = cursor.fetchall()
+        self.close(conn)
+        return result
+
 class Read_db_watchlist(Read_db):
     def __init__(self, read_position):
         Read_db.__init__(self, read_position)
@@ -300,8 +310,29 @@ class Write_db_user(Write_db):
 
                 return 102
 
-    def change_profile(self, old_n, old_e, new_n, new_e):
-        if self.change_email(old_e, new_e)==103 and self.change_name(old_n, new_n)==103:
+    def change_password(self, old_p, new_p, old_n):
+        if old_p == new_p:
+            return 103
+        reader = Read_db_user("database/USER.db")
+        if reader.checkU(old_n) :
+            # no such user
+            return 101
+        else :
+            if reader.checkAccount(old_n, old_p):
+                db_handle = self.open()
+                conn = db_handle[0]
+                cur = db_handle[1]
+                # print(old_n)
+                # print(new_n)
+                cur.execute("UPDATE user SET PASSWORD='"+new_p+"' WHERE USERNAME='"+old_n+"' AND PASSWORD='"+old_p+"'")
+                self.close(conn)
+                return 103
+            else:
+                # wrong old password, not allowed to change the password
+                return 102
+
+    def change_profile(self, old_n, old_e, new_n, new_e, old_p, new_p):
+        if self.change_email(old_e, new_e)==103 and self.change_name(old_n, new_n)==103 and self.change_password(old_p, new_p, old_n):
             return True
         else:
             return False
