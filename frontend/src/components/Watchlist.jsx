@@ -32,13 +32,22 @@ class Watchlist extends Component {
 
   deleteMovie(id) {
     let user = this.getUsername();
+    console.log(id);
+
     const promise = axios.delete(
       "http://127.0.0.1:4897/" + user + "/watchlist",
       {
-        m_id: id
+        data: id
       }
     );
-    window.location.reload();
+
+    const newMovies = this.state.movies.filter(movie => {
+      return movie.id !== id;
+    });
+
+    this.setState({
+      movies: [...newMovies]
+    });
   }
 
   async componentDidMount() {
@@ -52,8 +61,6 @@ class Watchlist extends Component {
       movies: data,
       search: ""
     });
-
-    console.log(this.state.movies);
   }
 
   updateSearch(event) {
