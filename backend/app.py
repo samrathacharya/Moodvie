@@ -296,7 +296,11 @@ def ChangeProfile():
         old_e = request.get_json()['oldEmail']
         new_e = request.get_json()['newEmail']
         # email = request.get_json()['email']
-        if db_writer_u.change_profile(old_n, old_e, new_n, new_e):
+        # old_p = request.get_json()['oldPassword']
+        # new_p = request.get_json()['newPassword']
+        old_p = ""
+        new_p = ""
+        if db_writer_u.change_profile(old_n, old_e, new_n, new_e, old_p, new_p):
             print("Change name/email done\n")
             access_token = create_access_token(identity = {'username':new_n, 'email':new_e})
             result = jsonify({"token": access_token, "result":"success"})
