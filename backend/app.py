@@ -322,15 +322,16 @@ def addtowatchlist(username):
 
         # print(w_list)
 
-        jw_list = {0:{'title': "", 'link': ""}}
+        jw_list = []
         i = 0
         for m in w_list:
             
             m_id = ''.join(map(str, m))
             # print(m_id)
-            title= db_reader_m.get_title_by_id(m_id)
-            # print(title[0])
-            jw_list[i] = {'title': title, 'link': "localhost:3000/moviedetails/"+m_id}
+            tup= db_reader_m.get_title_by_id(m_id)
+            title = ''.join(tup[0])
+            print(title)
+            jw_list.append({'title': title, 'link': "localhost:3000/moviedetails/"+m_id})
             i += 1
 
 

@@ -1,5 +1,5 @@
 #import libraries
-import urllib.request
+import urllib2
 from bs4 import BeautifulSoup
 import requests
 from platforms import Platform

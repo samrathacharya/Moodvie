@@ -29,20 +29,30 @@ class Watchlist extends Component {
     return decoded.identity.username;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //Get username
-    let user = this.getUsername();
+    let nuser = this.getUsername();
     //Load movies from database
-    axios
-      .get("http://127.0.0.1:4897/" + user + "/watchlist")
-      .then(function(res) {
-        console.log(Object.keys(res.data).length);
-        console.log(res.data);
-        let size = Object.keys(res.data).length;
-        // this.setState({
-        //   movies: res.data.title
-        // });
-      });
+    // axios
+    //   .get("http://127.0.0.1:4897/" + user + "/watchlist")
+    //   .then(function(res) {
+    //     console.log(Object.keys(res.data).length);
+    //     console.log(res.data);
+    //     let size = Object.keys(res.data).length;
+    //     this.setState({
+    //       user: "",
+    //       movies: res.data,
+    //       search: ""
+    //     });
+    //   });
+    const promise = axios.get("http://127.0.0.1:4897/" + nuser + "/watchlist");
+    const reponse = await promise;
+    const data = reponse.data;
+    this.setState({
+      user: nuser,
+      movies: data,
+      search: ""
+    })
 
     console.log(this.state.movies);
   }
@@ -77,6 +87,7 @@ class Watchlist extends Component {
   }
   render() {
     //Search for movies function
+    console.log(this.state.movies)
     let filteredMovies = this.state.movies.filter(movie => {
       return (
         movie.title.toLowerCase().indexOf(this.state.search.toLowerCase()) !==
