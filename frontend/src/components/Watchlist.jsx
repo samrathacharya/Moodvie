@@ -32,13 +32,19 @@ class Watchlist extends Component {
   componentDidMount() {
     //Get username
     let user = this.getUsername();
-    console.log(user);
     //Load movies from database
     axios
       .get("http://127.0.0.1:4897/" + user + "/watchlist")
       .then(function(res) {
+        console.log(Object.keys(res.data).length);
         console.log(res.data);
+        let size = Object.keys(res.data).length;
+        // this.setState({
+        //   movies: res.data.title
+        // });
       });
+
+    console.log(this.state.movies);
   }
 
   updateSearch(event) {
