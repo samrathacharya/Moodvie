@@ -34,10 +34,10 @@ class Watchlist extends Component {
     let user = this.getUsername();
     console.log(id);
 
-    const promise = axios.delete(
-      "http://127.0.0.1:4897/" + user + "/watchlist",
+    const promise = axios.post(
+      "http://127.0.0.1:4897/" + user + "/deletefromwatchlist",
       {
-        data: id
+        movieID: id
       }
     );
 
