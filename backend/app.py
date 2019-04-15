@@ -311,7 +311,7 @@ def ChangeProfile():
 
     return result
 
-@app.route("/<string:username>/watchlist",methods=["GET","POST","DELETE"])
+@app.route("/<string:username>/watchlist",methods=["GET","POST"])
 def addtowatchlist(username):
     if request.method == "POST":
         m_id = request.get_json()["movieId"]
@@ -337,9 +337,13 @@ def addtowatchlist(username):
 
         # print (jw_list)
         return jsonify(jw_list)
-    else:
-        print("hello delete method")
-        m_id = request.get_json()["m_id"]
-        db_writer_w.delete_from_watchlist(username, m_id)
 
-app.run(port=4897, debug=True)
+@app.route("/<string:username>/deletefromwatchlist",methods=["GET","POST"])
+def delete_from_watchlist(username):
+    if request.method == "POST":
+        
+        m_id = request.get_json()["movieID"]
+        db_writer_w.delete_from_watchlist(username, m_id)
+        print(m_id)
+
+app.run(port=4897, debug=True, threaded=True)
