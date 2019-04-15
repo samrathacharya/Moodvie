@@ -330,13 +330,16 @@ def addtowatchlist(username):
             # print(m_id)
             tup= db_reader_m.get_title_by_id(m_id)
             title = ''.join(tup[0])
-            print(title)
+            # print(title)
             jw_list.append({'title': title, 'link': "http://localhost:3000/moviedetails/"+m_id, 'id': m_id})
             i += 1
 
 
-        print (jw_list)
+        # print (jw_list)
         return jsonify(jw_list)
     else:
+        print("hello delete method")
+        m_id = request.get_json()["m_id"]
+        db_writer_w.delete_from_watchlist(username, m_id)
 
 app.run(port=4897, debug=True)
