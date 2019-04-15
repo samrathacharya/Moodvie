@@ -21,12 +21,22 @@ class Watchlist extends Component {
 
     this.updateSearch = this.updateSearch.bind(this);
     this.getUsername = this.getUsername.bind(this);
+    this.deleteMovie = this.deleteMovie.bind(this);
   }
 
   getUsername() {
     const token = localStorage.usertoken;
     const decoded = jwt_decode(token);
     return decoded.identity.username;
+  }
+
+  deleteMovie(id) {
+    let user = this.getUsername();
+    const promise = axios.delete(
+      "http://127.0.0.1:4897/" + user + "/watchlist",
+      id
+    );
+    window.location.reload();
   }
 
   async componentDidMount() {
@@ -84,13 +94,12 @@ class Watchlist extends Component {
 
     //Render movies
     this.movieList = filteredMovies.map(movie => (
-      <a href="http://localhost:3000/moviedetails/tt4154756">
-        <h4 key={movie.key}>
-          <span class={this.badge()}>
-            <a href={movie.link}>{movie.title}</a>
-          </span>
-        </h4>
-      </a>
+      <h4 key={movie.key}>
+        <span class={this.badge()}>
+          <a href={movie.link}>{movie.title}</a>
+          <button onClick={() => this.deleteMovie(movie.id)}>Delete</button>
+        </span>
+      </h4>
     ));
     return (
       <React.Fragment>
