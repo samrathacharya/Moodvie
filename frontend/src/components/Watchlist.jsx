@@ -34,7 +34,9 @@ class Watchlist extends Component {
     let user = this.getUsername();
     const promise = axios.delete(
       "http://127.0.0.1:4897/" + user + "/watchlist",
-      id
+      {
+        m_id: id
+      }
     );
     window.location.reload();
   }
