@@ -32,19 +32,6 @@ class Watchlist extends Component {
   async componentDidMount() {
     //Get username
     let nuser = this.getUsername();
-    //Load movies from database
-    // axios
-    //   .get("http://127.0.0.1:4897/" + user + "/watchlist")
-    //   .then(function(res) {
-    //     console.log(Object.keys(res.data).length);
-    //     console.log(res.data);
-    //     let size = Object.keys(res.data).length;
-    //     this.setState({
-    //       user: "",
-    //       movies: res.data,
-    //       search: ""
-    //     });
-    //   });
     const promise = axios.get("http://127.0.0.1:4897/" + nuser + "/watchlist");
     const reponse = await promise;
     const data = reponse.data;
@@ -52,7 +39,7 @@ class Watchlist extends Component {
       user: nuser,
       movies: data,
       search: ""
-    })
+    });
 
     console.log(this.state.movies);
   }
@@ -87,7 +74,7 @@ class Watchlist extends Component {
   }
   render() {
     //Search for movies function
-    console.log(this.state.movies)
+    console.log(this.state.movies);
     let filteredMovies = this.state.movies.filter(movie => {
       return (
         movie.title.toLowerCase().indexOf(this.state.search.toLowerCase()) !==
@@ -99,7 +86,9 @@ class Watchlist extends Component {
     this.movieList = filteredMovies.map(movie => (
       <a href="http://localhost:3000/moviedetails/tt4154756">
         <h4 key={movie.key}>
-          <span class={this.badge()}>{movie.title}</span>
+          <span class={this.badge()}>
+            <a href={movie.link}>{movie.title}</a>
+          </span>
         </h4>
       </a>
     ));

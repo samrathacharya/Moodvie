@@ -331,7 +331,7 @@ def addtowatchlist(username):
             tup= db_reader_m.get_title_by_id(m_id)
             title = ''.join(tup[0])
             print(title)
-            jw_list.append({'title': title, 'link': "localhost:3000/moviedetails/"+m_id})
+            jw_list.append({'title': title, 'link': "http://localhost:3000/moviedetails/"+m_id})
             i += 1
 
 
