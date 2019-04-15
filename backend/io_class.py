@@ -161,6 +161,16 @@ class Read_db_movie(Read_db):
         self.close(conn)
         return False
 
+    # get title by id
+    def get_title_by_id(self, m_id):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        cursor = cur.execute("SELECT TITLE from movie where ID='"+m_id+"'")
+        result = cursor.fetchall()
+        self.close(conn)
+        return result
+
 class Read_db_watchlist(Read_db):
     def __init__(self, read_position):
         Read_db.__init__(self, read_position)

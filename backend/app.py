@@ -308,25 +308,29 @@ def ChangeProfile():
     return result
 
 @app.route("/<string:username>/watchlist",methods=["GET","POST"])
-def watchlist(username):
+def addtowatchlist(username):
     if request.method == "POST":
         m_id = request.get_json()["movieId"]
         db_writer_w.add_to_watchlist(username, m_id)
         
+    else:
+        w_list = db_reader_w.get_watchlist(username)
 
-    w_list = db_reader_w.get_watchlist(username)
+        # print(w_list)
 
-    # print(w_list)
+        jw_list = {0:{'title': "", 'link': ""}}
+        i = 0
+        for m in w_list:
+            
+            m_id = ''.join(map(str, m))
+            # print(m_id)
+            title= db_reader_m.get_title_by_id(m_id)
+            # print(title[0])
+            jw_list[i] = {'title': title, 'link': "localhost:3000/moviedetails/"+m_id}
+            i += 1
 
-    jw_list = {}
-    i = 0
-    for m in w_list:
-        # print(m)
-        jw_list[i] = m
-        i += 1
 
-
-    print (jw_list)
+        print (jw_list)
     return jsonify(jw_list)
 
 app.run(port=4897, debug=True)
