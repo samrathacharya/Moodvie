@@ -346,6 +346,10 @@ def delete_from_watchlist(username):
         db_writer_w.delete_from_watchlist(username, m_id)
         print(m_id)
 
+
+
+
+#recommandation for the movie
 @app.route("/recommend/<string:username>", methods=["GET","POST"])
 def recommend(username):
     if request.method == "GET":

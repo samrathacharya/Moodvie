@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import "./css/home.css";
 import TextField from "@material-ui/core/TextField";
 import Dialog_bar from "./Dialog";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 import {
   Paper,
   Input,
   FormControl,
   Button,
   Grid,
-  IconButton
+  IconButton,
+  Fab
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -30,11 +33,42 @@ const styles = {
     position: "absolute",
     top: "51%",
     left: "66%"
-  }
+  },
+  recommand: {}
 };
 class Home extends Component {
-  state = {};
+  state = {
+    recommand: ""
+  };
   search_term = React.createRef();
+
+  async componentDidMount() {
+    const { classes } = this.props;
+    if (localStorage.getItem("usertoken") !== null) {
+      const token = localStorage.usertoken;
+      const decoded = jwt_decode(token);
+      const name = decoded.identity.username;
+      const promise = axios.get("http://127.0.0.1:4897/recommend/" + name);
+      const reponse = await promise;
+      const data = reponse.data;
+      console.log(data);
+
+      let recommand = data.map(item => {
+        return (
+          <Fab
+            variant="extended"
+            color="primary"
+            key={item.id}
+            classes={classes.recommand}
+          >
+            <a href={item.link}>{item.title}</a>
+          </Fab>
+        );
+      });
+      this.setState({ recommand: recommand });
+    }
+  }
+
   handleSubmit = e => {
     if (e.target.searchterm == undefined) {
       this.props.history.push("/search/");
@@ -52,7 +86,7 @@ class Home extends Component {
           <form onSubmit={this.handleSubmit}>
             <Paper classes={{ root: classes.root }}>
               <Input
-                fullWidth="true"
+                fullWidth
                 margin="dense"
                 name="searchterm"
                 classes={{ root: classes.input }}
@@ -69,6 +103,7 @@ class Home extends Component {
           </form>
         </Grid>
         <div className="login">
+          {this.state.recommand}
           <Dialog_bar />
         </div>
       </React.Fragment>
