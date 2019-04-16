@@ -11,12 +11,13 @@ import {
   Button,
   Grid,
   IconButton,
-  Fab
+  Fab,
+  Typography
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-
+import Badge from "react-bootstrap/Badge";
 const styles = {
   root: {
     width: "40%",
@@ -55,13 +56,14 @@ class Home extends Component {
 
       let recommand = data.map(item => {
         return (
-          <Fab
-            variant="extended"
-            color="primary"
-            key={item.id}
-            classes={classes.recommand}
-          >
-            <a href={item.link}>{item.title}</a>
+          <Fab variant="extended" color="primary" key={item.id} size="small">
+            <a
+              style={{ textDecoration: "none" }}
+              target="_blank"
+              href={item.link}
+            >
+              {item.title}
+            </a>
           </Fab>
         );
       });
@@ -103,9 +105,9 @@ class Home extends Component {
           </form>
         </Grid>
         <div className="login">
-          {this.state.recommand}
           <Dialog_bar />
         </div>
+        <div className="rec">{this.state.recommand}</div>
       </React.Fragment>
     );
   }
