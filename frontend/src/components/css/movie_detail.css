@@ -28,7 +28,8 @@
 }
 .rating {
   font-family: "Audiowide", sans-serif;
-  padding-top: 2%;
+  float: left;
+  margin-left: 10px;
 }
 .trailor {
   clear: both;
