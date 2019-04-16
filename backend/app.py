@@ -51,7 +51,7 @@ def basic_movie_info(id):
                 if (n != info['casts'].__len__()):
                     cas += '|'
                 
-            db_writer_m.insert_movie(id,info['title'], info['poster_link'], info['synopsis'], info['date'], cas, info['director'], info['AgeRestriction'], info['runtime'], info['ratings']['imdb'], info['ratings']['mt'],info['ratings']['rt'],"N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A") 
+            db_writer_m.insert_movie(id,info['title'], info['poster_link'], info['synopsis'], info['date'], cas, info['director'], info['AgeRestriction'], info['runtime'], info['ratings']['imdb'], info['ratings']['mt'],info['ratings']['rt'],"N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A") 
             return jsonify(info)
     else:
         info1 = db_reader_m.get_info(id)
@@ -200,11 +200,20 @@ def getYoutobePrice(title, year, id):
 
 # get the review from rotten tomatoes
 # format: movie_title
-@app.route("/review/title=<string:title>")
-def getRtReview(title):
+@app.route("/review/title=<string:title>&date=<string:year>&id=<string:id>")
+def getRtReview(title,year,id):
+    info = db_reader_m.check_review(id)
 
+    if (info == None):
+        pass
+    else:
+        data = {"movie_title": title, "review": info[0]}
+        return jsonify(data)
+    
+    #title = title.replace(': ',':_')
+    title = title.replace(' ', '_')
     # running the shell scrip to web scrap the rt review
-    p = Popen(['./webscraping/rt_review.sh', title],
+    p = Popen(['./webscraping/rt_review.sh', title, year],
               stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate(
         b"input data that is passed to subprocess' stdin")
@@ -217,7 +226,7 @@ def getRtReview(title):
     # print(review)
 
     # making json object
-    data = {"movie_title": title, "rotten tomatoes review": review}
+    data = {"movie_title": title, "review": review}
 
     # json_data = json.dumps(data)
 
