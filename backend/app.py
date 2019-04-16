@@ -372,7 +372,10 @@ def get_review(id):
     if(len(result_dictionary['results'])==0):
         return jsonify({"author":"-1","content":"-1"})
     
-    return jsonify({"author":result_dictionary['results'][0]['author'],"content":result_dictionary['results'][0]['content']})
+    cont = result_dictionary['results'][0]['content'].replace("_"," ")
+    if (len(cont)>500):
+        cont = cont[0:500]+"..."
+    return jsonify({"author":result_dictionary['results'][0]['author'],"content":cont})
 
 
 #recommandation for the movie

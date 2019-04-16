@@ -42,7 +42,7 @@ class Platform extends Component {
         prim = "secondary";
         break;
       default:
-        prim = "";
+        prim = "inherit";
         break;
     }
     return prim;
