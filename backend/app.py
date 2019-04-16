@@ -204,11 +204,13 @@ def getYoutobePrice(title, year, id):
 @app.route("/review/title=<string:title>&date=<string:year>&id=<string:id>")
 def getRtReview(title,year,id):
     info = db_reader_m.check_review(id)
-
+    print(title)
+    print(year)
+    print(info)
     if (info == None):
         pass
     else:
-        data = {"movie_title": title, "review": info[0]}
+        data = {"movie_title": title, "review": info[1]}
         return jsonify(data)
     
     #title = title.replace(': ',':_')
@@ -220,15 +222,20 @@ def getRtReview(title,year,id):
         b"input data that is passed to subprocess' stdin")
     rc = p.returncode
 
+    print(output)
     # get the link
     review = output.decode('ascii')
+    print(review)
 
     # print the review (for testing)
     # print(review)
 
     # making json object
+    if review == "":
+        review = "N/A"
     data = {"movie_title": title, "review": review}
 
+    print(data)
     # json_data = json.dumps(data)
 
     # for testing

@@ -146,6 +146,7 @@ class Read_db_movie(Read_db):
                 return info
         self.close(conn)
         return None
+        
     # check if the review is updated
     def check_review(self, m_id):
         db_handle = self.open()
