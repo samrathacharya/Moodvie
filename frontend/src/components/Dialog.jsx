@@ -132,7 +132,7 @@ class Dialog_bar extends Component {
                   id="pw"
                   name="pw"
                   label="Password"
-                  type="Text"
+                  type="Password"
                   fullWidth
                 />
               </DialogContent>

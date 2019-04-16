@@ -72,16 +72,20 @@ class UserProfile extends Component {
     this.state = {
       name: "",
       email: "",
-      movies: ["H"],
+      movies: [],
       mobileOpen: false,
       open: false,
       body: "",
       isNameButtonDisabled: false,
-      isEmailButtonDisabled: false
+      isEmailButtonDisabled: false,
+      search: ""
     };
+    this.updateSearch = this.updateSearch.bind(this);
+    this.getUsername = this.getUsername.bind(this);
+    this.deleteMovie = this.deleteMovie.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (localStorage.getItem("usertoken") !== null) {
       const token = localStorage.usertoken;
       const decoded = jwt_decode(token);
@@ -112,9 +116,19 @@ class UserProfile extends Component {
       });
 
       console.log(this.state.name);
+
+      let nuser = decoded.identity.username;
+      const promise = axios.get("http://127.0.0.1:4897/" + nuser + "/watchlist");
+      const reponse = await promise;
+      const data = reponse.data;
+      console.log(data)
+      this.setState({
+        movies: data,
+      });
     } else {
       this.props.history.push("/users/login");
     }
+
   }
 
   ChangeToProfile = () => {
@@ -212,10 +226,57 @@ class UserProfile extends Component {
     }
   };
 
+
+  updateSearch(event) {
+    this.setState({ search: event.target.value.substr(0, 20) });
+  }
+
+  getUsername() {
+    const token = localStorage.usertoken;
+    const decoded = jwt_decode(token);
+    return decoded.identity.username;
+  }
+
   ChangetowatchList = () => {
     console.log("there should be watch list here");
-    this.setState({ body: <h1>i am your watch list</h1> });
+    
+    this.setState({ body: <h1>{this.movieList}</h1> });
+    
   };
+
+  deleteMovie(id) {
+    let user = this.getUsername();
+    console.log(id);
+
+    axios.post(
+      "http://127.0.0.1:4897/" + user + "/deletefromwatchlist",
+      {
+        movieID: id
+      }
+    );
+
+    const newMovies = this.state.movies.filter(movie => {
+      return movie.id !== id;
+    });
+
+    const newList = newMovies.map(movie => (
+      <h4 key={movie.key}>
+        <span>
+          <a href={movie.link}>{movie.title}</a>
+          <button onClick={() => this.deleteMovie(movie.id)}>Delete</button>
+        </span>
+      </h4>
+    ));
+
+    this.setState({
+      movies: [...newMovies],
+      body: <h1>{newList}</h1>
+    });
+    
+  }
+
+
+
   ChangeToChangeProfile = () => {
     const { classes, theme } = this.props;
     const newBody = (
@@ -270,6 +331,22 @@ class UserProfile extends Component {
   render() {
     const { classes, theme } = this.props;
     const { open } = this.state.open;
+    let filteredMovies = this.state.movies.filter(movie => {
+      return (
+        movie.title.toLowerCase().indexOf(this.state.search.toLowerCase()) !==
+        -1
+      );
+    });
+
+    //Render movies
+    this.movieList = filteredMovies.map(movie => (
+      <h4 key={movie.key}>
+        <span>
+          <a href={movie.link}>{movie.title}</a>
+          <button onClick={() => this.deleteMovie(movie.id)}>Delete</button>
+        </span>
+      </h4>
+    ));
     const drawer = (
       <div>
         <div className={classes.toolbar}>
