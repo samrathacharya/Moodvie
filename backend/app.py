@@ -414,32 +414,37 @@ def get_review(id):
 def recommend(username):
     if request.method == "GET":
         curr_list = db_reader_w.get_watchlist(username)
-        data = []
+        data = set({})
         result = []
+        print(set(curr_list))
         for m_id in curr_list:
             # print(m_id)
             namelist = db_reader_w.get_similar_likes_u(username, ''.join(m_id))
             for name in namelist:
-                # print(''.join(name))
+                print(''.join(name))
                 o_m_list = db_reader_w.get_watchlist(''.join(name))
-                # print(o_m_list)
+                print(set(o_m_list))
                 recommend_list = set(o_m_list).difference(set(curr_list))
-                # print(recommend_list)
-                data.append(list(recommend_list))
-                # print(data)
+                print(recommend_list)
+                data = data.union(recommend_list)
+                print(data)
 
         # data = data[1:]
         print("--------")
         print(data)
+        #print(set(data))
         print("--------")
+        i = 0
         for d in data:
-            for e in d:
+            #for e in d:
                 # print(''.join(e[0]))
-                m_id = ''.join(e[0])
+                m_id = ''.join(d)
                 tup = db_reader_m.get_title_by_id(m_id)
                 print(tup)
                 title = ''.join(tup[0])
                 result.append({'title': title, 'link': "http://localhost:3000/moviedetails/"+m_id, 'id': m_id})
+                i += 1
+                if (i == 5): break
 
         return jsonify(result)
     
