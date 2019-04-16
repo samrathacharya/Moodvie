@@ -343,43 +343,44 @@ class MovieDetails extends Component {
         >
           Popular ratings
         </Typography>
-
-        <a
-          target="_blank"
-          href={imdb_string}
-          className="sm-link sm-link_padding-bottom sm-link3"
-        >
-          <img
-            className="reviewlogo"
-            src={require("./icon/imdb.jpeg")}
-            alt="rt"
-          />
-          <Typography
-            variant="display1"
-            style={{ paddingTop: "3%", paddingLeft: "20%" }}
+        <div className="rating">
+          <a
+            target="_blank"
+            href={imdb_string}
+            className="sm-link sm-link_padding-bottom sm-link3"
           >
-            {this.state.rating.imdb}
-          </Typography>
-        </a>
-
-        <a
-          target="_blank"
-          href={rt_string}
-          className="sm-link sm-link_padding-bottom sm-link3"
-        >
-          <img
-            className="reviewlogo"
-            src={require("./icon/rt.png")}
-            alt="imdb"
-          />
-          <Typography
-            variant="display1"
-            style={{ paddingTop: "3%", paddingLeft: "20%" }}
+            <img
+              className="reviewlogo"
+              src={require("./icon/imdb.jpeg")}
+              alt="rt"
+            />
+            <Typography
+              variant="display1"
+              style={{ paddingTop: "3%", paddingLeft: "10%" }}
+            >
+              {this.state.rating.imdb}
+            </Typography>
+          </a>
+        </div>
+        <div className="rating">
+          <a
+            target="_blank"
+            href={rt_string}
+            className="sm-link sm-link_padding-bottom sm-link3"
           >
-            {this.state.rating.rt}
-          </Typography>
-        </a>
-
+            <img
+              className="reviewlogo"
+              src={require("./icon/rt.png")}
+              alt="imdb"
+            />
+            <Typography
+              variant="display1"
+              style={{ paddingTop: "3%", paddingLeft: "10%" }}
+            >
+              {this.state.rating.rt}
+            </Typography>
+          </a>
+        </div>
         <a
           target="_blank"
           href={mt_string}
@@ -388,7 +389,7 @@ class MovieDetails extends Component {
           <img className="reviewlogo" src={require("./icon/mt.png")} alt="mt" />
           <Typography
             variant="display1"
-            style={{ paddingTop: "3%", paddingLeft: "20%" }}
+            style={{ paddingTop: "3%", paddingLeft: "10%" }}
           >
             {this.state.rating.mt}
           </Typography>
