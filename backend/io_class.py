@@ -218,7 +218,17 @@ class Read_db_watchlist(Read_db):
 
         self.close(conn)
         return a_list
+        
+    # get users that have similar likes on the movie
+    def get_similar_likes_u(self, u_name, m_id):
+        db_handle = self.open()
+        conn = db_handle[0]
+        cur = db_handle[1]
+        cur.execute("select USERNAME from watchlist where USERNAME!='"+u_name+"' AND MOVIEID='"+m_id+"'")
+        namelist = cur.fetchall()
+        self.close(conn)
 
+        return namelist
 
 class Write(object):
     def __init__(self, write_method, write_position):
