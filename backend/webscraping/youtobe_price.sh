@@ -18,7 +18,8 @@ youtobe_url="https://www.youtube.com/results?search_query=$movie_title+$movie_ye
 wget -q -O- "$youtobe_url" |
 egrep -o ">Watch from A[$]\d+.\d*" |
 egrep -o "[$]\d+.\d*" | 
-uniq #> result.txt
+uniq |
+head -1 #> result.txt
 
 
 # the link
