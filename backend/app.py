@@ -235,6 +235,7 @@ def getYoutobePrice(title, year, id):
 def getRtReview(title,year,id):
     info = db_reader_m.check_review(id)
     print(title)
+    year = year[0:4]
     print(year)
     print(info)
     if (info == None):
