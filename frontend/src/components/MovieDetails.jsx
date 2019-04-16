@@ -65,7 +65,8 @@ class MovieDetails extends Component {
       trailor: <CircularProgress />,
       id: "",
 
-      reviews: ""
+      reviews: "",
+      rt_review: ""
     };
     this.addToWatchlist = this.addToWatchlist.bind(this);
   }
@@ -128,12 +129,32 @@ class MovieDetails extends Component {
     const reviewresponse = await promiseReview;
     const reviewDb = reviewresponse.data;
 
-    console.log(reviewDb);
-
+    let tmp = new Date(this.state.date);
     this.setState({ reviews: reviewDb });
+
+    const promiseReview2 = axios.get(
+      "http://127.0.0.1:4897/review/title=" +
+        data.title +
+        "&date=" +
+        tmp.getFullYear() +
+        "&id=" +
+        id
+    );
+    console.log(
+      "http://127.0.0.1:4897/review/title=" +
+        data.title +
+        "&date=" +
+        tmp.getFullYear() +
+        "&id=" +
+        id
+    );
+    const reviewresponse2 = await promiseReview2;
+    const reviewDb2 = reviewresponse2.data;
+
+    this.setState({ rt_review: reviewDb2 });
     //set youtube
     //youtube trailor
-    let tmp = new Date(this.state.date);
+
     const promise2 = axios.get(
       "http://127.0.0.1:4897/trailor/title=" +
         data.title +
@@ -298,7 +319,7 @@ class MovieDetails extends Component {
         <Typography component="h2" variant="display1">
           Watch now on
         </Typography>
-        <div style={{ paddingTop: "10px" }}>{this.state.platforms}</div>
+        <div style={{ paddingTop: "40px" }}>{this.state.platforms}</div>
       </React.Fragment>
     );
   }
@@ -418,6 +439,26 @@ class MovieDetails extends Component {
     this.props.history.push("/search/" + e.target.searchterm.value);
   };
 
+  rt_review = () => {
+    return (
+      <Grid xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
+        <Paper
+          style={{
+            padding: "40px",
+            "background-color": "#6ed3cf",
+            "font-style": "italic"
+          }}
+        >
+          <Typography style={{ font: "Italic" }}>
+            {this.state.rt_review.review}
+          </Typography>
+          <Typography style={{ paddingTop: "20px" }}>
+            By- Rotten tomatoes
+          </Typography>
+        </Paper>
+      </Grid>
+    );
+  };
   reviewDb = () => {
     if (this.state.reviews.content != "-1")
       return (
@@ -425,7 +466,7 @@ class MovieDetails extends Component {
           <Paper
             style={{
               padding: "40px",
-              "background-color": "pink",
+              "background-color": "lightsalmon",
               "font-style": "italic"
             }}
           >
@@ -489,7 +530,11 @@ class MovieDetails extends Component {
                 </Zoom>
 
                 <Zoom in>
-                  <Typography variant="subtitle1" gutterBottom>
+                  <Typography
+                    variant="subtitle1"
+                    style={{ paddingTop: "10px" }}
+                    gutterBottom
+                  >
                     {this.state.date} ({this.state.runtime}) By {this.state.by}
                     {"               "}
                     {localStorage.usertoken ? watchlistButton : noButton}
@@ -499,14 +544,18 @@ class MovieDetails extends Component {
 
                 <Grid>
                   <Zoom in>
-                    <Typography variant="h6" gutterBottom>
+                    <Typography
+                      variant="h6"
+                      style={{ paddingTop: "10px" }}
+                      gutterBottom
+                    >
                       {this.state.summary}
                     </Typography>
                   </Zoom>
                 </Grid>
-                <Grid style={{ paddingTop: "10px" }}>{this.trailor()}</Grid>
+                <Grid style={{ paddingTop: "20px" }}>{this.trailor()}</Grid>
 
-                <Grid item lg style={{ paddingTop: "10px" }}>
+                <Grid item lg style={{ paddingTop: "40px" }}>
                   {this.platformsList()}
                 </Grid>
               </Grid>
@@ -516,10 +565,11 @@ class MovieDetails extends Component {
                   image={this.state.posterLink}
                   classes={{ root: classes.poster }}
                 />
-                <div style={{ paddingLeft: "17%", paddingTop: "4%" }}>
+                <div style={{ paddingLeft: "17%", paddingTop: "2%" }}>
                   {this.ratingList()}
                 </div>
                 {this.reviewDb()}
+                {this.rt_review()}
               </Grid>
             </Grid>
           </Paper>
