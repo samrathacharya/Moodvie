@@ -1,6 +1,7 @@
-import requests
+import urllib.request
 from movie import Movie
 from datetime import datetime
+import requests
 
 
 class Omdb_api():

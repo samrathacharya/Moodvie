@@ -1,7 +1,7 @@
 #import libraries
-import urllib2
+import urllib.request
 from bs4 import BeautifulSoup
-import requests
+#import requests
 from platforms import Platform
 from datetime import datetime
 

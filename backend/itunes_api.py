@@ -1,5 +1,5 @@
 
-import requests
+import urllib.request
 from platforms import Platform
 from datetime import datetime
 
