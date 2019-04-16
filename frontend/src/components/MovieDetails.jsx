@@ -63,7 +63,9 @@ class MovieDetails extends Component {
       platforms: [],
       runtime: "",
       trailor: <CircularProgress />,
-      id: ""
+      id: "",
+
+      reviews: ""
     };
     this.addToWatchlist = this.addToWatchlist.bind(this);
   }
@@ -120,6 +122,15 @@ class MovieDetails extends Component {
       id: id
     });
 
+    const promiseReview = axios.get(
+      "http://127.0.0.1:4897/moviedbreview/" + id
+    );
+    const reviewresponse = await promiseReview;
+    const reviewDb = reviewresponse.data;
+
+    console.log(reviewDb);
+
+    this.setState({ reviews: reviewDb });
     //set youtube
     //youtube trailor
     let tmp = new Date(this.state.date);
@@ -219,7 +230,7 @@ class MovieDetails extends Component {
         prim = "secondary";
         break;
       default:
-        prim = "";
+        prim = "inherit";
         break;
     }
     return prim;
@@ -251,10 +262,9 @@ class MovieDetails extends Component {
           {this.state.casts.map(actor => {
             return (
               //link to the wiki page of the actor
-              <Zoom in="true">
+              <Zoom in key={actor}>
                 <Button
                   variant="outlined"
-                  key={actor}
                   classes={{ root: classes.cast_button }}
                   color={this.color_button()}
                 >
@@ -288,7 +298,7 @@ class MovieDetails extends Component {
         <Typography component="h2" variant="display1">
           Watch now on
         </Typography>
-        <div style={{ "padding-top": "10px" }}>{this.state.platforms}</div>
+        <div style={{ paddingTop: "10px" }}>{this.state.platforms}</div>
       </React.Fragment>
     );
   }
@@ -320,7 +330,7 @@ class MovieDetails extends Component {
               />
               <Typography
                 variant="display1"
-                style={{ "padding-top": "3%", "padding-left": "20%" }}
+                style={{ paddingTop: "3%", paddingLeft: "20%" }}
               >
                 {this.state.rating.imdb}
               </Typography>
@@ -341,7 +351,7 @@ class MovieDetails extends Component {
               />
               <Typography
                 variant="display1"
-                style={{ "padding-top": "3%", "padding-left": "20%" }}
+                style={{ paddingTop: "3%", paddingLeft: "20%" }}
               >
                 {this.state.rating.rt}
               </Typography>
@@ -362,7 +372,7 @@ class MovieDetails extends Component {
               />
               <Typography
                 variant="display1"
-                style={{ "padding-top": "3%", "padding-left": "20%" }}
+                style={{ paddingTop: "3%", paddingLeft: "20%" }}
               >
                 {this.state.rating.mt}
               </Typography>
@@ -392,7 +402,7 @@ class MovieDetails extends Component {
         </Typography>
         <a target="_blank" href={this.state.trailor.link}>
           <img
-            style={{ "padding-top": "10px" }}
+            style={{ paddingTop: "10px" }}
             className="trailerImg"
             src={this.state.trailor.pic}
             alt="Not available"
@@ -406,6 +416,29 @@ class MovieDetails extends Component {
     const term = e.target.searchterm.value;
     this.setState({ term });
     this.props.history.push("/search/" + e.target.searchterm.value);
+  };
+
+  reviewDb = () => {
+    if (this.state.reviews.content != "-1")
+      return (
+        <Grid xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
+          <Paper
+            style={{
+              padding: "40px",
+              "background-color": "pink",
+              "font-style": "italic"
+            }}
+          >
+            <Typography style={{ font: "Italic" }}>
+              {this.state.reviews.content}
+            </Typography>
+            <Typography style={{ paddingTop: "20px" }}>
+              By- {this.state.reviews.author}
+            </Typography>
+          </Paper>
+        </Grid>
+      );
+    return "";
   };
   render() {
     const { classes } = this.props;
@@ -430,7 +463,7 @@ class MovieDetails extends Component {
               padding: 40,
               marginTop: 40,
               marginBottom: 10,
-              height: "30cm",
+              height: "40cm",
               width: "100%"
             }}
           >
@@ -439,7 +472,7 @@ class MovieDetails extends Component {
             </Grid>
             <Grid container>
               <Grid item xs={7}>
-                <Zoom in="true">
+                <Zoom in>
                   <Typography variant="h4" gutterBottom>
                     {this.state.title}
                     <a
@@ -455,7 +488,7 @@ class MovieDetails extends Component {
                   </Typography>
                 </Zoom>
 
-                <Zoom in="true">
+                <Zoom in>
                   <Typography variant="subtitle1" gutterBottom>
                     {this.state.date} ({this.state.runtime}) By {this.state.by}
                     {"               "}
@@ -465,14 +498,15 @@ class MovieDetails extends Component {
                 <Grid>{this.castList()}</Grid>
 
                 <Grid>
-                  <Zoom in="true">
+                  <Zoom in>
                     <Typography variant="h6" gutterBottom>
                       {this.state.summary}
                     </Typography>
                   </Zoom>
                 </Grid>
-                <Grid style={{ "padding-top": "10px" }}>{this.trailor()}</Grid>
-                <Grid lg style={{ "padding-top": "10px" }}>
+                <Grid style={{ paddingTop: "10px" }}>{this.trailor()}</Grid>
+
+                <Grid item lg style={{ paddingTop: "10px" }}>
                   {this.platformsList()}
                 </Grid>
               </Grid>
@@ -482,9 +516,10 @@ class MovieDetails extends Component {
                   image={this.state.posterLink}
                   classes={{ root: classes.poster }}
                 />
-                <div style={{ "padding-left": "17%", "padding-top": "4%" }}>
+                <div style={{ paddingLeft: "17%", paddingTop: "4%" }}>
                   {this.ratingList()}
                 </div>
+                {this.reviewDb()}
               </Grid>
             </Grid>
           </Paper>
