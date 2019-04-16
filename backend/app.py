@@ -9,6 +9,7 @@ from flask_jwt_extended import JWTManager
 from flask_jwt_extended import create_access_token
 from flask_bcrypt import Bcrypt
 app = Flask(__name__)
+import requests
 CORS(app)
 engine = Search_engine()
 jwt = JWTManager(app)
@@ -346,7 +347,16 @@ def delete_from_watchlist(username):
         db_writer_w.delete_from_watchlist(username, m_id)
         print(m_id)
 
+@app.route("/moviedbreview/<string:id>",methods=["GET","POST"])
 
+def get_review(id):
+    response = requests.get("https://api.themoviedb.org/3/movie/"+id+"/reviews?api_key=6d9e14ac2ad18af84209ee5f055615d0&language=en-US&page=1")
+    result_dictionary = response.json()
+
+    if(len(result_dictionary['results'])==0):
+        return jsonify({"author":"-1","content":"-1"})
+    
+    return jsonify({"author":result_dictionary['results'][0]['author'],"content":result_dictionary['results'][0]['content']})
 
 
 #recommandation for the movie
