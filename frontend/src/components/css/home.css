@@ -101,6 +101,11 @@ a:active {
 }
 .login {
   position: absolute;
-  top: 65%;
-  left: 60%;
+  top: 5%;
+  left: 80%;
+}
+.rec {
+  position: absolute;
+  top: 60%;
+  left: 26%;
 }

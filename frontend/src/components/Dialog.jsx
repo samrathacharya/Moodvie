@@ -86,6 +86,7 @@ class Dialog_bar extends Component {
       re = (
         <React.Fragment>
           <Button
+            size="medium"
             color="inherit"
             classes={{ root: classes.login_profile_button }}
           >
@@ -104,6 +105,7 @@ class Dialog_bar extends Component {
         <React.Fragment>
           <Button
             color="inherit"
+            size="medium"
             classes={{ root: classes.login_profile_button }}
             onClick={this.handleLoginOpen}
           >
@@ -137,10 +139,14 @@ class Dialog_bar extends Component {
                 />
               </DialogContent>
               <DialogActions>
-                <Button type="submit" color="primary">
+                <Button type="submit" color="primary" size="medium">
                   Login
                 </Button>
-                <Button onClick={this.handleLoginClose} color="primary">
+                <Button
+                  onClick={this.handleLoginClose}
+                  color="primary"
+                  size="medium"
+                >
                   Cancel
                 </Button>
               </DialogActions>
@@ -150,11 +156,12 @@ class Dialog_bar extends Component {
           <Button
             color="inherit"
             classes={{ root: classes.login_profile_button }}
+            size="medium"
           >
             <a
-              target="_blank"
               href="http://localhost:3000/users/register"
               style={{ textDecoration: "none" }}
+              target="_blank"
             >
               Sign Up!
             </a>

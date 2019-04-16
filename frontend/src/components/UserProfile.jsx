@@ -25,9 +25,10 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Moodvie_icon from "./Moodvie_icon";
 import SaveIcon from "@material-ui/icons/Save";
-
+import DeleteIcon from "@material-ui/icons/Delete";
 import TextField from "@material-ui/core/TextField";
-import { ButtonBase, Button, Zoom } from "@material-ui/core";
+import { ButtonBase, Button, Zoom, Input } from "@material-ui/core";
+import Watchlist from "./Watchlist";
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -78,7 +79,8 @@ class UserProfile extends Component {
       body: "",
       isNameButtonDisabled: false,
       isEmailButtonDisabled: false,
-      search: ""
+      search: "",
+      movieList: ""
     };
     this.updateSearch = this.updateSearch.bind(this);
     this.getUsername = this.getUsername.bind(this);
@@ -118,17 +120,18 @@ class UserProfile extends Component {
       console.log(this.state.name);
 
       let nuser = decoded.identity.username;
-      const promise = axios.get("http://127.0.0.1:4897/" + nuser + "/watchlist");
+      const promise = axios.get(
+        "http://127.0.0.1:4897/" + nuser + "/watchlist"
+      );
       const reponse = await promise;
       const data = reponse.data;
-      console.log(data)
+      console.log(data);
       this.setState({
-        movies: data,
+        movies: data
       });
     } else {
       this.props.history.push("/users/login");
     }
-
   }
 
   ChangeToProfile = () => {
@@ -226,7 +229,6 @@ class UserProfile extends Component {
     }
   };
 
-
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0, 20) });
   }
@@ -236,46 +238,52 @@ class UserProfile extends Component {
     const decoded = jwt_decode(token);
     return decoded.identity.username;
   }
-
   ChangetowatchList = () => {
-    console.log("there should be watch list here");
-    
-    this.setState({ body: <h1>{this.movieList}</h1> });
-    
+    //Render movies
+
+    this.setState({
+      body: (
+        <Zoom>
+          <Watchlist />
+        </Zoom>
+      )
+    });
   };
 
   deleteMovie(id) {
     let user = this.getUsername();
     console.log(id);
 
-    axios.post(
-      "http://127.0.0.1:4897/" + user + "/deletefromwatchlist",
-      {
-        movieID: id
-      }
-    );
+    axios.post("http://127.0.0.1:4897/" + user + "/deletefromwatchlist", {
+      movieID: id
+    });
 
     const newMovies = this.state.movies.filter(movie => {
       return movie.id !== id;
     });
 
     const newList = newMovies.map(movie => (
-      <h4 key={movie.key}>
-        <span>
-          <a href={movie.link}>{movie.title}</a>
-          <button onClick={() => this.deleteMovie(movie.id)}>Delete</button>
-        </span>
-      </h4>
+      <ListItem button key={movie.title}>
+        <a href={movie.link} style={{ textDecoration: "none" }} target="_blank">
+          <Typography component="h2" variant="display1">
+            {movie.title}
+          </Typography>
+        </a>
+
+        <IconButton
+          aria-label="Delete"
+          onClick={() => this.deleteMovie(movie.id)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </ListItem>
     ));
 
     this.setState({
       movies: [...newMovies],
       body: <h1>{newList}</h1>
     });
-    
   }
-
-
 
   ChangeToChangeProfile = () => {
     const { classes, theme } = this.props;
@@ -331,22 +339,7 @@ class UserProfile extends Component {
   render() {
     const { classes, theme } = this.props;
     const { open } = this.state.open;
-    let filteredMovies = this.state.movies.filter(movie => {
-      return (
-        movie.title.toLowerCase().indexOf(this.state.search.toLowerCase()) !==
-        -1
-      );
-    });
 
-    //Render movies
-    this.movieList = filteredMovies.map(movie => (
-      <h4 key={movie.key}>
-        <span>
-          <a href={movie.link}>{movie.title}</a>
-          <button onClick={() => this.deleteMovie(movie.id)}>Delete</button>
-        </span>
-      </h4>
-    ));
     const drawer = (
       <div>
         <div className={classes.toolbar}>
@@ -416,61 +409,3 @@ UserProfile.propTypes = {
 };
 
 export default withStyles(styles, { withTheme: true })(UserProfile);
-/*
-
-
-          <Navbar />
-
-
-        <div className="bottom">
-          <div className="navigation">
-            <h2>Navigation</h2>
-            <br />
-            <p>
-              <a href="/profile"> Your Profile </a>
-            </p>
-            <p>
-              <a href="/watchlist">Your Watchlist</a>
-            </p>
-          </div>
-          <div className="profile">
-            <h2 className="welcome">
-              {" "}
-              <b>Welcome {this.state.name}</b>
-            </h2>
-            <div className="profileImageDiv">
-              <img className="profileImage" src={userImage} />
-            </div>
-            <div className="details">
-              <span className="detailField">
-                {" "}
-                <b>Name:</b>
-              </span>
-              {this.state.name} <br />
-              <span className="detailField">
-                <b>Email:</b>
-              </span>
-              {this.state.email} <br />
-              <span className="detailField">
-                <b>Watch Later: </b>
-              </span>
-              5
-            </div>
-          </div>
-        </div>
-      </React.Fragment>
-
-
-
-      <a href="/profile"> Your Profile </a>
-
-            <a href="/watchlist">Your Watchlist</a>
-
-            <b>Welcome {this.state.name}</b>
-
-            <img className="profileImage" src={userImage} />
-
-            {this.state.name}
-
-            {this.state.email}
-*/

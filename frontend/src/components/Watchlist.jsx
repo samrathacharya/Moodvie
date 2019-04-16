@@ -3,19 +3,42 @@ import Moodvie_result_icon from "./Moodive_result_icon";
 import Navbar from "./navbar";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Divider from "@material-ui/core/Divider";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import MailIcon from "@material-ui/icons/Mail";
+import MenuIcon from "@material-ui/icons/Menu";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import Moodvie_icon from "./Moodvie_icon";
+import SaveIcon from "@material-ui/icons/Save";
+import DeleteIcon from "@material-ui/icons/Delete";
+import TextField from "@material-ui/core/TextField";
+import { ButtonBase, Button, Zoom, Input } from "@material-ui/core";
 
+const styles = {
+  root: {
+    width: "40%"
+  }
+};
 class Watchlist extends Component {
   constructor() {
     super();
     this.state = {
       user: "",
-      movies: [
-        { key: 1, title: "Avengers Infinity War" },
-        { key: 2, title: "Batman Returns" },
-        { key: 3, title: "Get Out" },
-        { key: 4, title: "Wolf Of Wall Street" },
-        { key: 5, title: "Ace Ventura" }
-      ],
+      movies: [],
       search: ""
     };
 
@@ -66,32 +89,9 @@ class Watchlist extends Component {
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0, 20) });
   }
-  badge() {
-    let ran = Math.floor(Math.random() * Math.floor(5));
-    let prim = "primary";
-    switch (ran) {
-      case 0:
-        prim = "primary";
-        break;
-      case 1:
-        prim = "secondary";
-        break;
-      case 2:
-        prim = "success";
-        break;
-      case 3:
-        prim = "dark";
-        break;
-      case 4:
-        prim = "warning";
-        break;
-      case 5:
-        prim = "info";
-        break;
-    }
-    return "badge badge-" + prim;
-  }
+
   render() {
+    const { classes } = this.props;
     //Search for movies function
     console.log(this.state.movies);
     let filteredMovies = this.state.movies.filter(movie => {
@@ -102,57 +102,39 @@ class Watchlist extends Component {
     });
 
     //Render movies
-    this.movieList = filteredMovies.map(movie => (
-      <h4 key={movie.key}>
-        <span class={this.badge()}>
-          <a href={movie.link}>{movie.title}</a>
-          <button onClick={() => this.deleteMovie(movie.id)}>Delete</button>
-        </span>
-      </h4>
+    let movieList = filteredMovies.map(movie => (
+      <ListItem button key={movie.id}>
+        <a href={movie.link} style={{ textDecoration: "none" }} target="_blank">
+          <Typography component="h2" variant="display1">
+            {movie.title}
+          </Typography>
+        </a>
+
+        <IconButton
+          aria-label="Delete"
+          onClick={() => this.deleteMovie(movie.id)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </ListItem>
     ));
     return (
       <React.Fragment>
-        {/* Include navbar component */}
-        <div className="headerContainer">
-          <Navbar />
-        </div>
+        <Input
+          type="text"
+          value={this.state.search}
+          placeholder="Search For movie in watchlist"
+          onChange={this.updateSearch.bind(this)}
+          classes={{ root: classes.root }}
+        />
 
-        {/* User Profile */}
-        <div className="bottom">
-          <div className="navigation">
-            <h2>Navigation</h2>
-            <br />
-            <p>
-              <a href="/user"> Your User Page </a>
-            </p>
-            <p>
-              <a href="/profile">Your Profile Page</a>
-            </p>
-          </div>
-          <div className="profile">
-            <div className="details" />
-            <h4 className="welcome">
-              <b>Your Watchlist:</b>
-            </h4>
-
-            <input
-              className="searchForm"
-              type="text"
-              value={this.state.search}
-              placeholder="Search For movie in watchlist"
-              onChange={this.updateSearch.bind(this)}
-            />
-            <br />
-            <br />
-            {this.movieList}
-          </div>
-        </div>
+        {movieList}
       </React.Fragment>
     );
   }
 }
 
-export default Watchlist;
+export default withStyles(styles)(Watchlist);
 
 // handleChange = event => {
 //   //Turn Search to lower case
