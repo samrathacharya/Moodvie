@@ -9,6 +9,7 @@ import "./css/button.css";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import SearchAppBar from "./NavBarTop";
+
 import {
   Grow,
   Typography,
@@ -66,7 +67,8 @@ class MovieDetails extends Component {
       id: "",
 
       reviews: "",
-      rt_review: ""
+      rt_review: "",
+      loading: true
     };
     this.addToWatchlist = this.addToWatchlist.bind(this);
   }
@@ -237,7 +239,7 @@ class MovieDetails extends Component {
       />
     );
     // set the state
-    this.setState({ platforms: platforms });
+    this.setState({ platforms: platforms, loading: false });
   }
 
   color_button() {
@@ -334,72 +336,63 @@ class MovieDetails extends Component {
       "https://www.imdb.com/title/" + this.props.match.params.id;
     return (
       <React.Fragment>
-        <Typography component="h2" variant="display1">
+        <Typography
+          component="h2"
+          variant="display1"
+          style={{ paddingBottom: "10px" }}
+        >
           Popular ratings
         </Typography>
-        <div className="rating">
-          <Typography>
-            <a
-              target="_blank"
-              href={imdb_string}
-              className="sm-link sm-link_padding-bottom sm-link3"
-            >
-              <img
-                className="reviewlogo"
-                src={require("./icon/imdb.jpeg")}
-                alt="rt"
-              />
-              <Typography
-                variant="display1"
-                style={{ paddingTop: "3%", paddingLeft: "20%" }}
-              >
-                {this.state.rating.imdb}
-              </Typography>
-            </a>
+
+        <a
+          target="_blank"
+          href={imdb_string}
+          className="sm-link sm-link_padding-bottom sm-link3"
+        >
+          <img
+            className="reviewlogo"
+            src={require("./icon/imdb.jpeg")}
+            alt="rt"
+          />
+          <Typography
+            variant="display1"
+            style={{ paddingTop: "3%", paddingLeft: "20%" }}
+          >
+            {this.state.rating.imdb}
           </Typography>
-        </div>
-        <div className="rating">
-          <Typography>
-            <a
-              target="_blank"
-              href={rt_string}
-              className="sm-link sm-link_padding-bottom sm-link3"
-            >
-              <img
-                className="reviewlogo"
-                src={require("./icon/rt.png")}
-                alt="imdb"
-              />
-              <Typography
-                variant="display1"
-                style={{ paddingTop: "3%", paddingLeft: "20%" }}
-              >
-                {this.state.rating.rt}
-              </Typography>
-            </a>
+        </a>
+
+        <a
+          target="_blank"
+          href={rt_string}
+          className="sm-link sm-link_padding-bottom sm-link3"
+        >
+          <img
+            className="reviewlogo"
+            src={require("./icon/rt.png")}
+            alt="imdb"
+          />
+          <Typography
+            variant="display1"
+            style={{ paddingTop: "3%", paddingLeft: "20%" }}
+          >
+            {this.state.rating.rt}
           </Typography>
-        </div>
-        <div className="rating">
-          <Typography>
-            <a
-              target="_blank"
-              href={mt_string}
-              className="sm-link sm-link_padding-bottom sm-link3"
-            >
-              <img
-                className="reviewlogo"
-                src={require("./icon/mt.png")}
-                alt="mt"
-              />
-              <Typography
-                variant="display1"
-                style={{ paddingTop: "3%", paddingLeft: "20%" }}
-              >
-                {this.state.rating.mt}
-              </Typography>
-            </a>
+        </a>
+
+        <a
+          target="_blank"
+          href={mt_string}
+          className="sm-link sm-link_padding-bottom sm-link3"
+        >
+          <img className="reviewlogo" src={require("./icon/mt.png")} alt="mt" />
+          <Typography
+            variant="display1"
+            style={{ paddingTop: "3%", paddingLeft: "20%" }}
+          >
+            {this.state.rating.mt}
           </Typography>
-        </div>
+        </a>
       </React.Fragment>
     );
   }
@@ -440,24 +433,27 @@ class MovieDetails extends Component {
   };
 
   rt_review = () => {
-    return (
-      <Grid xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
-        <Paper
-          style={{
-            padding: "40px",
-            "background-color": "#6ed3cf",
-            "font-style": "italic"
-          }}
-        >
-          <Typography style={{ font: "Italic" }}>
-            {this.state.rt_review.review}
-          </Typography>
-          <Typography style={{ paddingTop: "20px" }}>
-            By- Rotten tomatoes
-          </Typography>
-        </Paper>
-      </Grid>
-    );
+    if (this.state.rt_review.review != "N/A") {
+      return (
+        <Grid xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
+          <Paper
+            style={{
+              padding: "40px",
+              "background-color": "#6ed3cf",
+              "font-style": "italic"
+            }}
+          >
+            <Typography style={{ font: "Italic" }}>
+              {this.state.rt_review.review}
+            </Typography>
+            <Typography style={{ paddingTop: "20px" }}>
+              By- Rotten tomatoes
+            </Typography>
+          </Paper>
+        </Grid>
+      );
+    }
+    return "";
   };
   reviewDb = () => {
     if (this.state.reviews.content != "-1")
@@ -496,6 +492,30 @@ class MovieDetails extends Component {
       </Tooltip>
     );
     const noButton = <div />;
+    if (this.state.loading) {
+      return (
+        <React.Fragment>
+          <Grid container>
+            <Paper
+              style={{
+                padding: 40,
+                marginTop: 40,
+                marginBottom: 10,
+                height: "40cm",
+                width: "100%"
+              }}
+            >
+              <Grid item>
+                <SearchAppBar />
+              </Grid>
+              <Grid container>
+                <CircularProgress />
+              </Grid>
+            </Paper>
+          </Grid>
+        </React.Fragment>
+      );
+    }
     return (
       <React.Fragment>
         <Grid container>
@@ -554,6 +574,7 @@ class MovieDetails extends Component {
                   </Zoom>
                 </Grid>
                 <Grid style={{ paddingTop: "20px" }}>{this.trailor()}</Grid>
+                <Grid style={{ paddingTop: "20px" }}>{this.ratingList()}</Grid>
 
                 <Grid item lg style={{ paddingTop: "40px" }}>
                   {this.platformsList()}
@@ -565,9 +586,7 @@ class MovieDetails extends Component {
                   image={this.state.posterLink}
                   classes={{ root: classes.poster }}
                 />
-                <div style={{ paddingLeft: "17%", paddingTop: "2%" }}>
-                  {this.ratingList()}
-                </div>
+
                 {this.reviewDb()}
                 {this.rt_review()}
               </Grid>
@@ -580,38 +599,3 @@ class MovieDetails extends Component {
 }
 
 export default withStyles(styles)(MovieDetails);
-/*
-            <img src={this.state.posterLink} />
-            {this.ratingList()}
-
-          <div className="info">
-            <div className="title">
-              <p>
-                {this.state.title}
-                <a
-                  target="_blank"
-                  href={"https://en.wikipedia.org/wiki/" + this.state.title}
-                >
-                  <img
-                    className="logo_img"
-                    src={require("./icon/wiki.png")}
-                    float="left"
-                  />
-                </a>
-              </p>
-            </div>
-
-            <h4>
-              {this.state.date} ({this.state.runtime}) By {this.state.by}
-            </h4>
-            {this.castList()}
-            <div>
-              <p></p>
-            </div>
-            <div className="summary">
-              <p>{this.state.summary}</p>
-            </div>
-
-            {this.platformsList()}
-            {this.trailor()}
-*/
