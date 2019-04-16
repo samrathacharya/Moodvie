@@ -428,11 +428,16 @@ def recommend(username):
                 data.append(list(recommend_list))
                 # print(data)
 
+        # data = data[1:]
+        print("--------")
+        print(data)
+        print("--------")
         for d in data:
             for e in d:
                 # print(''.join(e[0]))
                 m_id = ''.join(e[0])
                 tup = db_reader_m.get_title_by_id(m_id)
+                print(tup)
                 title = ''.join(tup[0])
                 result.append({'title': title, 'link': "http://localhost:3000/moviedetails/"+m_id, 'id': m_id})
 
