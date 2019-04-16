@@ -97,15 +97,50 @@ def getItunes(title, date, id):
 
 # get the google platforms of a movie by title and date
 # date formate: yr-mon-day in numeric
-@app.route("/platforms/google_play/title=<string:title>&date=<string:date>&id=<string:id>")
-def getGoogle(title, date, id):
+@app.route("/platforms/google_play/title=<string:title>&date=<string:year>&id=<string:id>")
+def getGoogle(title, year, id):
     # print(title[1:len(title)-1])
     info = db_reader_m.check_price(id, "Google")
+    print(title+"asdfadsf")
+    year = year[0:4]
+    print(year)
+    
+    # if (info == None):
+    #     pass
+    # else:
+    #     return jsonify({"name": "google", "price": info[1], "link": info[2]})
 
-    if (info == None):
-        pass
-    else:
-        return jsonify({"name": "google", "price": info[1], "link": info[2]})
+     # running the shell scrip to web scrap the google price
+    p = Popen(['./webscraping/google_price.sh', title, year],
+              stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    output, err = p.communicate(
+        b"input data that is passed to subprocess' stdin")
+    rc = p.returncode
+
+    # split the output line by line
+    info_list = output.splitlines()
+    print(info_list)
+    # get the price
+    price = info_list[0].decode('ascii')
+
+    print(price)
+    # check if the price is in correct format
+    if not price.startswith("$"):
+        return jsonify({"name": "Google",
+                        "price": "N/A", "link": "N/A"})
+
+    # get the link
+    link = info_list[1].decode('ascii')
+
+    # making json object
+    data = {"name": "Google",
+            "price": price, "link": link}
+
+    print(data)
+    if(db_writer_m.update_price(id,price,link,"Google")):
+        print ("update google price successful")
+    
+    return jsonify(data)
 
     
 # get the google platforms of a movie by title and date
@@ -121,7 +156,7 @@ def getTrailor(title, date, id):
         return jsonify({"link": info[1], "pic": info[2]})
 
     title = title.replace(" ", "_")
-    print(title)
+
     p = Popen(['./webscraping/youtobe_trailer.sh', title, date],
               stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate(

@@ -378,18 +378,18 @@ class Write_db_movie(Write_db):
             return False
 
     # update price
-    def update_price(self, m_ID, n_price, n_pirce_link, platform):
+    def update_price(self, m_ID, n_price, n_price_link, platform):
         if platform == "Youtube":
             db_handle = self.open()
             conn = db_handle[0]
             cur = db_handle[1]
-            cur.execute("UPDATE movie SET PRICE_Y='"+n_price+"',YP_LINK='"+n_pirce_link+"' WHERE ID='"+m_ID+"'")
+            cur.execute("UPDATE movie SET PRICE_Y='"+n_price+"',YP_LINK='"+n_price_link+"' WHERE ID='"+m_ID+"'")
             self.close(conn)
         elif platform == "Itunes":
             db_handle = self.open()
             conn = db_handle[0]
             cur = db_handle[1]
-            cur.execute("UPDATE movie SET PRICE_I='"+n_price+"',IP_LINK='"+n_pirce_link+"' WHERE ID='"+m_ID+"'")
+            cur.execute("UPDATE movie SET PRICE_I='"+n_price+"',IP_LINK='"+n_price_link+"' WHERE ID='"+m_ID+"'")
             self.close(conn)
         elif platform == "Google":
             db_handle = self.open()
