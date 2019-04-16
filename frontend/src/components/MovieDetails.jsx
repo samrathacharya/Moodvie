@@ -167,7 +167,7 @@ class MovieDetails extends Component {
     );
     const reponse2 = await promise2;
     const trailor = reponse2.data;
-    this.setState({ trailor: trailor });
+    this.setState({ trailor: trailor, loading: false });
 
     rating.imdb = data.ratings.imdb;
     rating.rt = data.ratings.rt;
@@ -239,7 +239,7 @@ class MovieDetails extends Component {
       />
     );
     // set the state
-    this.setState({ platforms: platforms, loading: false });
+    this.setState({ platforms: platforms });
   }
 
   color_button() {
