@@ -146,7 +146,7 @@ class Read_db_movie(Read_db):
                 return info
         self.close(conn)
         return None
-        
+
     # check if the review is updated
     def check_review(self, m_id):
         db_handle = self.open()
@@ -371,7 +371,7 @@ class Write_db_movie(Write_db):
             db_handle = self.open()
             conn = db_handle[0]
             cur = db_handle[1]
-            cur.execute("INSERT INTO movie(ID, TITLE, POSTERLINK, SUMMARY, DATE, CASTS, BY, RATED, RUNTIME, RATING_IMDB, RATING_MT, RATING_RT, PRICE_Y, PRICE_G, PRICE_I, YP_LINK, GP_LINK, IP_LINK, TRAILER_LINK, TRAILER_PIC) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(m_ID, m_title, m_poster_link, m_summary, m_date, m_casts, m_by, m_rated, m_runtime, m_rting_imdb, m_rting_mt, m_rting_rt, m_price_y, m_price_G, m_price_I,YP_LINK, GP_LINK, IP_LINK,trailer_link, trailer_pic, rt_review))
+            cur.execute("INSERT INTO movie(ID, TITLE, POSTERLINK, SUMMARY, DATE, CASTS, BY, RATED, RUNTIME, RATING_IMDB, RATING_MT, RATING_RT, PRICE_Y, PRICE_G, PRICE_I, YP_LINK, GP_LINK, IP_LINK, TRAILER_LINK, TRAILER_PIC, RT_REVIEW) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(m_ID, m_title, m_poster_link, m_summary, m_date, m_casts, m_by, m_rated, m_runtime, m_rting_imdb, m_rting_mt, m_rting_rt, m_price_y, m_price_G, m_price_I,YP_LINK, GP_LINK, IP_LINK,trailer_link, trailer_pic, rt_review))
             self.close(conn)
             return True
         else:

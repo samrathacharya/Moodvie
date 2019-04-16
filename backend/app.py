@@ -103,12 +103,7 @@ def getGoogle(title, date, id):
     info = db_reader_m.check_price(id, "Google")
 
     if (info == None):
-        data = engine.get_googlePlay(title,date)
-        if (db_writer_m.update_price(id, "$"+str(data['price']), str(data['link']), "Google")):
-            print("update google price successful")
-        else:
-            print(data)
-        return jsonify(data)
+        pass
     else:
         return jsonify({"name": "google", "price": info[1], "link": info[2]})
 

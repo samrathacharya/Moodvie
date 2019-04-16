@@ -16,7 +16,9 @@ google_url="https://play.google.com/store/search?q=$movie_title+$movie_year"
 
 # get the price
 wget -q -O- "$google_url" |
-egrep "<span class=\"display-price\">\$[0-9]*\.[0-9]*</span>"
+egrep -o "<span class=\"display-price\">.*" |
+cut -d'>' -f2 |
+cut -d'<' -f1
 
 
 # the link
