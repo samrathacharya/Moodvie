@@ -2,6 +2,7 @@
 import urllib.request
 from platforms import Platform
 from datetime import datetime
+import requests
 
 
 class Itunes_api():
