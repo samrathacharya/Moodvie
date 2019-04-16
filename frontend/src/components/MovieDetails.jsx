@@ -138,7 +138,7 @@ class MovieDetails extends Component {
       "http://127.0.0.1:4897/review/title=" +
         data.title +
         "&date=" +
-        tmp.getFullYear() +
+        this.state.date +
         "&id=" +
         id
     );
