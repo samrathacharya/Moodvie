@@ -148,11 +148,15 @@ class Read_db_movie(Read_db):
         return None
 
     # check if the review is updated
-    def check_review(self, m_id):
+    def check_review(self, m_id, r_type):
         db_handle = self.open()
         conn = db_handle[0]
         cur = db_handle[1]
-        arr = cur.execute("select ID, RT_REVIEW from movie where ID='"+m_id+"'")
+        if (r_type == "RT"):
+            arr = cur.execute("select ID, RT_REVIEW from movie where ID='"+m_id+"'")
+        elif (r_type == ""):
+            arr = cur.execute("select ID, REVIEW, REVIEW_AUT from movie where ID='"+m_id+"'")
+
         for row in arr:
             if row[0] == m_id and row[1] != "N/A":
                 info = row
@@ -365,13 +369,13 @@ class Write_db_movie(Write_db):
         Write_db.__init__(self, write_position)
 
     # store a movie
-    def insert_movie(self,m_ID, m_title, m_poster_link, m_summary, m_date, m_casts, m_by, m_rated, m_runtime, m_rting_imdb, m_rting_mt, m_rting_rt, m_price_y, m_price_G, m_price_I,YP_LINK, GP_LINK, IP_LINK, trailer_link, trailer_pic, rt_review):
+    def insert_movie(self,m_ID, m_title, m_poster_link, m_summary, m_date, m_casts, m_by, m_rated, m_runtime, m_rting_imdb, m_rting_mt, m_rting_rt, m_price_y, m_price_G, m_price_I,YP_LINK, GP_LINK, IP_LINK, trailer_link, trailer_pic, rt_review, review, review_aut):
         reader = Read_db_movie("database/MOVIE.db")
         if reader.checkID(m_ID):
             db_handle = self.open()
             conn = db_handle[0]
             cur = db_handle[1]
-            cur.execute("INSERT INTO movie(ID, TITLE, POSTERLINK, SUMMARY, DATE, CASTS, BY, RATED, RUNTIME, RATING_IMDB, RATING_MT, RATING_RT, PRICE_Y, PRICE_G, PRICE_I, YP_LINK, GP_LINK, IP_LINK, TRAILER_LINK, TRAILER_PIC, RT_REVIEW) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(m_ID, m_title, m_poster_link, m_summary, m_date, m_casts, m_by, m_rated, m_runtime, m_rting_imdb, m_rting_mt, m_rting_rt, m_price_y, m_price_G, m_price_I,YP_LINK, GP_LINK, IP_LINK,trailer_link, trailer_pic, rt_review))
+            cur.execute("INSERT INTO movie(ID, TITLE, POSTERLINK, SUMMARY, DATE, CASTS, BY, RATED, RUNTIME, RATING_IMDB, RATING_MT, RATING_RT, PRICE_Y, PRICE_G, PRICE_I, YP_LINK, GP_LINK, IP_LINK, TRAILER_LINK, TRAILER_PIC, RT_REVIEW, REVIEW, REVIEW_AUT) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(m_ID, m_title, m_poster_link, m_summary, m_date, m_casts, m_by, m_rated, m_runtime, m_rting_imdb, m_rting_mt, m_rting_rt, m_price_y, m_price_G, m_price_I,YP_LINK, GP_LINK, IP_LINK,trailer_link, trailer_pic, rt_review, review, review_aut))
             self.close(conn)
             return True
         else:
@@ -418,7 +422,7 @@ class Write_db_movie(Write_db):
 
         return False
 
-    def update_review(self, m_id, review):
+    def update_review(self, m_id, review, review_aut):
         reader = Read_db_movie("database/MOVIE.db")
         if (reader.checkID(m_id)):
             print("does not have the movie for updating review")
@@ -426,8 +430,13 @@ class Write_db_movie(Write_db):
             db_handle = self.open()
             conn = db_handle[0]
             cur = db_handle[1]
-            cur.execute("UPDATE movie SET RT_REVIEW='"+review+"' WHERE ID='"+m_id+"'")
+            if (review_aut == "RT"):
+                cur.execute("UPDATE movie SET RT_REVIEW=? WHERE ID='"+m_id+"'", (review,))
+            else:
+                cur.execute("UPDATE movie SET REVIEW=?, REVIEW_AUT=? WHERE ID='"+m_id+"'", (review, review_aut))
+                
             self.close(conn)
+            
             print("review updating success")
             return True
 

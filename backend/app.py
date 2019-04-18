@@ -52,7 +52,7 @@ def basic_movie_info(id):
                 if (n != info['casts'].__len__()):
                     cas += '|'
                 
-            db_writer_m.insert_movie(id,info['title'], info['poster_link'], info['synopsis'], info['date'], cas, info['director'], info['AgeRestriction'], info['runtime'], info['ratings']['imdb'], info['ratings']['mt'],info['ratings']['rt'],"N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A") 
+            db_writer_m.insert_movie(id,info['title'], info['poster_link'], info['synopsis'], info['date'], cas, info['director'], info['AgeRestriction'], info['runtime'], info['ratings']['imdb'], info['ratings']['mt'],info['ratings']['rt'],"N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A", "N/A","N/A") 
             return jsonify(info)
     else:
         info1 = db_reader_m.get_info(id)
@@ -101,14 +101,14 @@ def getItunes(title, date, id):
 def getGoogle(title, year, id):
     # print(title[1:len(title)-1])
     info = db_reader_m.check_price(id, "Google")
-    print(title+"asdfadsf")
+    # print(title+"asdfadsf")
     year = year[0:4]
-    print(year)
+    # print(year)
     
-    # if (info == None):
-    #     pass
-    # else:
-    #     return jsonify({"name": "google", "price": info[1], "link": info[2]})
+    if (info == None):
+        pass
+    else:
+        return jsonify({"name": "google", "price": info[1], "link": info[2]})
 
      # running the shell scrip to web scrap the google price
     p = Popen(['./webscraping/google_price.sh', title, year],
@@ -119,11 +119,11 @@ def getGoogle(title, year, id):
 
     # split the output line by line
     info_list = output.splitlines()
-    print(info_list)
+    # print(info_list)
     # get the price
     price = info_list[0].decode('ascii')
 
-    print(price)
+    # print(price)
     # check if the price is in correct format
     if not price.startswith("$"):
         return jsonify({"name": "Google",
@@ -136,7 +136,7 @@ def getGoogle(title, year, id):
     data = {"name": "Google",
             "price": price, "link": link}
 
-    print(data)
+    # print(data)
     if(db_writer_m.update_price(id,price,link,"Google")):
         print ("update google price successful")
     
@@ -233,11 +233,11 @@ def getYoutobePrice(title, year, id):
 # format: movie_title
 @app.route("/review/title=<string:title>&date=<string:year>&id=<string:id>")
 def getRtReview(title,year,id):
-    info = db_reader_m.check_review(id)
-    print(title)
+    info = db_reader_m.check_review(id,"RT")
+    # print(title)
     year = year[0:4]
-    print(year)
-    print(info)
+    # print(year)
+    # print(info)
     if (info == None):
         pass
     else:
@@ -253,10 +253,10 @@ def getRtReview(title,year,id):
         b"input data that is passed to subprocess' stdin")
     rc = p.returncode
 
-    print(output)
+    # print(output)
     # get the link
     review = output.decode('ascii')
-    print(review)
+    # print(review)
 
     # print the review (for testing)
     # print(review)
@@ -266,7 +266,10 @@ def getRtReview(title,year,id):
         review = "N/A"
     data = {"movie_title": title, "review": review}
 
-    print(data)
+    print(review)
+    if(db_writer_m.update_review(id, review, "RT")):
+        print("update RT review successful")
+    # print(data)
     # json_data = json.dumps(data)
 
     # for testing
@@ -397,6 +400,14 @@ def delete_from_watchlist(username):
 @app.route("/moviedbreview/<string:id>",methods=["GET","POST"])
 
 def get_review(id):
+    info = db_reader_m.check_review(id, "")
+
+    if (info == None): 
+        pass
+    else:
+        data = {"author": info[2], "content": info[1]}
+        return jsonify(data)
+
     response = requests.get("https://api.themoviedb.org/3/movie/"+id+"/reviews?api_key=6d9e14ac2ad18af84209ee5f055615d0&language=en-US&page=1")
     result_dictionary = response.json()
 
@@ -404,9 +415,14 @@ def get_review(id):
         return jsonify({"author":"-1","content":"-1"})
     
     cont = result_dictionary['results'][0]['content'].replace("_"," ")
+    aut = result_dictionary['results'][0]['author']
     if (len(cont)>500):
         cont = cont[0:500]+"..."
-    return jsonify({"author":result_dictionary['results'][0]['author'],"content":cont})
+
+    if(db_writer_m.update_review(id, cont, aut)):
+        print("update review successful")
+
+    return jsonify({"author": aut,"content":cont})
 
 
 #recommandation for the movie
@@ -416,31 +432,31 @@ def recommend(username):
         curr_list = db_reader_w.get_watchlist(username)
         data = set({})
         result = []
-        print(set(curr_list))
+        # print(set(curr_list))
         for m_id in curr_list:
             # print(m_id)
             namelist = db_reader_w.get_similar_likes_u(username, ''.join(m_id))
             for name in namelist:
-                print(''.join(name))
+                # print(''.join(name))
                 o_m_list = db_reader_w.get_watchlist(''.join(name))
-                print(set(o_m_list))
+                # print(set(o_m_list))
                 recommend_list = set(o_m_list).difference(set(curr_list))
-                print(recommend_list)
+                # print(recommend_list)
                 data = data.union(recommend_list)
-                print(data)
+                # print(data)
 
-        # data = data[1:]
-        print("--------")
-        print(data)
-        #print(set(data))
-        print("--------")
+        # # data = data[1:]
+        # print("--------")
+        # print(data)
+        # #print(set(data))
+        # print("--------")
         i = 0
         for d in data:
             #for e in d:
                 # print(''.join(e[0]))
                 m_id = ''.join(d)
                 tup = db_reader_m.get_title_by_id(m_id)
-                print(tup)
+                # print(tup)
                 title = ''.join(tup[0])
                 result.append({'title': title, 'link': "http://localhost:3000/moviedetails/"+m_id, 'id': m_id})
                 i += 1
