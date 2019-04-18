@@ -17,6 +17,7 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
+    "react-share": "^2.4.0",
     "sass": "^1.17.3"
   },
   "scripts": {

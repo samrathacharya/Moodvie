@@ -100,7 +100,7 @@ class MovieResult extends Component {
               padding: 40,
               marginTop: 40,
               marginBottom: 10,
-              height: "30cm",
+              height: "auto",
               width: "100%"
             }}
           >

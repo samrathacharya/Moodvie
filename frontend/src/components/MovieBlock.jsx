@@ -19,14 +19,14 @@ const styles = {
   poster: {
     "margin-left": "auto",
     "margin-right": "auto",
-    width: "200px",
-    height: "250px",
+    width: "100%",
+    height: "310px",
     "object-fit": "fill"
   },
   root: {
-    width: "200px",
+    width: "20%",
 
-    height: "310px",
+    height: "360px",
     float: "left",
     "margin-left": "3%",
     "margin-bottom": "3%",
@@ -65,7 +65,6 @@ class MovieBlock extends Component {
               <CardMedia
                 component="img"
                 image={this.state.imageUrl}
-              
                 classes={{ root: classes.poster }}
               />
             </CardActionArea>

@@ -9,7 +9,54 @@ import "./css/button.css";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import SearchAppBar from "./NavBarTop";
-
+import {
+  FacebookShareButton,
+  GooglePlusShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  TelegramShareButton,
+  WhatsappShareButton,
+  PinterestShareButton,
+  VKShareButton,
+  OKShareButton,
+  RedditShareButton,
+  TumblrShareButton,
+  LivejournalShareButton,
+  MailruShareButton,
+  ViberShareButton,
+  WorkplaceShareButton,
+  LineShareButton,
+  EmailShareButton
+} from "react-share";
+import {
+  FacebookIcon,
+  TwitterIcon,
+  TelegramIcon,
+  WhatsappIcon,
+  GooglePlusIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  VKIcon,
+  OKIcon,
+  RedditIcon,
+  TumblrIcon,
+  LivejournalIcon,
+  MailruIcon,
+  ViberIcon,
+  WorkplaceIcon,
+  LineIcon,
+  EmailIcon
+} from "react-share";
+import {
+  FacebookShareCount,
+  GooglePlusShareCount,
+  LinkedinShareCount,
+  PinterestShareCount,
+  VKShareCount,
+  OKShareCount,
+  RedditShareCount,
+  TumblrShareCount
+} from "react-share";
 import {
   Grow,
   Typography,
@@ -436,12 +483,12 @@ class MovieDetails extends Component {
   rt_review = () => {
     if (this.state.rt_review.review != "N/A") {
       return (
-        <Grid xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
+        <Grid item xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
           <Paper
             style={{
               padding: "40px",
-              "background-color": "#6ed3cf",
-              "font-style": "italic"
+              backgroundColor: "#6ed3cf",
+              fontStyle: "italic"
             }}
           >
             <Typography style={{ font: "Italic" }}>
@@ -459,12 +506,12 @@ class MovieDetails extends Component {
   reviewDb = () => {
     if (this.state.reviews.content != "-1")
       return (
-        <Grid xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
+        <Grid item xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
           <Paper
             style={{
               padding: "40px",
-              "background-color": "lightsalmon",
-              "font-style": "italic"
+              backgroundColor: "lightsalmon",
+              fontStyle: "italic"
             }}
           >
             <Typography style={{ font: "Italic" }}>
@@ -502,7 +549,7 @@ class MovieDetails extends Component {
                 padding: 40,
                 marginTop: 40,
                 marginBottom: 10,
-                height: "40cm",
+                height: "auto",
                 width: "100%"
               }}
             >
@@ -535,25 +582,29 @@ class MovieDetails extends Component {
             <Grid container>
               <Grid item xs={7}>
                 <Zoom in>
-                  <Typography variant="h4" gutterBottom>
-                    {this.state.title}
-                    <a
-                      target="_blank"
-                      href={"https://en.wikipedia.org/wiki/" + this.state.title}
-                    >
-                      <img
-                        className="logo_img"
-                        src={require("./icon/wiki.png")}
-                        float="left"
-                      />
-                    </a>
-                  </Typography>
+                  <Grid>
+                    <Typography variant="h4" gutterBottom>
+                      {this.state.title}
+                      <a
+                        target="_blank"
+                        href={
+                          "https://en.wikipedia.org/wiki/" + this.state.title
+                        }
+                      >
+                        <img
+                          className="logo_img"
+                          src={require("./icon/wiki.png")}
+                          float="left"
+                        />
+                      </a>
+                    </Typography>
+                  </Grid>
                 </Zoom>
 
                 <Zoom in>
                   <Typography
                     variant="subtitle1"
-                    style={{ paddingTop: "10px" }}
+                    style={{ paddingTop: "1px" }}
                     gutterBottom
                   >
                     {this.state.date} ({this.state.runtime}) By {this.state.by}
@@ -561,6 +612,41 @@ class MovieDetails extends Component {
                     {localStorage.usertoken ? watchlistButton : noButton}
                   </Typography>
                 </Zoom>
+                <div style={{ paddingTop: "6px" }}>
+                  {" "}
+                  <div style={{ display: "inline-block" }}>
+                    <FacebookShareButton
+                      url={"http://127.0.0.1:3000/" + this.state.id}
+                      style={{ width: "40px" }}
+                    >
+                      <FacebookIcon size={25} />
+                    </FacebookShareButton>
+                  </div>
+                  <div style={{ display: "inline-block" }}>
+                    <TwitterShareButton
+                      url={"http://127.0.0.1:3000/" + this.state.id}
+                      style={{ width: "40px" }}
+                    >
+                      <TwitterIcon size={25} />
+                    </TwitterShareButton>
+                  </div>
+                  <div style={{ display: "inline-block" }}>
+                    <RedditShareButton
+                      url={"http://127.0.0.1:3000/" + this.state.id}
+                      style={{ width: "40px" }}
+                    >
+                      <RedditIcon size={25} />
+                    </RedditShareButton>
+                  </div>
+                  <div style={{ display: "inline-block" }}>
+                    <WhatsappShareButton
+                      url={"http://127.0.0.1:3000/" + this.state.id}
+                      style={{ width: "40px" }}
+                    >
+                      <WhatsappIcon size={25} />
+                    </WhatsappShareButton>
+                  </div>
+                </div>
                 <Grid>{this.castList()}</Grid>
 
                 <Grid>
