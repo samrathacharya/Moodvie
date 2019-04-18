@@ -65,6 +65,7 @@ class MovieBlock extends Component {
               <CardMedia
                 component="img"
                 image={this.state.imageUrl}
+              
                 classes={{ root: classes.poster }}
               />
             </CardActionArea>
