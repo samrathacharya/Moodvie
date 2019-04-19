@@ -80,6 +80,7 @@ class Dialog_bar extends Component {
   render() {
     const { classes } = this.props;
     let re;
+    console.log(localStorage.usertoken)
     if (localStorage.getItem("usertoken") !== null) {
       const token = localStorage.usertoken;
       const decoded = jwt_decode(token);

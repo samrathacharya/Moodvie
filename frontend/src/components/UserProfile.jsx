@@ -130,7 +130,7 @@ class UserProfile extends Component {
         movies: data
       });
     } else {
-      this.props.history.push("/users/login");
+      this.props.history.push("/home");
     }
   }
 
