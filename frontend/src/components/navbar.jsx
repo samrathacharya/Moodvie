@@ -89,8 +89,10 @@ function SearchAppBar(props) {
   }
   function logout(e) {
     localStorage.removeItem("usertoken");
+
     history.push("/home");
   }
+
   return (
     <div className={classes.root}>
       <AppBar classes={{ root: classes.backapp }} postion="relative">

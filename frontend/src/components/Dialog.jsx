@@ -43,16 +43,7 @@ class Dialog_bar extends Component {
       openProfile: false
     };
   }
-  DidMount() {
-    if (localStorage.getItem("usertoken") !== null) {
-      const token = localStorage.usertoken;
-      const decoded = jwt_decode(token);
-      this.setState({
-        name: decoded.identity.username,
-        login: true
-      });
-    }
-  }
+  DidMount() {}
   handleLogin = e => {
     e.preventDefault();
     console.log(e.target.name.value);
@@ -80,10 +71,12 @@ class Dialog_bar extends Component {
   render() {
     const { classes } = this.props;
     let re;
-    console.log(localStorage.usertoken)
+    console.log(localStorage.usertoken);
     if (localStorage.getItem("usertoken") !== null) {
       const token = localStorage.usertoken;
       const decoded = jwt_decode(token);
+
+      console.log(decoded);
       re = (
         <React.Fragment>
           <Button
