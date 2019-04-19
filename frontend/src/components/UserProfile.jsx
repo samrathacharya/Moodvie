@@ -183,7 +183,7 @@ class UserProfile extends Component {
           newEmail: this.state.email
         })
         .then(res => {
-          localStorage.clear();
+          localStorage.clear("usertoken");
           localStorage.setItem("usertoken", res.data.token);
           console.log(res);
         });
@@ -215,7 +215,7 @@ class UserProfile extends Component {
           newEmail: newEmail
         })
         .then(res => {
-          localStorage.clear();
+          localStorage.clear("usertoken");
           localStorage.setItem("usertoken", res.data.token);
           console.log(res);
         });
