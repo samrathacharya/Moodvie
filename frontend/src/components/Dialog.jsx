@@ -45,13 +45,16 @@ class Dialog_bar extends Component {
   }
   DidMount() {}
   handleLogin = e => {
-    e.preventDefault();
+    // e.preventDefault();
     console.log(e.target.name.value);
     console.log(e.target.pw.value);
     const user = {
       username: e.target.name.value,
       password: e.target.pw.value
     };
+    if (localStorage.getItem('usertoken') !== null) {
+      localStorage.clear('usertoken');
+    }
     login(user).then(res => {
       console.log(res);
       if (res.data.result === "success") {
