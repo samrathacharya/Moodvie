@@ -616,7 +616,9 @@ class MovieDetails extends Component {
                   {" "}
                   <div style={{ display: "inline-block" }}>
                     <FacebookShareButton
-                      url={"http://127.0.0.1:3000/" + this.state.id}
+                      url={
+                        "http://127.0.0.1:3000/moviedetails/" + this.state.id
+                      }
                       style={{ width: "40px" }}
                     >
                       <FacebookIcon size={25} />
@@ -624,7 +626,9 @@ class MovieDetails extends Component {
                   </div>
                   <div style={{ display: "inline-block" }}>
                     <TwitterShareButton
-                      url={"http://127.0.0.1:3000/" + this.state.id}
+                      url={
+                        "http://127.0.0.1:3000/moviedetails/" + this.state.id
+                      }
                       style={{ width: "40px" }}
                     >
                       <TwitterIcon size={25} />
@@ -632,7 +636,9 @@ class MovieDetails extends Component {
                   </div>
                   <div style={{ display: "inline-block" }}>
                     <RedditShareButton
-                      url={"http://127.0.0.1:3000/" + this.state.id}
+                      url={
+                        "http://127.0.0.1:3000/moviedetails/" + this.state.id
+                      }
                       style={{ width: "40px" }}
                     >
                       <RedditIcon size={25} />
@@ -640,7 +646,9 @@ class MovieDetails extends Component {
                   </div>
                   <div style={{ display: "inline-block" }}>
                     <WhatsappShareButton
-                      url={"http://127.0.0.1:3000/" + this.state.id}
+                      url={
+                        "http://127.0.0.1:3000/moviedetails/" + this.state.id
+                      }
                       style={{ width: "40px" }}
                     >
                       <WhatsappIcon size={25} />
