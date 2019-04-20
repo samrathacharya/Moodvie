@@ -52,9 +52,9 @@ class Dialog_bar extends Component {
       username: e.target.name.value,
       password: e.target.pw.value
     };
-    if (localStorage.getItem('usertoken') !== null) {
-      localStorage.removeItem('usertoken');
-    }
+    // if (localStorage.getItem('usertoken') !== null) {
+    //   localStorage.removeItem('usertoken');
+    // }
     login(user).then(res => {
       console.log(res);
       if (res.data.result === "success") {
