@@ -29,6 +29,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import TextField from "@material-ui/core/TextField";
 import { ButtonBase, Button, Zoom, Input } from "@material-ui/core";
 import Watchlist from "./Watchlist";
+import Popup from 'react-popup';
+import ReactDom from 'react-dom';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -105,7 +107,7 @@ class UserProfile extends Component {
           </Typography>
 
           <Typography variant="display1" style={{ paddingTop: "4px" }}>
-            This is where your journey start...
+            This is where your journey starts...
           </Typography>
         </React.Fragment>
       );
@@ -180,18 +182,27 @@ class UserProfile extends Component {
           oldUsername: this.state.name,
           newUsername: newName,
           oldEmail: this.state.email,
-          newEmail: this.state.email
+          newEmail: this.state.email,
+          oldPassword: "",
+          newPassword: ""
         })
         .then(res => {
-          localStorage.clear("usertoken");
-          localStorage.setItem("usertoken", res.data.token);
+          if (res.data.result === "success") {
+            localStorage.clear("usertoken");
+            localStorage.setItem("usertoken", res.data.token);
+            //2. Change name in frontend
+            this.setState({
+              name: newName,
+              isNameButtonDisabled: true
+            });
+            console.log(this.state.name)
+          } else {
+            alert(res.data.reason.Name)
+          }
           console.log(res);
+
         });
-      //2. Change name in frontend
-      this.setState({
-        name: newName,
-        isNameButtonDisabled: true
-      });
+
       //3. Change name in localStorage
     }
   };
@@ -201,7 +212,12 @@ class UserProfile extends Component {
     event.preventDefault();
     console.log(event.target.email.value);
     //Grab newEmail from the form
-
+    let result = window.confirm("Are you sure you want to change your email address?")
+    // window.confirm("hahah")
+    console.log("confirm:"+result)
+    if (result == false) {
+      return;
+    } 
     let newEmail = event.target.email.value;
     if (newEmail === "") {
       return;
@@ -212,23 +228,63 @@ class UserProfile extends Component {
           oldUsername: this.state.name,
           newUsername: this.state.name,
           oldEmail: this.state.email,
-          newEmail: newEmail
+          newEmail: newEmail,
+          oldPassword: "",
+          newPassword: ""
         })
         .then(res => {
-          localStorage.clear("usertoken");
-          localStorage.setItem("usertoken", res.data.token);
+          if (res.result === "success") {
+            localStorage.clear("usertoken");
+            localStorage.setItem("usertoken", res.data.token);
+      
+            this.setState({
+              email: newEmail,
+              isEmailButtonDisabled: true
+            });
+          } else if (res.data.result === "failed") {
+              alert(res.data.reason.Email)
+          }
           console.log(res);
         });
-      console.log(newEmail);
-      console.log(this.state.email);
-
-      this.setState({
-        email: newEmail,
-        isEmailButtonDisabled: true
-      });
+     
     }
   };
 
+  changePassword = event => {
+    //prevent re-render
+    event.preventDefault();
+    //Grab from the form
+
+    let newPw = event.target.newpw.value;
+    let oldPw = event.target.oldpw.value;
+
+    console.log("new password:"+newPw);
+    console.log("old password:"+oldPw);
+    if (newPw === "" || oldPw === "") {
+      return;
+    } else {
+      //Pass to backend
+      const promise = axios
+        .post("http://127.0.0.1:4897/profile", {
+          oldUsername: this.state.name,
+          newUsername: this.state.name,
+          oldEmail: this.state.email,
+          newEmail: this.state.email,
+          oldPassword: oldPw,
+          newPassword: newPw
+        })
+        .then(res => {
+          if (res.result === "success") {
+            localStorage.clear("usertoken");
+            localStorage.setItem("usertoken", res.data.token);
+            console.log(res);
+          } else {
+            alert(res.data.reason.Password)
+          }
+        });
+
+    }
+  };
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0, 20) });
   }
@@ -313,14 +369,20 @@ class UserProfile extends Component {
                 <SaveIcon />
               </IconButton>
             </form>
-            <form onSubmit={this.changeName.bind(this)}>
+            <form onSubmit={this.changePassword}>
               <TextField
-                label="Password"
+                label="Old Password"
                 defaultValue={"*****"}
                 margin="normal"
-                inputProps={{ name: "pw" }}
+                inputProps={{ name: "oldpw" }}
               />
-              <IconButton classes={{ root: classes.IconButt }}>
+              <TextField
+                label="New Password"
+                defaultValue={"*****"}
+                margin="normal"
+                inputProps={{ name: "newpw" }}
+              />
+              <IconButton classes={{ root: classes.IconButt }} type="submit">
                 <SaveIcon />
               </IconButton>
             </form>

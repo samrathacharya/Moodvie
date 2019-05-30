@@ -157,15 +157,19 @@ def getTrailor(title, date, id):
 
     title = title.replace(" ", "_")
 
+    print('Title'+title)
+    print('Date'+date)
+
     p = Popen(['./webscraping/youtobe_trailer.sh', title, date],
               stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate(
         b"input data that is passed to subprocess' stdin")
     rc = p.returncode
 
+
     # remove newline
     info_list = output.splitlines()
-
+    print(info_list)
     videoCode = info_list[0].decode('ascii')
 
     videoPic = info_list[1].decode('ascii')
@@ -344,20 +348,23 @@ def ChangeProfile():
     if request.method == "POST":
         old_n = request.get_json()['oldUsername']
         new_n = request.get_json()['newUsername']
+
         old_e = request.get_json()['oldEmail']
         new_e = request.get_json()['newEmail']
-        # email = request.get_json()['email']
-        # old_p = request.get_json()['oldPassword']
-        # new_p = request.get_json()['newPassword']
-        old_p = ""
-        new_p = ""
-        if db_writer_u.change_profile(old_n, old_e, new_n, new_e, old_p, new_p):
-            print("Change name/email done\n")
+
+        old_p = request.get_json()['oldPassword']
+        new_p = request.get_json()['newPassword']
+
+        message = db_writer_u.change_profile(old_n, old_e, new_n, new_e, old_p, new_p)
+
+        if message == True:
+            print("Change name/email/passowrd done\n")
             access_token = create_access_token(identity = {'username':new_n, 'email':new_e})
             result = jsonify({"token": access_token, "result":"success"})
         else:
-            print("Change name/email failed\n")
-            result= jsonify({"error": "Invalid username/email","result":"failed"})
+            print("Change name/email failed, reason:\n")
+            print(message)
+            result= jsonify({"error": "Invalid username/email/password","result":"failed","reason":message})
 
 
     return result
@@ -410,6 +417,7 @@ def get_review(id):
 
     response = requests.get("https://api.themoviedb.org/3/movie/"+id+"/reviews?api_key=6d9e14ac2ad18af84209ee5f055615d0&language=en-US&page=1")
     result_dictionary = response.json()
+
 
     if(len(result_dictionary['results'])==0):
         return jsonify({"author":"-1","content":"-1"})

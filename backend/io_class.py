@@ -41,11 +41,11 @@ class Read_db_user(Read_db):
         cur = db_handle[1]
         arr = cur.execute("select * from user where USERNAME='"+username+"'")
         if arr.fetchall() == []:
-            print("True for username\n")
+            print("User does not exist(no such username)\n")
             self.close(conn)
             return True
         else:
-            print("False for username\n")
+            print("User exist(username exist)\n")
             self.close(conn)
             return False
 
@@ -295,11 +295,11 @@ class Write_db_user(Write_db):
 
     def change_name(self, old_n, new_n):
         if old_n == new_n:
-            return 103
+            return "103"
         reader = Read_db_user("database/USER.db")
         if reader.checkU(old_n) :
             # no such user
-            return 101
+            return "101"
         else :
             if reader.checkU(new_n):
                 db_handle = self.open()
@@ -309,19 +309,19 @@ class Write_db_user(Write_db):
                 # print(new_n)
                 cur.execute("UPDATE user SET USERNAME='"+new_n+"' WHERE USERNAME='"+old_n+"'")
                 self.close(conn)
-                return 103
+                return "103"
             else :
                 # name already exist
 
-                return 102
+                return "name already in use, please change one"
 
     def change_email(self, old_e, new_e):
         if old_e == new_e:
-            return 103
+            return "104"
         reader = Read_db_user("database/USER.db")
         if reader.checkE(old_e) :
             # no such email
-            return 101
+            return "101"
         else :
             if reader.checkE(new_e):
                 db_handle = self.open()
@@ -331,19 +331,21 @@ class Write_db_user(Write_db):
                 # print(new_e)
                 cur.execute("UPDATE user SET EMAIL='"+new_e+"' WHERE EMAIL='"+old_e+"'")
                 self.close(conn)
-                return 103
+                return "103"
             else :
                 # email already exist
 
-                return 102
+                return "email already in use, please change one"
 
     def change_password(self, old_p, new_p, old_n):
+        if old_p == "" and new_p == "":
+            return "103"
         if old_p == new_p:
-            return 103
+            return "You entered same old password and new password, please make a change."
         reader = Read_db_user("database/USER.db")
         if reader.checkU(old_n) :
             # no such user
-            return 101
+            return "Wrong username!"
         else :
             if reader.checkAccount(old_n, old_p):
                 db_handle = self.open()
@@ -356,13 +358,17 @@ class Write_db_user(Write_db):
                 return 103
             else:
                 # wrong old password, not allowed to change the password
-                return 102
+                return "wrong password!"
 
     def change_profile(self, old_n, old_e, new_n, new_e, old_p, new_p):
-        if self.change_email(old_e, new_e)==103 and self.change_name(old_n, new_n)==103 and self.change_password(old_p, new_p, old_n):
+        message1 = self.change_email(old_e, new_e)
+        message2 = self.change_name(old_n, new_n)
+        message3 = self.change_password(old_p, new_p, old_n)
+        if message1 == "103" and message2 == "103" and message3 == "103":
             return True
         else:
-            return False
+
+            return {"Email": message1, "Name": message2, "Password": message3}
 
 class Write_db_movie(Write_db):
     def __init__(self, write_position):
