@@ -171,7 +171,13 @@ class UserProfile extends Component {
   changeName = event => {
     //prevent re-render
     event.preventDefault();
-    //Grab newName from the form
+  
+    let result = window.confirm("Are you sure you want to change your username?")
+    
+    console.log("confirm:"+result)
+    if (result == false) {
+      return;
+    } 
     let newName = event.target.name.value;
     if (newName === "") {
       return;
@@ -188,6 +194,8 @@ class UserProfile extends Component {
         })
         .then(res => {
           if (res.data.result === "success") {
+            console.log("new name:"+newName);
+            console.log("old name:"+this.state.name);
             localStorage.clear("usertoken");
             localStorage.setItem("usertoken", res.data.token);
             //2. Change name in frontend
@@ -233,10 +241,11 @@ class UserProfile extends Component {
           newPassword: ""
         })
         .then(res => {
-          if (res.result === "success") {
+          if (res.data.result === "success") {
             localStorage.clear("usertoken");
             localStorage.setItem("usertoken", res.data.token);
-      
+            console.log("old email:"+this.state.email)
+            console.log("new email:"+newEmail);
             this.setState({
               email: newEmail,
               isEmailButtonDisabled: true
@@ -254,6 +263,13 @@ class UserProfile extends Component {
     //prevent re-render
     event.preventDefault();
     //Grab from the form
+
+    let result = window.confirm("Are you sure you want to change your password?")
+    // window.confirm("hahah")
+    console.log("confirm:"+result)
+    if (result == false) {
+      return;
+    } 
 
     let newPw = event.target.newpw.value;
     let oldPw = event.target.oldpw.value;
@@ -274,7 +290,8 @@ class UserProfile extends Component {
           newPassword: newPw
         })
         .then(res => {
-          if (res.result === "success") {
+          console.log(res);
+          if (res.data.result === "success") {
             localStorage.clear("usertoken");
             localStorage.setItem("usertoken", res.data.token);
             console.log(res);

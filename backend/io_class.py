@@ -316,8 +316,9 @@ class Write_db_user(Write_db):
                 return "name already in use, please change one"
 
     def change_email(self, old_e, new_e):
+
         if old_e == new_e:
-            return "104"
+            return "103"
         reader = Read_db_user("database/USER.db")
         if reader.checkE(old_e) :
             # no such email
@@ -355,7 +356,7 @@ class Write_db_user(Write_db):
                 # print(new_n)
                 cur.execute("UPDATE user SET PASSWORD='"+new_p+"' WHERE USERNAME='"+old_n+"' AND PASSWORD='"+old_p+"'")
                 self.close(conn)
-                return 103
+                return "103"
             else:
                 # wrong old password, not allowed to change the password
                 return "wrong password!"
