@@ -63,9 +63,12 @@ class Dialog_bar extends Component {
       if (res.data.result === "success") {
         localStorage.setItem("usertoken", res.data.token);
         this.props.history.push("/user");
+        this.setState({ openLogin: false, login: true });
+      } else {
+        alert("username or password may be wrong, please try it again.")
       }
     });
-    this.setState({ openLogin: false, login: true });
+    // this.setState({ openLogin: false, login: true });
   };
   handleLoginOpen = () => {
     this.setState({ openLogin: true });
