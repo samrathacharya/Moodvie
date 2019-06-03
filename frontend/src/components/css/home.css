@@ -99,14 +99,24 @@ a:active {
   top: 70%;
   left: 60%;
 }
-.login {
+.notLoggedIn {
   position: absolute;
   top: 5%;
-  left: 80%;
+  left: 85%;
 }
+
+.loggedIn {
+  position: relative;
+  top: 5%;
+  left: 90%;
+}
+
 .rec {
   position: absolute;
   top: 60%;
-
   left: 30%;
+}
+
+.recTitle {
+  transform: translate(50%, 0%);
 }

@@ -1,4 +1,3 @@
-#!/bin/sh
 
 if test $# != 2
 then
@@ -12,11 +11,11 @@ movie_title=`echo "$1" |
 youtobe_url="https://www.youtube.com/results?search_query=$movie_title+$movie_year+trailer"
 
 # getting video link
-wget -q -O- "$youtobe_url" |
-egrep '<a href="/watch\?v=' |
-sed "s|.*<a href=\"/watch\?v=||g" |
-cut -d'"' -f1 |
-head -1
+# wget -q -O- "$youtobe_url" |
+# egrep '<a href="/watch\?v=' |
+# sed "s|.*<a href=\"/watch\?v=||g" |
+# cut -d'"' -f1 |
+# head -1
 
 # getting pic link
 wget -q -O- "$youtobe_url" |
@@ -24,5 +23,10 @@ egrep '<img.*src=' |
 egrep 'src="https://i.ytimg.com/vi/' |
 sed "s/.*src=\"//g" |
 cut -d'"' -f1 |
-head -1
+head -1 > trailer.txt
+
+cut -d'/' -f5 trailer.txt
+
+cat trailer.txt
+
 

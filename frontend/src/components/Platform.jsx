@@ -4,17 +4,7 @@ import SpinnerPage from "./Spinner";
 import not_available from "./icon/not_available.png";
 import "./css/platform.css";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import {
-  Grow,
-  Typography,
-  Zoom,
-  Icon,
-  Button,
-  Tooltip,
-  Fab,
-  Fade,
-  CardMedia
-} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 class Platform extends Component {
   state = {
     loading_link: this.props.loading_link,
@@ -27,23 +17,18 @@ class Platform extends Component {
   not_available() {
     return (
       <Button variant="contained" disabled>
-        {this.state.name + "-:(  Not available"}
+        {this.state.name + "- N.A"}
       </Button>
     );
   }
   color_button() {
-    let ran = Math.floor(Math.random() * Math.floor(3));
     let prim = "";
-    switch (ran) {
-      case 0:
-        prim = "primary";
-        break;
-      case 1:
-        prim = "secondary";
-        break;
-      default:
-        prim = "inherit";
-        break;
+    if (this.state.name === "itunes") {
+      prim = "primary";
+    } else if (this.state.name === "youtube") {
+      prim = "secondary";
+    } else if (this.state.name === "google play") {
+      prim = "inherit";
     }
     return prim;
   }

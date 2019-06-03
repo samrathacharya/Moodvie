@@ -7,8 +7,6 @@ import jwt_decode from "jwt-decode";
 import {
   Paper,
   Input,
-  FormControl,
-  Button,
   Grid,
   IconButton,
   Fab,
@@ -39,13 +37,17 @@ const styles = {
 };
 class Home extends Component {
   state = {
-    recommand: ""
+    recommand: "",
+    loggedIn: false
   };
   search_term = React.createRef();
 
   async componentDidMount() {
     const { classes } = this.props;
     if (localStorage.getItem("usertoken") !== null) {
+      this.setState({
+        loggedIn: true
+      });
       const token = localStorage.usertoken;
       const decoded = jwt_decode(token);
       const name = decoded.identity.username;
@@ -56,9 +58,15 @@ class Home extends Component {
 
       let recommand = data.map(item => {
         return (
-          <Fab variant="extended" color="primary" key={item.id} size="small">
+          <Fab
+            style={{ margin: 5 }}
+            variant="extended"
+            color="primary"
+            key={item.id}
+            size="small"
+          >
             <a
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: "none", padding: 3 }}
               target="_blank"
               href={item.link}
             >
@@ -104,10 +112,13 @@ class Home extends Component {
             </IconButton>
           </form>
         </Grid>
-        <div className="login">
+        <div className={this.state.loggedIn ? "loggedIn" : "notLoggedIn"}>
           <Dialog_bar />
         </div>
-        <div className="rec">{this.state.recommand}</div>
+        <div className="rec">
+          <h2 className="recTitle">Recommended Movies </h2>
+          <div>{this.state.recommand}</div>
+        </div>
       </React.Fragment>
     );
   }

@@ -59,10 +59,18 @@ class MovieResult extends Component {
   renderMovieBlocks() {
     if (this.state.blocks.length === 0 && this.state.rendered)
       return (
-        <div>
-          <h3>Sorry,there is no result related for {this.state.term}</h3>
-          <h4>Please try again</h4>
-        </div>
+        <Typography
+          variant="display1"
+          gutterBottom
+          style={{
+            padding: 5,
+            marginTop: 5,
+            marginBottom: 20,
+            transform: "translate(20%, 0%)"
+          }}
+        >
+          Sorry, there are no results related to "{this.state.term}"
+        </Typography>
       );
     let blocks = this.state.blocks.map(block => (
       <Grow style={{ transformOrigin: "0 0 0" }} in="true">
@@ -81,7 +89,12 @@ class MovieResult extends Component {
           component="h3"
           variant="display1"
           gutterBottom
-          style={{ padding: 5, marginTop: 5, marginBottom: 10 }}
+          style={{
+            padding: 5,
+            marginTop: 5,
+            marginBottom: 20,
+            transform: "translate(20%, 0%)"
+          }}
         >
           Showing results for "{this.props.match.params.term}"
         </Typography>

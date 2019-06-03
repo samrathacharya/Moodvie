@@ -48,16 +48,6 @@ import {
   EmailIcon
 } from "react-share";
 import {
-  FacebookShareCount,
-  GooglePlusShareCount,
-  LinkedinShareCount,
-  PinterestShareCount,
-  VKShareCount,
-  OKShareCount,
-  RedditShareCount,
-  TumblrShareCount
-} from "react-share";
-import {
   Grow,
   Typography,
   Zoom,
@@ -84,7 +74,7 @@ const styles = {
   },
 
   poster: {
-    "margin-left": "auto",
+    "margin-left": "17%",
     "margin-right": "auto",
     width: "70%",
     height: "auto",
@@ -290,19 +280,7 @@ class MovieDetails extends Component {
   }
 
   color_button() {
-    let ran = Math.floor(Math.random() * Math.floor(3));
-    let prim = "";
-    switch (ran) {
-      case 0:
-        prim = "primary";
-        break;
-      case 1:
-        prim = "secondary";
-        break;
-      default:
-        prim = "inherit";
-        break;
-    }
+    let prim = "primary";
     return prim;
   }
   /*
@@ -328,7 +306,7 @@ class MovieDetails extends Component {
 
     return (
       <React.Fragment>
-        <div className="cast">
+        <div className="cast" style={{ display: "inline" }}>
           {this.state.casts.map(actor => {
             return (
               //link to the wiki page of the actor
@@ -349,15 +327,19 @@ class MovieDetails extends Component {
               </Zoom>
             );
           })}
-
-          <Button
-            variant="contained"
-            classes={{ root: classes.cast_button }}
-            color="primary"
-          >
-            {" "}
-            Rated - {this.state.rated}
-          </Button>
+          <div>
+            <div style={{ display: "inline-block", width: 75 }}>
+              <h5 style={{ width: "100%", display: "inline" }}>Rating: </h5>
+            </div>
+            <Button
+              variant="contained"
+              classes={{ root: classes.cast_button }}
+              color="primary"
+            >
+              {" "}
+              {this.state.rated}
+            </Button>
+          </div>
         </div>
       </React.Fragment>
     );
@@ -366,7 +348,7 @@ class MovieDetails extends Component {
     return (
       <React.Fragment>
         <Typography component="h2" variant="display1">
-          Watch now on
+          Watch Now
         </Typography>
         <div style={{ paddingTop: "40px" }}>{this.state.platforms}</div>
       </React.Fragment>
@@ -388,7 +370,7 @@ class MovieDetails extends Component {
           variant="display1"
           style={{ paddingBottom: "10px" }}
         >
-          Popular ratings
+          Ratings
         </Typography>
         <div className="rating">
           <a
@@ -481,6 +463,7 @@ class MovieDetails extends Component {
   };
 
   rt_review = () => {
+    console.log(this.state.rt_review);
     if (this.state.rt_review.review != "N/A") {
       return (
         <Grid item xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
@@ -491,11 +474,13 @@ class MovieDetails extends Component {
               fontStyle: "italic"
             }}
           >
-            <Typography style={{ font: "Italic" }}>
-              {this.state.rt_review.review}
+            <Typography style={{ textAlign: "center" }}>
+              <h3>
+                <b>Rotten Tomatoes </b>
+              </h3>
             </Typography>
-            <Typography style={{ paddingTop: "20px" }}>
-              By- Rotten tomatoes
+            <Typography style={{ font: "Italic" }}>
+              "{this.state.rt_review.review}"
             </Typography>
           </Paper>
         </Grid>
@@ -509,16 +494,18 @@ class MovieDetails extends Component {
         <Grid item xs={12} style={{ paddingLeft: "17%", paddingTop: "4%" }}>
           <Paper
             style={{
-              padding: "40px",
+              padding: "30px",
               backgroundColor: "lightsalmon",
               fontStyle: "italic"
             }}
           >
-            <Typography style={{ font: "Italic" }}>
-              {this.state.reviews.content}
+            <Typography style={{ textAlign: "center" }}>
+              <h3>
+                <b> IMDB </b>
+              </h3>
             </Typography>
-            <Typography style={{ paddingTop: "20px" }}>
-              By- {this.state.reviews.author}
+            <Typography style={{ font: "Italic" }}>
+              "{this.state.reviews.content}"
             </Typography>
           </Paper>
         </Grid>
@@ -534,6 +521,7 @@ class MovieDetails extends Component {
           color="secondary"
           aria-label="Add"
           onClick={this.addToWatchlist}
+          style={{ marginLeft: 10 }}
         >
           <AddIcon />
         </Fab>
@@ -600,16 +588,15 @@ class MovieDetails extends Component {
                     </Typography>
                   </Grid>
                 </Zoom>
-
                 <Zoom in>
                   <Typography
                     variant="subtitle1"
                     style={{ paddingTop: "1px" }}
                     gutterBottom
                   >
-                    {this.state.date} ({this.state.runtime}) By {this.state.by}
-                    {"               "}
+                    {this.state.date} ({this.state.runtime}){" "}
                     {localStorage.usertoken ? watchlistButton : noButton}
+                    {"               "}
                   </Typography>
                 </Zoom>
                 <div style={{ paddingTop: "6px" }}>
@@ -655,8 +642,32 @@ class MovieDetails extends Component {
                     </WhatsappShareButton>
                   </div>
                 </div>
-                <Grid>{this.castList()}</Grid>
-
+                <div style={{ display: "inline-block", width: 75 }}>
+                  <h4 style={{ width: "100%", display: "inline" }}>
+                    Director:{" "}
+                  </h4>
+                </div>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  classes={{ root: classes.cast_button }}
+                  color={this.color_button()}
+                  style={{ display: "inline" }}
+                >
+                  <a
+                    target="_blank"
+                    href={"https://en.wikipedia.org/wiki/" + this.state.by}
+                    style={{ textDecoration: "none" }}
+                  >
+                    {this.state.by}
+                  </a>
+                </Button>
+                <Grid>
+                  <div style={{ display: "inline-block", width: 75 }}>
+                    <h4 style={{ width: "100%", display: "inline" }}>Cast: </h4>
+                  </div>
+                  {this.castList()}
+                </Grid>
                 <Grid>
                   <Zoom in>
                     <Typography
@@ -670,7 +681,6 @@ class MovieDetails extends Component {
                 </Grid>
                 <Grid style={{ paddingTop: "20px" }}>{this.trailor()}</Grid>
                 <Grid style={{ paddingTop: "20px" }}>{this.ratingList()}</Grid>
-
                 <Grid item lg style={{ paddingTop: "40px" }}>
                   {this.platformsList()}
                 </Grid>

@@ -40,7 +40,6 @@ class MovieBlock extends Component {
     imageUrl: this.props.imageUrl,
     date: this.props.date,
     currnt: 2020,
-
     movie_page: "/moviedetails/" + this.props.id
   };
 
@@ -53,10 +52,19 @@ class MovieBlock extends Component {
     if (this.state.date < this.state.currnt) return "available";
     return "upcoming";
   }
+
+  isImageAvailable() {
+    if (this.state.imageUrl === "N/A") {
+      this.setState({
+        imageUrl: require("../assets/noimg.jpg")
+      });
+    }
+  }
   GoMoviePage() {}
 
   render() {
     const { classes } = this.props;
+    this.isImageAvailable();
     return (
       <React.Fragment>
         <a href={this.state.movie_page} style={{ textDecoration: "none" }}>
@@ -64,13 +72,13 @@ class MovieBlock extends Component {
             <CardActionArea>
               <CardMedia
                 component="img"
-                image={this.state.imageUrl}
+                src={this.state.imageUrl}
                 classes={{ root: classes.poster }}
               />
             </CardActionArea>
             <CardActions>
               <Typography>
-                {this.state.title}({this.state.date})
+                <b>{this.state.title}</b> ({this.state.date})
               </Typography>
             </CardActions>
           </Card>

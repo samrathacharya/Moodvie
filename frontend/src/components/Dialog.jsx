@@ -53,7 +53,6 @@ class Dialog_bar extends Component {
       password: e.target.pw.value
     };
 
-
     if (localStorage.getItem("usertoken") !== null) {
       localStorage.removeItem("usertoken");
     }

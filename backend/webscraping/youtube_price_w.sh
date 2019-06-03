@@ -16,15 +16,16 @@ youtobe_url="https://www.youtube.com/results?search_query=$movie_title+$movie_ye
 
 # get the price
 wget -q -O- "$youtobe_url" |
-egrep -o ">Watch from A[$]\d+.\d*" |
-egrep -o "[$]\d+.\d*" | 
-uniq |
-head -1 #> result.txt
+grep -E -o ">Watch from A[$][0-9]+.[0-9]*" |
+ egrep -o "[$][0-9]+.[0-9]*" | 
+ uniq |
+ head -1 #> result.txt
 
 
 # the link
 echo "$youtobe_url"
 
+#echo "shell:$1,$2,$movie_title, $movie_year, $youtobe_url"
+
 
 exit 0
- 
