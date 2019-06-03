@@ -3,6 +3,9 @@ from search_engine import Search_engine
 from subprocess import Popen, PIPE
 import subprocess
 import shlex
+import sys
+import os
+import shlex
 from flask_cors import CORS
 from initialize import db_reader_u, db_writer_u, db_reader_m, db_writer_m, db_writer_w, db_reader_w
 from flask_jwt_extended import JWTManager
@@ -110,12 +113,16 @@ def getGoogle(title, year, id):
     else:
         return jsonify({"name": "google", "price": info[1], "link": info[2]})
 
+    #Mac:
      # running the shell scrip to web scrap the google price
-    p = Popen(['./webscraping/google_price.sh', title, year],
-              stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    output, err = p.communicate(
-        b"input data that is passed to subprocess' stdin")
-    rc = p.returncode
+    # p = Popen(['./webscraping/google_price.sh', title, year],
+    #           stdin=PIPE, stdout=PIPE, stderr=PIPE)
+
+    #Windows:
+    command = "sh ./webscraping/google_price_w.sh "+title+" "+year
+    args = shlex.split(command)
+    p = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE)
+    output = p.communicate()[0]
 
     # split the output line by line
     info_list = output.splitlines()
@@ -157,19 +164,27 @@ def getTrailor(title, date, id):
 
     title = title.replace(" ", "_")
 
-    print('Title'+title)
-    print('Date'+date)
+    print('Title' +title)
+    print('yyear' + date)
+    #Mac:
+    # p = Popen(['./webscraping/youtobe_trailer.sh', title, date],
+    #           stdin=PIPE, stdout=PIPE, stderr=PIPE)
 
-    p = Popen(['./webscraping/youtobe_trailer.sh', title, date],
-              stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    output, err = p.communicate(
-        b"input data that is passed to subprocess' stdin")
-    rc = p.returncode
+    #Windows:
+    command = "sh ./webscraping/youtube_trailer_w.sh "+title+" "+date
+    args = shlex.split(command)
+    p = subprocess.Popen(args, shell=True,stdout=subprocess.PIPE)
+    # result = subprocess.run(['sh ./webscraping/youtobe_trailer.sh', title, date],stderr=subprocess.PIPE, shell=True)
+    # if result.returncode == 0:
+    #     print(result.stdout)
+    # else:
+    #     if result.stderr:
+    #         print(result.stderr)
 
-
+    output = p.communicate()[0]
+    # rc = p.returncodep
     # remove newline
     info_list = output.splitlines()
-    print(info_list)
     videoCode = info_list[0].decode('ascii')
 
     videoPic = info_list[1].decode('ascii')
@@ -195,7 +210,7 @@ def getTrailor(title, date, id):
 @app.route("/platforms/youtube/title=<string:title>&date=<string:year>&id=<string:id>")
 def getYoutobePrice(title, year, id):
     info = db_reader_m.check_price(id, "Youtobe")
-
+    title = title.replace(' ', '_')
     if (info == None):
         pass
     else:
@@ -203,18 +218,21 @@ def getYoutobePrice(title, year, id):
         return jsonify(data)
     
     # running the shell scrip to web scrap the youtobe price
-    p = Popen(['./webscraping/youtobe_price.sh', title, year],
-              stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    output, err = p.communicate(
-        b"input data that is passed to subprocess' stdin")
-    rc = p.returncode
+    #Mac:
+    # p = Popen(['./webscraping/youtobe_price.sh', title, year],
+    #           stdin=PIPE, stdout=PIPE, stderr=PIPE)
 
+    #Windows:
+    command = "sh ./webscraping/youtube_price_w.sh "+title+" "+year
+    args=shlex.split(command)
+    print("youyube"+title)
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, shell=True)
+    output = p.communicate()[0]
+    print(output)
     # split the output line by line
     info_list = output.splitlines()
-
     # get the price
     price = info_list[0].decode('ascii')
-
     # check if the price is in correct format
     if not price.startswith("$"):
         return jsonify({"name": "youtube",
@@ -250,12 +268,17 @@ def getRtReview(title,year,id):
     
     #title = title.replace(': ',':_')
     title = title.replace(' ', '_')
+
+    #Mac:
     # running the shell scrip to web scrap the rt review
-    p = Popen(['./webscraping/rt_review.sh', title, year],
-              stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    output, err = p.communicate(
-        b"input data that is passed to subprocess' stdin")
-    rc = p.returncode
+    # p = Popen(['./webscraping/rt_review.sh', title, year],
+    #           stdin=PIPE, stdout=PIPE, stderr=PIPE)
+
+    #Windows:
+    command = "sh ./webscraping/rt_review_w.sh "+title+ " "+year
+    args = shlex.split(command)
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, shell=True)
+    output = p.communicate()[0]
 
     # print(output)
     # get the link
