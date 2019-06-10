@@ -116,7 +116,7 @@ class Home extends Component {
           <Dialog_bar />
         </div>
         <div className="rec">
-          <h2 className="recTitle">Recommended Movies </h2>
+          {/* <h2 className="recTitle">Recommended Movies </h2> */}
           <div>{this.state.recommand}</div>
         </div>
       </React.Fragment>

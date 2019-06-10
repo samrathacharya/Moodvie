@@ -29,8 +29,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import TextField from "@material-ui/core/TextField";
 import { ButtonBase, Button, Zoom, Input } from "@material-ui/core";
 import Watchlist from "./Watchlist";
-import Popup from 'react-popup';
-import ReactDom from 'react-dom';
+import ReactDom from "react-dom";
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -171,13 +170,15 @@ class UserProfile extends Component {
   changeName = event => {
     //prevent re-render
     event.preventDefault();
-  
-    let result = window.confirm("Are you sure you want to change your username?")
-    
-    console.log("confirm:"+result)
+
+    let result = window.confirm(
+      "Are you sure you want to change your username?"
+    );
+
+    console.log("confirm:" + result);
     if (result == false) {
       return;
-    } 
+    }
     let newName = event.target.name.value;
     if (newName === "") {
       return;
@@ -194,8 +195,8 @@ class UserProfile extends Component {
         })
         .then(res => {
           if (res.data.result === "success") {
-            console.log("new name:"+newName);
-            console.log("old name:"+this.state.name);
+            console.log("new name:" + newName);
+            console.log("old name:" + this.state.name);
             localStorage.clear("usertoken");
             localStorage.setItem("usertoken", res.data.token);
             //2. Change name in frontend
@@ -203,12 +204,11 @@ class UserProfile extends Component {
               name: newName,
               isNameButtonDisabled: true
             });
-            console.log(this.state.name)
+            console.log(this.state.name);
           } else {
-            alert(res.data.reason.Name)
+            alert(res.data.reason.Name);
           }
           console.log(res);
-
         });
 
       //3. Change name in localStorage
@@ -220,12 +220,14 @@ class UserProfile extends Component {
     event.preventDefault();
     console.log(event.target.email.value);
     //Grab newEmail from the form
-    let result = window.confirm("Are you sure you want to change your email address?")
+    let result = window.confirm(
+      "Are you sure you want to change your email address?"
+    );
     // window.confirm("hahah")
-    console.log("confirm:"+result)
+    console.log("confirm:" + result);
     if (result == false) {
       return;
-    } 
+    }
     let newEmail = event.target.email.value;
     if (newEmail === "") {
       return;
@@ -244,18 +246,17 @@ class UserProfile extends Component {
           if (res.data.result === "success") {
             localStorage.clear("usertoken");
             localStorage.setItem("usertoken", res.data.token);
-            console.log("old email:"+this.state.email)
-            console.log("new email:"+newEmail);
+            console.log("old email:" + this.state.email);
+            console.log("new email:" + newEmail);
             this.setState({
               email: newEmail,
               isEmailButtonDisabled: true
             });
           } else if (res.data.result === "failed") {
-              alert(res.data.reason.Email)
+            alert(res.data.reason.Email);
           }
           console.log(res);
         });
-     
     }
   };
 
@@ -264,18 +265,20 @@ class UserProfile extends Component {
     event.preventDefault();
     //Grab from the form
 
-    let result = window.confirm("Are you sure you want to change your password?")
+    let result = window.confirm(
+      "Are you sure you want to change your password?"
+    );
     // window.confirm("hahah")
-    console.log("confirm:"+result)
+    console.log("confirm:" + result);
     if (result == false) {
       return;
-    } 
+    }
 
     let newPw = event.target.newpw.value;
     let oldPw = event.target.oldpw.value;
 
-    console.log("new password:"+newPw);
-    console.log("old password:"+oldPw);
+    console.log("new password:" + newPw);
+    console.log("old password:" + oldPw);
     if (newPw === "" || oldPw === "") {
       return;
     } else {
@@ -296,10 +299,9 @@ class UserProfile extends Component {
             localStorage.setItem("usertoken", res.data.token);
             console.log(res);
           } else {
-            alert(res.data.reason.Password)
+            alert(res.data.reason.Password);
           }
         });
-
     }
   };
   updateSearch(event) {
